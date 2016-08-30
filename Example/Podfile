@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'SBLib_Example' do
+  pod 'SBLib', :path => '../'
+
+  target 'SBLib_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
