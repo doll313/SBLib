@@ -7,6 +7,7 @@
 //
 
 #import "SBViewController.h"
+#import "SBCONSTANT.h"
 
 @interface SBViewController ()
 
@@ -17,6 +18,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
