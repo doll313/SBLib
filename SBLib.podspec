@@ -1,42 +1,40 @@
-#
-# Be sure to run `pod lib lint SBLib.podspec' to ensure this is a
-# valid spec before submitting.
-#
-# Any lines starting with a # are optional, but their use is encouraged
-# To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
-#
-
 Pod::Spec.new do |s|
   s.name             = 'SBLib'
   s.version          = '0.1.0'
   s.summary          = 'A short description of SBLib.'
 
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
-
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
-                       DESC
+                        SBLib...
+                        DESC
 
-  s.homepage         = 'https://github.com/<GITHUB_USERNAME>/SBLib'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
+  s.homepage         = "https://github.com/doll313/SBLib"
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'yuki.wang' => 'yuki.wang@dianping.com' }
-  s.source           = { :git => 'https://github.com/<GITHUB_USERNAME>/SBLib.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.author           = { 'yuki.wang' => '385734069@qq.com' }
+  s.source           = { :git => "https://github.com/CocoaPods/Specs", :tag => s.version.to_s }
 
-  s.ios.deployment_target = '8.0'
-
+  s.ios.deployment_target = '7.0'
   s.source_files = 'SBLib/Classes/**/*'
-  
+  s.prefix_header_file = "SBLib/Classes/SBLib-prefix.pch"
+
+
   # s.resource_bundles = {
   #   'SBLib' => ['SBLib/Assets/*.png']
   # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+
+  s.dependency 'FMDB'
+  s.dependency 'MBProgressHUD'
+  s.dependency 'MJRefresh'
+  s.dependency 'SDWebImage'
+
+
+non_arc_files = 'SBLib/Classes/STKeyChain/STKeychain.*','SBLib/Classes/Util/SBDownloadFilter.*'
+s.exclude_files = non_arc_files
+s.subspec 'no-arc' do |sp|
+sp.source_files = non_arc_files
+sp.requires_arc = false
+end
+
 end
