@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.homepage         = "https://github.com/doll313/SBLib"
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'yuki.wang' => '385734069@qq.com' }
-  s.source           = { :git => "https://github.com/CocoaPods/Specs", :tag => s.version.to_s }
+  s.source           = { :git => "https://github.com/doll313/SBLib.git", :tag => s.version.to_s }
 
   s.ios.deployment_target = '7.0'
   s.source_files = 'SBLib/Classes/**/*'
