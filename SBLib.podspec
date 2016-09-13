@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'SBLib'
-  s.version          = '0.1.1'
+  s.version          = '0.1.2'
   s.summary          = 'A short description of SBLib.'
 
   s.description      = <<-DESC
@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = '7.0'
   s.source_files = 'SBLib/Classes/**/*'
-  s.prefix_header_file = "SBLib/Classes/SBLib-prefix.pch"
+  s.prefix_header_file = "SBLib/Classes/SBLib-prefix.h"
 
 
   # s.resource_bundles = {
