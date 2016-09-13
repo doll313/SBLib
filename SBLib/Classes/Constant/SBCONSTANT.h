@@ -111,8 +111,11 @@
 #import <UIKit/UIKit.h>                         //UI
 #import <QuartzCore/QuartzCore.h>               //绘制
 
+//三方
+#import "MBProgressHUD.h"           //hud
+#import "MJRefresh.h"               //下拉刷新
+#import "FMDB.h"                    //fmdb
 
-#import "SBThirdPart.h"
 
 //数据库键值对宏
 #import "STORE.h"
