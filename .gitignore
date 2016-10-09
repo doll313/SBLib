@@ -35,3 +35,4 @@ Carthage
 Example/Podfile.lock
 
 *.xcworkspacedata
+Example/Pods
