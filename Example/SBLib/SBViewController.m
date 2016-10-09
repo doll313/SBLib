@@ -19,6 +19,14 @@
 {
     [super viewDidLoad];
     
+    for (int i = 0; i < 20; i++) {
+        if (APPCONFIG_VERSION_OVER_(i)) {
+            NSLog(@"%@", @(i));
+        }
+    }
+    
+    [self.view sb_showTips:@"一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十" hiddenAfterSeconds:3];
+    
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -26,6 +34,8 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    
+    
 }
 
 @end

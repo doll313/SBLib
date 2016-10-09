@@ -85,6 +85,7 @@
     [MBProgressHUD hideHUDForView:view animated:YES];
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
     hud.label.text = tips;
+    hud.label.numberOfLines = 10;
     hud.bezelView.style = MBProgressHUDBackgroundStyleSolidColor;
     hud.bezelView.backgroundColor = [UIColor blackColor];
     hud.contentColor = [UIColor whiteColor];

@@ -100,6 +100,7 @@
 #define APPCONFIG_VERSION_OVER_8                 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0f)
 #define APPCONFIG_VERSION_OVER_9                 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0f)
 #define APPCONFIG_VERSION_OVER_10                 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 10.0f)
+#define APPCONFIG_VERSION_OVER_(x)                 ([[[UIDevice currentDevice] systemVersion] floatValue] >= x)
 
 
 #define APPCONFIG_UNIT_LINE_WIDTH                (1/[UIScreen mainScreen].scale)       //常用线宽
