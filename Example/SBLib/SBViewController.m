@@ -25,7 +25,7 @@
         }
     }
     
-    [self.view sb_showTips:@"一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十" hiddenAfterSeconds:3];
+    [self.view sb_showTips:@"" showIndicator:YES hiddenAfterSeconds:3];
     
 	// Do any additional setup after loading the view, typically from a nib.
 }

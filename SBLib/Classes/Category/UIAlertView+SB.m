@@ -79,9 +79,13 @@
 
 // 显示提示信息（可设定自动隐藏时间、是否显示转子）
 + (void)sb_showTips:(NSString *)tips inView:(UIView *)view showIndicator:(BOOL)showIndicator hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds {
-    if (tips.length == 0 || [tips isKindOfClass:[NSNull class]]) {
-        tips = @"";
+    BOOL hasTips = (tips.length == 0 || [tips isKindOfClass:[NSNull class]]);
+
+    //不带文字 并且也不是转圈的
+    if (hasTips && !showIndicator) {
+        return;
     }
+    
     [MBProgressHUD hideHUDForView:view animated:YES];
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
     hud.label.text = tips;
