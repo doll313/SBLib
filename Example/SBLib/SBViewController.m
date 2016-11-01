@@ -18,24 +18,24 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    for (int i = 0; i < 20; i++) {
-        if (APPCONFIG_VERSION_OVER_(i)) {
-            NSLog(@"%@", @(i));
-        }
-    }
-    
-    [self.view sb_showTips:@"" showIndicator:YES hiddenAfterSeconds:3];
-    
-	// Do any additional setup after loading the view, typically from a nib.
+
+    UIButton *bb = [[UIButton alloc] init];
+    bb.backgroundColor = [UIColor redColor];
+    bb.frame = CGRectMake(110, 110, 44, 44);
+    [bb addTarget:self action:@selector(clicked) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:bb];
+
+    // Do any additional setup after loading the view, typically from a nib.
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-    
-    
+- (void)clicked {
+    //UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
+    [UIWindow sb_showTips:@"jjjjj"];
+//    [self sb_showConfirm:@"111" cancel:^(UIAlertAction *action) {
+//
+//    } handler:^(UIAlertAction *action) {
+//
+//    }];
 }
 
 @end

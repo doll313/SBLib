@@ -21,7 +21,7 @@
 #import "UIAlertView+SB.h"
 
 
-@implementation UIAlertView (sbalert)
+@implementation UIWindow (sbalert)
 
 /** 获取window 弹出的时候不会被键盘遮住 */
 + (UIView *)systemKeyboardView {
@@ -31,7 +31,7 @@
 
 /** 隐藏当前实例 */
 + (void)sb_hiddenTips {
-    UIView *keyView = [UIAlertView systemKeyboardView];
+    UIView *keyView = [UIWindow systemKeyboardView];
     [self sb_hiddenTipsInView:keyView];
 }
 
@@ -41,40 +41,40 @@
 
 /** 显示提示信息 */
 + (void)sb_showTips:(NSString *)tips {
-	[UIAlertView sb_showTips:tips showIndicator:YES hiddenAfterSeconds:0];
+	[UIWindow sb_showTips:tips showIndicator:NO hiddenAfterSeconds:0];
 }
 
 /** 显示提示信息（可设定自动隐藏时间） */
 + (void)sb_showTips:(NSString *)tips hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds {
-	[UIAlertView sb_showTips:tips showIndicator:NO hiddenAfterSeconds:hiddenAfterSeconds];
+	[UIWindow sb_showTips:tips showIndicator:NO hiddenAfterSeconds:hiddenAfterSeconds];
 }
 
 /** 显示提示信息（可设定是否显示转子） */
 + (void)sb_showTips:(NSString *)tips showIndicator:(BOOL)showIndicator {
-	[UIAlertView sb_showTips:tips showIndicator:showIndicator hiddenAfterSeconds:0];
+	[UIWindow sb_showTips:tips showIndicator:showIndicator hiddenAfterSeconds:0];
 }
 
 /** 显示提示信息（可设定自动隐藏时间、是否显示转子） */
 + (void)sb_showTips:(NSString *)tips showIndicator:(BOOL)showIndicator hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds {
-    UIView *keyView = [UIAlertView systemKeyboardView];
-    [UIAlertView sb_showTips:tips inView:keyView showIndicator:showIndicator hiddenAfterSeconds:hiddenAfterSeconds];
+    UIView *keyView = [UIWindow systemKeyboardView];
+    [UIWindow sb_showTips:tips inView:keyView showIndicator:showIndicator hiddenAfterSeconds:hiddenAfterSeconds];
 }
 
 // ///////////////////////////////////////////////////////////////////////////
 
 // 显示提示信息 （无按钮）
 + (void)sb_showTips:(NSString *)tips inView:(UIView *)view {
-    [UIAlertView sb_showTips:tips inView:view showIndicator:YES hiddenAfterSeconds:0];
+    [UIWindow sb_showTips:tips inView:view showIndicator:YES hiddenAfterSeconds:0];
 }
 
 // 显示提示信息（可设定自动隐藏时间）
 + (void)sb_showTips:(NSString *)tips inView:(UIView *)view hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds {
-    [UIAlertView sb_showTips:tips inView:view showIndicator:NO hiddenAfterSeconds:hiddenAfterSeconds];
+    [UIWindow sb_showTips:tips inView:view showIndicator:NO hiddenAfterSeconds:hiddenAfterSeconds];
 }
 
 // 显示提示信息（可设定是否显示转子）
 + (void)sb_showTips:(NSString *)tips inView:(UIView *)view showIndicator:(BOOL)showIndicator {
-    [UIAlertView sb_showTips:tips inView:view showIndicator:showIndicator hiddenAfterSeconds:0];
+    [UIWindow sb_showTips:tips inView:view showIndicator:showIndicator hiddenAfterSeconds:0];
 }
 
 // 显示提示信息（可设定自动隐藏时间、是否显示转子）
@@ -114,84 +114,6 @@
     }
 }
 
-
-/** 显示提示对话框 */
-+ (UIAlertView *)sb_showAlert:(NSString *)msg {
-    return [UIAlertView sb_showAlert:msg withDelegate:nil];
-}
-
-/** 显示提示对话框(withDelegate) */
-+ (UIAlertView *)sb_showAlert:(NSString *)msg withDelegate:(id<UIAlertViewDelegate>)delegate {
-    [UIAlertView sb_hiddenTips];
-
-    if (nil == msg || [msg length] < 1) {
-        return nil;
-    }
-
-	UIAlertView *tipsView = [[UIAlertView alloc] initWithTitle: @"温馨提示"
-                                                       message: msg
-                                                      delegate: delegate
-                                             cancelButtonTitle: @"确定"
-                                             otherButtonTitles: nil];
-	[tipsView show];
-
-    return tipsView;
-}
-
-/** Show confirm message */
-+ (UIAlertView *)sb_showConfirm:(NSString *)msg withDelegate:(id<UIAlertViewDelegate>)delegate {
-    [UIAlertView sb_hiddenTips];
-
-    if (nil == msg || [msg length] < 1) {
-        return nil;
-    }
-
-	UIAlertView *tipsView = [[UIAlertView alloc] initWithTitle: @"确认"
-                                                       message: msg
-                                                      delegate: delegate
-                                             cancelButtonTitle: @"取消"
-                                             otherButtonTitles: @"确定", nil];
-	[tipsView show];
-
-    return tipsView;
-}
-
-+ (UIAlertView *)sb_showProgressDialog:(NSString *)msg withDelegate:(id<UIAlertViewDelegate>)delegate {
-    [UIAlertView sb_hiddenTips];
-    
-    UIAlertView *tipsView = [[UIAlertView alloc] initWithTitle: msg
-                                                       message: @"\n"   //为显示progress view做的hack
-                                                      delegate: delegate
-                                             cancelButtonTitle: @"下次再说"
-                                             otherButtonTitles: nil];
-    
-    UIProgressView *progressView = [[UIProgressView alloc]initWithProgressViewStyle:UIProgressViewStyleDefault];
-    progressView.frame = CGRectMake(0, 0, 200.0f, 9.0f);
-    progressView.center = CGPointMake(139.5, 60.5);
-    [tipsView addSubview:progressView];
-	[tipsView show];
-    return tipsView;
-}
-
-+ (UIAlertView *)sb_showIndicatorDialog:(NSString *)msg withDelegate:(id<UIAlertViewDelegate>)delegate {
-    [UIAlertView sb_hiddenTips];
-    
-    UIAlertView *tipsView = [[UIAlertView alloc] initWithTitle: msg
-                                                       message: @"\n"   //为显示indicator view做的hack
-                                                      delegate: delegate
-                                             cancelButtonTitle: @"取消"
-                                             otherButtonTitles: nil];
-    
-    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    indicator.center = CGPointMake(139.5, 60.5);
-    [tipsView addSubview:indicator];
-    [indicator startAnimating];
-    
-	[tipsView show];
-    
-    return tipsView;
-}
-
 @end
 
 
@@ -200,53 +122,63 @@
 
 // 隐藏当前提示
 - (void)sb_hiddenTips {
-    [UIAlertView sb_hiddenTipsInView:self.view];
+    [UIWindow sb_hiddenTipsInView:self.view];
 }
 
 // 显示提示信息 （无按钮）
 - (void)sb_showTips:(NSString *)tips {
-    [UIAlertView sb_showTips:tips inView:self.view];
+    [UIWindow sb_showTips:tips inView:self.view];
 }
 
 // 显示提示信息（可设定自动隐藏时间）
 - (void)sb_showTips:(NSString *)tips hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds {
-    [UIAlertView sb_showTips:tips inView:self.view hiddenAfterSeconds:hiddenAfterSeconds];
+    [UIWindow sb_showTips:tips inView:self.view hiddenAfterSeconds:hiddenAfterSeconds];
 }
 
 // 显示提示信息（可设定是否显示转子）
 - (void)sb_showTips:(NSString *)tips showIndicator:(BOOL)showIndicator {
-    [UIAlertView sb_showTips:tips inView:self.view showIndicator:showIndicator];
+    [UIWindow sb_showTips:tips inView:self.view showIndicator:showIndicator];
 }
 
 // 显示提示信息（可设定自动隐藏时间、是否显示转子）
 - (void)sb_showTips:(NSString *)tips showIndicator:(BOOL)showIndicator hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds {
-    [UIAlertView sb_showTips:tips inView:self.view showIndicator:showIndicator hiddenAfterSeconds:hiddenAfterSeconds];
+    [UIWindow sb_showTips:tips inView:self.view showIndicator:showIndicator hiddenAfterSeconds:hiddenAfterSeconds];
 }
 
 // 显示提示对话框
 - (void)sb_showAlert:(NSString *)msg {
-    if (APPCONFIG_VERSION_OVER_8) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:msg preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            
-        }];
-        
-        [alertController addAction:cancelAction];
-        [self presentViewController:alertController animated:YES completion:nil];
-    }
-    else {
-        UIAlertView *tipsView = [[UIAlertView alloc] initWithTitle:@"温馨提示" message: msg delegate: nil cancelButtonTitle: @"确定" otherButtonTitles: nil];
-        [tipsView show];
-    }
+    [self sb_showAlert:msg handler:nil];
 }
 
 // 显示提示对话框(只有一个确定)
 - (void)sb_showAlert:(NSString *)msg handler:(void (^ __nullable)(UIAlertAction *action))handler {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:msg preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *sureAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        handler(action);
+        if (handler) {
+            handler(action);
+        }
     }];
     
+    [alertController addAction:sureAction];
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+// 显示提示对话框(一个确定和一个取消)
+- (void)sb_showConfirm:(nonnull NSString *)msg cancel:(void (^ __nullable)(UIAlertAction *action))cancel handler:(void (^ __nullable)(UIAlertAction *action))handler{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:msg preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        if (cancel) {
+            cancel(action);
+        }
+    }];
+    UIAlertAction *sureAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if (handler) {
+            handler(action);
+        }
+    }];
+    
+    [alertController addAction:cancelAction];
     [alertController addAction:sureAction];
     [self presentViewController:alertController animated:YES completion:nil];
 }
@@ -258,27 +190,27 @@
 @implementation UIView (sbalert)
 // 隐藏当前提示
 - (void)sb_hiddenTips {
-    [UIAlertView sb_hiddenTipsInView:self];
+    [UIWindow sb_hiddenTipsInView:self];
 }
 
 // 显示提示信息 （无按钮）
 - (void)sb_showTips:(NSString *)tips {
-    [UIAlertView sb_showTips:tips inView:self];
+    [UIWindow sb_showTips:tips inView:self];
 }
 
 // 显示提示信息（可设定自动隐藏时间）
 - (void)sb_showTips:(NSString *)tips hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds {
-    [UIAlertView sb_showTips:tips inView:self hiddenAfterSeconds:hiddenAfterSeconds];
+    [UIWindow sb_showTips:tips inView:self hiddenAfterSeconds:hiddenAfterSeconds];
 }
 
 // 显示提示信息（可设定是否显示转子）
 - (void)sb_showTips:(NSString *)tips showIndicator:(BOOL)showIndicator {
-    [UIAlertView sb_showTips:tips inView:self showIndicator:showIndicator];
+    [UIWindow sb_showTips:tips inView:self showIndicator:showIndicator];
 }
 
 // 显示提示信息（可设定自动隐藏时间、是否显示转子）
 - (void)sb_showTips:(NSString *)tips showIndicator:(BOOL)showIndicator hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds {
-    [UIAlertView sb_showTips:tips inView:self showIndicator:showIndicator hiddenAfterSeconds:hiddenAfterSeconds];
+    [UIWindow sb_showTips:tips inView:self showIndicator:showIndicator hiddenAfterSeconds:hiddenAfterSeconds];
 }
 
 @end

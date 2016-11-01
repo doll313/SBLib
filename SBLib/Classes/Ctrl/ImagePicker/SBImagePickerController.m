@@ -70,10 +70,10 @@
     UIImage *image = info[UIImagePickerControllerOriginalImage];
     
     if (nil == image) {
-        [UIAlertView sb_showAlert:@"非法图片"];
+        [self sb_showAlert:@"非法图片"];
 		return;
     } else if(image.scale * image.size.width < 74 || image.scale * image.size.height < 74){
-        [UIAlertView sb_showAlert:@"原图太小，请重新选择"];
+        [self sb_showAlert:@"原图太小，请重新选择"];
 		return;
     }
     
