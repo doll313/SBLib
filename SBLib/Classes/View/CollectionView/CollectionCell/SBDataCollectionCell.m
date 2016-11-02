@@ -31,7 +31,7 @@ static BOOL _item_alloc_debug;
         //调试单元格内存
         _item_alloc_debug = [[NSUserDefaults standardUserDefaults] boolForKey:DEBUG_MALLOC_FOR_COLLECTION_CELL];
         if (_item_alloc_debug) {
-            NSLog(@"item-count[init]: %d", ++_item_alloc_count);
+            NSLog(@"%@ [init]: %d", self, ++_item_alloc_count);
         }
     }
     
@@ -41,7 +41,7 @@ static BOOL _item_alloc_debug;
 - (void)dealloc {
     //调试单元格内存
     if (_item_alloc_debug) {
-        NSLog(@"item-count[dealloc]: %d", --_item_alloc_count);
+        NSLog(@"%@ [dealloc]: %d",self, --_item_alloc_count);
     }
 }
 

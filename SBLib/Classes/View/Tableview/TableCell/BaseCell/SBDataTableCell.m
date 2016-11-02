@@ -82,7 +82,7 @@ static BOOL _cell_alloc_debug;
         //调试单元格内存
         _cell_alloc_debug = [[NSUserDefaults standardUserDefaults] boolForKey:DEBUG_MALLOC_FOR_TABLE_CELL];
         if (_cell_alloc_debug) {
-            NSLog(@"cell-count[init]: %d", ++_cell_alloc_count);
+            NSLog(@"%@[init]: %d", self, ++_cell_alloc_count);
         }
     }
         
@@ -92,7 +92,7 @@ static BOOL _cell_alloc_debug;
 - (void)dealloc {
     //调试单元格内存
     if (_cell_alloc_debug) {
-        NSLog(@"cell-count[dealloc]: %d", --_cell_alloc_count);
+        NSLog(@"%@[dealloc]: %d", self, --_cell_alloc_count);
     }
 }
 
