@@ -17,6 +17,8 @@
  #####################################################################
  */
 
+#ifndef SBOBJECTSINGLETON_H
+#define SBOBJECTSINGLETON_H
 
 //是arc
 /** 单例模式：声明 */
@@ -93,4 +95,4 @@ return nil;                                      \
 
 
 
-
+#endif

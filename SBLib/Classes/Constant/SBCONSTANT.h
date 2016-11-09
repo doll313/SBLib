@@ -16,6 +16,8 @@
  #
  #####################################################################
  */
+#ifndef SBCONSTANT_H
+#define SBCONSTANT_H
 
 //常用键值
 #define __KEY_CELL_TITLE      @"<&__KEY_CELL_TITLE&>"           //表示标题
@@ -208,4 +210,5 @@
 //#define NSLog(s, ...)
  */
 
+#endif
 

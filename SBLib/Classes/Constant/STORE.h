@@ -17,6 +17,9 @@
  #####################################################################
  */
 
+#ifndef SBSTORE_H
+#define SBSTORE_H
+
 #pragma mark -
 #pragma mark 数据库类型名
 /** 数据库版本信息 */
@@ -69,3 +72,5 @@
 
 #define STORE_COLOR_SBCELL_BACKGROUND        @"STORE_COLOR_SBCELL_BACKGROUND"   //sbdatatablecell 背景色
 #define STORE_COLOR_SBCELL_SELECTED        @"STORE_COLOR_SBCELL_SELECTED"   //sbdatatablecell 点击色
+
+#endif
