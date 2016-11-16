@@ -57,21 +57,32 @@
 //重写设置下拉
 - (void)setIsRefreshType:(BOOL)isRefreshType {
     _isRefreshType = isRefreshType;
-    
-    SBWS(__self)
-    if(isRefreshType){
-        __self.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-            //0号位的段数据 重新请求数据
-            SBCollectionData *sectionData = [__self dataOfSection:0];
-            //从第一页开始
-            sectionData.pageAt = 1;
-            //加载数据
-            [sectionData loadData];
+
+    [self reloadRefreshHeader];
+}
+
+//更新刷新头部
+- (void)reloadRefreshHeader {
+    if(_isRefreshType){
+        SBWS(__self)
+        self.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+            [__self doRefreshData];
         }];
     }else{
         self.mj_header = nil;
     }
 }
+
+//一次刷新
+- (void)doRefreshData {
+    //0号位的段数据 重新请求数据
+    SBTableData *sectionData = [self dataOfSection:0];
+    //从第一页开始
+    sectionData.pageAt = 1;
+    //加载数据
+    [sectionData loadData];
+}
+
 
 #pragma mark - UICollectionViewDelegateFlowLayout
 

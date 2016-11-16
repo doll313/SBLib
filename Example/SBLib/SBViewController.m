@@ -15,6 +15,10 @@
 
 @implementation SBViewController
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
