@@ -19,45 +19,22 @@
 
 #import <UIKit/UIKit.h>
 
-//为SDK自带的 UIAlertView 类添加一些实用方法
-@interface UIWindow (sbalert)
-
-// 隐藏当前提示
-+ (void)sb_hiddenTips;
-+ (void)sb_hiddenTipsInView:(nonnull UIView *)view;
-
-// 显示提示信息 （无按钮）
-+ (void)sb_showTips:(nonnull NSString *)tips;
-
-// 显示提示信息（可设定自动隐藏时间） 
-+ (void)sb_showTips:(nonnull NSString *)tips hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds;
-
-// 显示提示信息（可设定是否显示转子） 
-+ (void)sb_showTips:(nonnull NSString *)tips showIndicator:(BOOL)showIndicator;
-
-// 显示提示信息（可设定自动隐藏时间、是否显示转子） 
-+ (void)sb_showTips:(nonnull NSString *)tips showIndicator:(BOOL)showIndicator hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds;
-
-@end
-
-
 //通过ctrl弹窗
 @interface UIViewController (sbalert)
 // 隐藏当前提示
 - (void)sb_hiddenTips;
 
 // 显示提示信息 （无按钮）
-- (void)sb_showTips:(nonnull NSString *)tips;
+- (MBProgressHUD *)sb_showTips:(nonnull NSString *)tips;
 
 // 显示提示信息（可设定自动隐藏时间）
-- (void)sb_showTips:(nonnull NSString *)tips hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds;
+- (MBProgressHUD *)sb_showTips:(nonnull NSString *)tips hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds;
 
 // 显示提示信息（可设定是否显示转子）
-- (void)sb_showTips:(nonnull NSString *)tips showIndicator:(BOOL)showIndicator;
+- (MBProgressHUD *)sb_showTips:(nonnull NSString *)tips showIndicator:(BOOL)showIndicator;
 
 // 显示提示信息（可设定自动隐藏时间、是否显示转子）
-- (void)sb_showTips:(nonnull NSString *)tips showIndicator:(BOOL)showIndicator hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds;
-
+- (MBProgressHUD *)sb_showTips:(nonnull NSString *)tips showIndicator:(BOOL)showIndicator hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds;
 
 // 显示提示对话框
 - (void)sb_showAlert:(nonnull NSString *)msg;
@@ -75,19 +52,44 @@
 //通过view弹窗
 @interface UIView (sbalert)
 // 隐藏当前提示
++ (void)sb_hiddenTips;
++ (void)sb_hiddenTipsInView:(nonnull UIView *)view;
+
+// 显示提示信息 （无按钮）
++ (MBProgressHUD *)sb_showTips:(nonnull NSString *)tips;
+
+// 显示提示信息（可设定自动隐藏时间）
++ (MBProgressHUD *)sb_showTips:(nonnull NSString *)tips hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds;
+
+// 显示提示信息（可设定是否显示转子）
++ (MBProgressHUD *)sb_showTips:(nonnull NSString *)tips showIndicator:(BOOL)showIndicator;
+
+// 显示提示信息（可设定自动隐藏时间、是否显示转子）
++ (MBProgressHUD *)sb_showTips:(nonnull NSString *)tips showIndicator:(BOOL)showIndicator hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds;
+
+
+/** 实例方法 **/
+
+// 隐藏当前提示
 - (void)sb_hiddenTips;
 
 // 显示提示信息 （无按钮）
-- (void)sb_showTips:(nonnull NSString *)tips;
+- (MBProgressHUD *)sb_showTips:(nonnull NSString *)tips;
 
 // 显示提示信息（可设定自动隐藏时间）
-- (void)sb_showTips:(nonnull NSString *)tips hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds;
+- (MBProgressHUD *)sb_showTips:(nonnull NSString *)tips hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds;
 
 // 显示提示信息（可设定是否显示转子）
-- (void)sb_showTips:(nonnull NSString *)tips showIndicator:(BOOL)showIndicator;
+- (MBProgressHUD *)sb_showTips:(nonnull NSString *)tips showIndicator:(BOOL)showIndicator;
 
 // 显示提示信息（可设定自动隐藏时间、是否显示转子）
-- (void)sb_showTips:(nonnull NSString *)tips showIndicator:(BOOL)showIndicator hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds;
+- (MBProgressHUD *)sb_showTips:(nonnull NSString *)tips showIndicator:(BOOL)showIndicator hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds;
+
+// 显示提示信息（可设定自动隐藏时间、是否显示转子， 结束事件）
+- (MBProgressHUD *)sb_showTips:(NSString *)tips showIndicator:(BOOL)showIndicator hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds completion:(void (^)())completion;
+
+/** 创建hud **/
+- (MBProgressHUD *)sb_createHud:(MBProgressHUDMode)mode;
 
 @end
 
