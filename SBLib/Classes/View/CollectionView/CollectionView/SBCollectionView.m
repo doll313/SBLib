@@ -76,7 +76,7 @@
 //一次刷新
 - (void)doRefreshData {
     //0号位的段数据 重新请求数据
-    SBTableData *sectionData = [self dataOfSection:0];
+    SBCollectionData *sectionData = [self dataOfSection:0];
     //从第一页开始
     sectionData.pageAt = 1;
     //加载数据
