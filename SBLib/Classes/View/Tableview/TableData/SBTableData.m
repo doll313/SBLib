@@ -153,9 +153,12 @@
     if ([self isLoadDataComplete]) {
         return;
     }
-    
-    //页码自动加1 并加载数据
-	self.pageAt++;
+
+    //上次请求成功的情况下
+    if (self.isLoadDataOK) {
+        //页码自动加1 并加载数据
+        self.pageAt++;
+    }
     
 	[self loadData];
 }
