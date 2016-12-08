@@ -26,12 +26,7 @@
 @property (nonatomic, assign) UIImagePickerControllerSourceType sourceType;
 @property (nonatomic, strong) UIViewController<SBImagePickerDelegate> *parentCtrl;
 
-/**
- *  唯一初始化方法
- *
- *  @param image 选中的图片
- *
- */
+/** 唯一初始化方法 */
 - (id)initWithImage:(UIImage *)image;
 
 @end

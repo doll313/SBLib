@@ -32,6 +32,8 @@
 #define STORE_CACHE_IMAGES                    @"STORE_CACHE_IMAGES"                   // 图片缓存
 #define STORE_CACHE_TABLEDATA                 @"STORE_CACHE_TABLEDATA"        // 列表最后一次访问的数据缓存
 #define STORE_CACHE_ARTICLE                @"STORE_CACHE_ARTICLE"                    // 帖子数据缓存
+#define STORE_CACHE_USERINFO                @"STORE_CACHE_USERINFO"                    // 用户数据缓存
+#define STORE_CACHE_MEDIA                @"STORE_CACHE_MEDIA"                    // 媒体数据缓存
 
 /** 应用程序核心设置信息 */
 #define STORE_CORE_CLIENT_VERSION_INFO        @"STORE_CORE_CLIENT_VERSION_INFO"       // 存放客户端当前版本信息
@@ -61,16 +63,5 @@
 #define STORE_KEY_IS_NEWER_SHOWED           @"STORE_KEY_IS_NEWER_SHOWED"      // 启动的时候，新手帮助是否显示过
 #define STORE_KEY_SB_ACCOUNT                @"STORE_KEY_SB_ACCOUNT"                // 股吧用户信息
 #define STORE_KEY_TABLE_REFRESH_IMAGE       @"STORE_KEY_TABLE_REFRESH_IMAGE"                //下拉刷新的图片
-
-
-#pragma mark -
-#pragma mark 一些默认的UI键名
-#define STORE_COLOR_SBTABLE_BACKGROUND        @"STORE_COLOR_SBTABLE_BACKGROUND"   //sbtableview 背景色
-#define STORE_COLOR_SBTABLE_SEPLINE        @"STORE_COLOR_SBTABLE_SEPLINE"   //sbtableview 分割线
-#define STORE_COLOR_SBTABLE_TABLEHEADER        @"STORE_COLOR_SBTABLE_TABLEHEADER"   //sbtableview 表头
-#define STORE_COLOR_SBTABLE_TABLEFOOTER       @"STORE_COLOR_SBTABLE_TABLEFOOTER"   //sbtableview 表尾
-
-#define STORE_COLOR_SBCELL_BACKGROUND        @"STORE_COLOR_SBCELL_BACKGROUND"   //sbdatatablecell 背景色
-#define STORE_COLOR_SBCELL_SELECTED        @"STORE_COLOR_SBCELL_SELECTED"   //sbdatatablecell 点击色
 
 #endif

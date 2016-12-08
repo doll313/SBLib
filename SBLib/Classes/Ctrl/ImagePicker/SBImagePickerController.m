@@ -38,13 +38,6 @@
 - (void)dealloc {
 }
 
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    if (self.parentController != nil && [self.parentController respondsToSelector:@selector(cancelImagePicker)]) {
-        [self.parentController cancelImagePicker];
-    }
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
     
 }
@@ -67,33 +60,49 @@
 
 //获取好照片后的代理
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
-    UIImage *image = info[UIImagePickerControllerOriginalImage];
-    
-    if (nil == image) {
-        [self sb_showAlert:@"非法图片"];
-		return;
-    } else if(image.scale * image.size.width < 74 || image.scale * image.size.height < 74){
-        [self sb_showAlert:@"原图太小，请重新选择"];
-		return;
+
+    //代理自己处理获取时间
+    if (self.parentController != nil && [self.parentController respondsToSelector:@selector(didFinishPickingMediaWithInfo:)]) {
+        [self.parentController didFinishPickingMediaWithInfo:info];
+    }
+    else {
+        UIImage *image = info[UIImagePickerControllerOriginalImage];
+
+        if (nil == image) {
+            [self sb_showAlert:@"未获取到图片"];
+            return;
+        } else if(image.scale * image.size.width < 74 || image.scale * image.size.height < 74){
+            [self sb_showAlert:@"原图太小，请重新选择"];
+            return;
+        }
+
+        if (self.imagePickerType == SBImagePickerTypeForEdit) { //修改头像
+            [self dismissViewControllerAnimated:YES completion:^{
+                //剪裁图片 简历的图片和粉丝团的图片尺寸不一样
+                SBImageEditorController *eCtrl = [[SBImageEditorController alloc] initWithImage:image];
+                eCtrl.parentCtrl = self.parentController;
+                eCtrl.sourceType = self.sourceType;
+                [self.parentController.navigationController pushViewController:eCtrl animated:YES];
+            }];
+        }else{
+            //选取照片
+            assert(self.imagePickerType == SBImagePickerTypeForPick);
+            if (self.parentController != nil && [self.parentController respondsToSelector:@selector(pickedImage:)]) {
+                [self.parentController pickedImage:image];
+            }
+            
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
     }
     
-    if (self.imagePickerType == SBImagePickerTypeForEdit) { //修改头像
-        [self dismissViewControllerAnimated:YES completion:^{
-            //剪裁图片 简历的图片和粉丝团的图片尺寸不一样
-            SBImageEditorController *eCtrl = [[SBImageEditorController alloc] initWithImage:image];
-            eCtrl.parentCtrl = self.parentController;
-            eCtrl.sourceType = self.sourceType;
-            [self.parentController.navigationController pushViewController:eCtrl animated:YES];
-        }];
-    }else{
-        //选取照片
-        assert(self.imagePickerType == SBImagePickerTypeForPick);
-        if (self.parentController != nil && [self.parentController respondsToSelector:@selector(pickedImage:)]) {
-            [self.parentController pickedImage:image];
-        }
-        
-        [self dismissViewControllerAnimated:YES completion:^{
-        }];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    if (self.parentController != nil && [self.parentController respondsToSelector:@selector(cancelImagePicker:)]) {
+        [self.parentController cancelImagePicker:picker];
+    }
+    else {
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 

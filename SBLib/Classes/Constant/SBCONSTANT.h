@@ -166,9 +166,8 @@
 #import "UIAlertView+SB.h"          //警告扩展
 
 //方法集合
-#import "SBPureColorImageGenerator.h"       //纯色图
+#import "SBPureColorImageGenerator.h"       //纯色图  ps 能不用就不要用了
 #import "SBURLAction.h"                 //界面跳转 （url形式）
-#import "SBCrashManager.h"              //异常崩溃检测
 
 //界面
 #import "SBBasicController.h"

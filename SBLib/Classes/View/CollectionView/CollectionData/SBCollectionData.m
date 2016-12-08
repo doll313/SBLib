@@ -139,7 +139,7 @@
     }
 
     //上次请求成功的情况下
-    if (self.isLoadDataOK) {
+    if (self.isLoadDataOK || self.pageAt == 1) {
         //页码自动加1 并加载数据
         self.pageAt++;
     }

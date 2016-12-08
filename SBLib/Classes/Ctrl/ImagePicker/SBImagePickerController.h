@@ -17,7 +17,7 @@
 #####################################################################
 */
 
-//#import <Reachability.h>
+
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
@@ -43,16 +43,17 @@ typedef enum {
  *  选择图片回调
  */
 @protocol SBImagePickerDelegate <NSObject>
-/**
- *  获取照片
- *
- *  @param image 图片数据
- */
+
+/** 获取照片 */
 - (void)pickedImage:(UIImage *)image;
 
 @optional
-/** 退出选图片页面 可选 */
-- (void)cancelImagePicker;
+
+/** 获取了图片 如果实现了 则不再自动消失 */
+- (void)didFinishPickingMediaWithInfo:(NSDictionary *)info;
+
+/** 退出选图片页面 如果实现了 则不再自动消失 */
+- (void)cancelImagePicker:(id)picker;
 
 @end
 
