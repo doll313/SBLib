@@ -45,9 +45,6 @@
 
 #define APPCONFIG_CONN_ERROR_MSG_DOMAIN     @"SBHttpTaskError"  // 连接出错信息标志
 
-//常用路径
-#define APPCONFIG_PATH_DOCUMENT [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0]   //document目录
-
 /** 色值 RGBA **/
 #define RGB_A(r, g, b, a) [UIColor colorWithRed:(CGFloat)(r)/255.0f green:(CGFloat)(g)/255.0f blue:(CGFloat)(b)/255.0f alpha:(CGFloat)(a)]
 
@@ -58,7 +55,40 @@
 /** 弱引用自己 */
 #define SBWS(weakSelf)  __weak __typeof(&*self)weakSelf = self;
 
-// 应用程序版本检查
+/** 是否为空 */
+#define SBStringIsEmpty(str) ([str isKindOfClass:[NSNull class]] || str == nil || [str length] < 1 ? YES : NO )
+#define SBArrayIsEmpty(array) (array == nil || [array isKindOfClass:[NSNull class]] || array.count == 0)
+#define SBDictionaryIsEmpty(dic) (dic == nil || [dic isKindOfClass:[NSNull class]] || dic.allKeys == 0)
+#define SBObjectIsEmpty(_object) (_object == nil \
+|| [_object isKindOfClass:[NSNull class]] \
+|| ([_object respondsToSelector:@selector(length)] && [(NSData *)_object length] == 0) \
+|| ([_object respondsToSelector:@selector(count)] && [(NSArray *)_object count] == 0))
+
+/** 简写 */
+#define SBApplication        [UIApplication sharedApplication]
+#define SBKeyWindow          [UIApplication sharedApplication].keyWindow
+#define SBAppDelegate        [UIApplication sharedApplication].delegate
+#define SBUserDefaults      [NSUserDefaults standardUserDefaults]
+#define SBNotificationCenter [NSNotificationCenter defaultCenter]
+#define SBViewWithTag(_OBJECT, _TAG)    [_OBJECT viewWithTag : _TAG]
+#define SBLocal(x, ...) NSLocalizedString(x, nil)
+#define SBDispatchBack(block) dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), block)
+#define SBDispatchMain(block) dispatch_async(dispatch_get_main_queue(),block)
+
+/** 应用参数 **/
+#define SBAppDisplayName [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"]
+#define SBAppVersion    [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]
+#define SBBuildVersion     [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]
+#define SBSystemVersion [[UIDevice currentDevice] systemVersion]//系统版本号
+#define SBCurrentLanguage ([[NSLocale preferredLanguages] objectAtIndex:0])//获取当前语言
+#define SBISiPhone (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)//判断是否为iPhone
+#define SBISiPad (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)//判断是否为iPad获取沙盒Document路径
+#define SBDocumentPath [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]//获取沙盒Document路径
+#define SBTempPath NSTemporaryDirectory()//获取沙盒temp路径
+#define SBCachePath [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject]//获取沙盒Cache路径
+
+
+
 #define APPCONFIG_APP_MSG_RELOAD_INTERVAL   300                         // 提示信息多长事件重新刷新一次（当前定为5分钟，调试时可修改）。
 #define APPCONFIG_APP_LOGIN_INTERVAL        900                         // 挂起多长时间后，激活时重新登录，单位秒（约定为15分钟，调试时可修改）。
 #define APPCONFIG_APP_VERSION_INTERVAL      7200                        // 版本检测间隔时间，单位秒（约定值为2小时，调试时可修改）
@@ -201,12 +231,12 @@
 #import "SBImagePickerController.h"
 
 /** 全局调试开关
-//#ifdef assert
-//#undef assert
-//#endif
-//
-//#define assert(x)
-//#define NSLog(s, ...)
+ //#ifdef assert
+ //#undef assert
+ //#endif
+ //
+ //#define assert(x)
+ //#define NSLog(s, ...)
  */
 
 #endif
