@@ -81,8 +81,9 @@
 
 /** 应用参数 **/
 #define SBAppDisplayName [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"]
+#define SBAppBundleName [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"]
 #define SBAppVersion    [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]
-#define SBBuildVersion     [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]
+#define SBAppBuildVersion     [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]
 #define SBSystemVersion [[UIDevice currentDevice] systemVersion]//系统版本号
 #define SBCurrentLanguage ([[NSLocale preferredLanguages] objectAtIndex:0])//获取当前语言
 #define SBISiPhone (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)//判断是否为iPhone

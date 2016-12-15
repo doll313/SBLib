@@ -67,7 +67,7 @@
 
 //更新一条数据库记录
 - (int)updateData:(NSString *)tableName data:(NSDictionary *)data whereParam:(NSString *)whereParam {
-    if (nil ==  tableName || [tableName length] < 1 || nil == data || [data count] < 1) {
+    if (nil ==  tableName || SBStringIsEmpty(tableName) || nil == data || [data count] < 1) {
         return 0;
     }
     
@@ -104,17 +104,17 @@
 #pragma mark 判断操作
 //数据库中是否存在某个键值对
 - (BOOL)hasTypeItem:(NSString *)tableName dataType:(NSString *)dataType dataKey:(NSString *)dataKey {
-	if(dataType.length == 0){
+	if(SBStringIsEmpty(dataType)){
 		return NO;
 	}
     
     NSString *whereParam;
-    if (dataKey.length == 0) {
+    if (SBStringIsEmpty(dataKey)) {
         whereParam = [NSString stringWithFormat:@"`DATA_TYPE`='%@'", dataType];
     } else {
         whereParam = [NSString stringWithFormat:@"`DATA_TYPE`='%@' and `DATA_KEY`='%@'", dataType, dataKey];
     }
-    if (nil == tableName || [tableName length] < 1) {
+    if (SBStringIsEmpty(tableName)) {
         return 0;
     }
     
@@ -140,7 +140,7 @@
 #pragma mark 删除操作
 /** 清理表中的无效数据 */
 - (BOOL)deleteTypeItem:(NSString *)tableName dataType:(NSString *)dataType dataKey:(NSString *)dataKey inSeconds:(NSInteger)seconds {
-	if(dataType.length == 0 || dataKey.length == 0){
+	if(SBStringIsEmpty(dataType) || SBStringIsEmpty(dataKey)){
 		return NO;
 	}
     
@@ -165,7 +165,7 @@
 
 //删除指定表中符合条件的数据
 - (int)deleteData:(NSString *)tableName whereParam:(NSString *)whereParam {
-    if (nil == tableName || [tableName length] < 1) {
+    if (SBStringIsEmpty(tableName)) {
         return 0;
     }
     
@@ -181,13 +181,13 @@
 
 //删除数据库中存在某个键值对
 - (int)deleteTypeItem:(NSString *)tableName dataType:(NSString *)dataType dataKey:(NSString *)dataKey {
-	if(dataType.length == 0){
+	if(SBStringIsEmpty(dataType)){
 		return 0;
 	}
     
     NSString *whereParam;
     
-    if (dataKey.length == 0) {
+    if (SBStringIsEmpty(dataKey)) {
         whereParam = [NSString stringWithFormat:@"`DATA_TYPE`='%@'", dataType];
     } else {
         whereParam = [NSString stringWithFormat:@"`DATA_TYPE`='%@' and `DATA_KEY`='%@'", dataType, dataKey];
@@ -251,7 +251,7 @@
 #pragma mark 修改操作
 //刷新某条数据的添加时间
 - (BOOL)refreshTypeTime:(NSString *)tableName dataType:(NSString *)dataType dataKey:(NSString *)dataKey {
-	if(nil == tableName || [tableName length] < 1 || nil == dataType || [dataType length] < 1 || nil == dataKey || [dataKey length] < 1){
+	if(SBStringIsEmpty(tableName) || SBStringIsEmpty(dataType) || SBStringIsEmpty(dataKey)){
 		return 0;
 	}
     
@@ -267,7 +267,7 @@
 #pragma mark 插入操作
 //设置条数据的值 
 - (sqlite3_int64)setItemValue:(NSString *)tableName dataType:(NSString *)dataType dataKey:(NSString *)dataKey dataValue:(id)dataValue {
-	if(dataType.length == 0 || dataKey.length == 0 || nil == dataValue){
+	if(SBStringIsEmpty(dataType) || SBStringIsEmpty(dataKey) || nil == dataValue){
 		return 0;
 	}
     
@@ -322,7 +322,7 @@
 #pragma mark 查询操作
 //获取一条整型数据
 - (int)getIntValue:(NSString *)dataType dataKey:(NSString *)dataKey {
-    if(dataType.length == 0 || dataKey.length == 0){
+    if(SBStringIsEmpty(dataType) || SBStringIsEmpty(dataKey)){
         return 0;
     }
     
@@ -338,7 +338,7 @@
 
 //获取一条字符串数据
 - (NSString *)getStrValue:(NSString *)dataType dataKey:(NSString *)dataKey {
-    if(dataType.length == 0 || dataKey.length == 0){
+    if(SBStringIsEmpty(dataType) || SBStringIsEmpty(dataKey)){
         return @"";
     }
     
@@ -354,7 +354,7 @@
 
 //获取一条二进制数据
 - (NSData *)getBinValue:(NSString *)dataType dataKey:(NSString *)dataKey {
-	if(dataType.length == 0 || dataKey.length == 0){
+	if(SBStringIsEmpty(dataType) || SBStringIsEmpty(dataKey)){
 		return nil;
 	}
 
@@ -394,7 +394,7 @@
 #pragma mark 对于额外的，自定义数据的操作
 //从数据库缓存中读取 DataItemDetail 数据结构，如果不存在则返回 nil
 - (DataItemDetail *)getDetailValue:(NSString *)dataType dataKey:(NSString *)dataKey {
-	if(nil == dataKey || [dataKey length] < 1){
+	if(SBStringIsEmpty(dataKey)){
 		return nil;
 	}
     
@@ -409,7 +409,7 @@
 
 //保存 DataItemDetail 结构的数据到数据库缓存中
 - (BOOL)setDetailValue:(NSString *)dataType dataKey:(NSString *)dataKey data:(DataItemDetail *)data {
-	if(nil == dataKey || [dataKey length] < 1 || nil == data){
+	if(SBStringIsEmpty(dataKey) || nil == data){
 		return NO;
 	}
     
@@ -428,7 +428,7 @@
 
 //从数据库缓存中读取 DataItemResult 数据结构，如果不存在则返回 nil
 - (DataItemResult *)getResultValue:(NSString *)dataType dataKey:(NSString *)dataKey {
-	if(nil == dataKey || [dataKey length] < 1){
+	if(SBStringIsEmpty(dataKey)){
 		return nil;
 	}
     
@@ -443,7 +443,7 @@
 
 //保存 DataItemResult 结构的数据到数据库缓存中
 - (BOOL)setResultValue:(NSString *)dataType dataKey:(NSString *)dataKey data:(DataItemResult *)data {
-	if(nil == dataKey || [dataKey length] < 1 || nil == data){
+	if(SBStringIsEmpty(dataKey) || nil == data){
 		return NO;
 	}
     

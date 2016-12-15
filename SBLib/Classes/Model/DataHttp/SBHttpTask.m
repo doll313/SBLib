@@ -332,7 +332,7 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 #pragma mark 私有方法
 //设置 HTTP 请求头报错时的错误信息
 - (void)onHttpStatusCodeError:(NSString *)errorDomain {
-    if (errorDomain.length == 0) {
+    if (SBStringIsEmpty(errorDomain)) {
         errorDomain = [SBHttpHelper httpStatusErrorStr:self.statusCode];
     }
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:0];

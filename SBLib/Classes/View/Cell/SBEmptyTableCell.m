@@ -29,7 +29,7 @@
 //加载错误数据
 -(void)loadErrorMessage {
     NSString *errorStr = self.tableData.tableDataResult.message;
-    self.displayLabel.text = errorStr.length == 0 ? @"数据为空！" : errorStr;
+    self.displayLabel.text = SBStringIsEmpty(errorStr) ? @"数据为空！" : errorStr;
 }
 
 @end
@@ -66,7 +66,7 @@
 //加载错误数据
 -(void)loadErrorMessage {
     NSString *errorStr = self.collectionData.tableDataResult.message;
-    self.displayLabel.text = errorStr.length == 0 ? @"数据为空！" : errorStr;
+    self.displayLabel.text = SBStringIsEmpty(errorStr) ? @"数据为空！" : errorStr;
 }
 
 @end
@@ -76,7 +76,7 @@
 //加载错误数据
 -(void)loadErrorMessage {
     NSString *errorStr = self.collectionData.tableDataResult.message;
-    self.displayLabel.text = errorStr.length == 0 ? @"数据为空！" : errorStr;
+    self.displayLabel.text = SBStringIsEmpty(errorStr) ? @"数据为空！" : errorStr;
 }
 
 @end

@@ -116,7 +116,7 @@ static CGFloat const SBTitleCellTitleFont = 15.0f;      //标题字体
     
     NSString *titleStr = [self.cellDetail getString:__KEY_CELL_TITLE];
     NSString *valueStr = [self.cellDetail getString:__KEY_CELL_VALUE];
-    self.subTitleLbl.hidden = valueStr.length == 0;
+    self.subTitleLbl.hidden = SBStringIsEmpty(valueStr);
     
     self.titleLbl.text = titleStr;
     self.subTitleLbl.text = valueStr;

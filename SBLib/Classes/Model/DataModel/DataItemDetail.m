@@ -52,6 +52,11 @@ static BOOL _data_item_detail_malloc = 0;
 
 + (DataItemDetail *)detailFromDictionary:(NSDictionary *)dict {
     DataItemDetail *detail = [[DataItemDetail alloc] init];
+    if (SBDictionaryIsEmpty(dict)) {
+        return detail;
+    }
+
+    //
     [dict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         if ([obj isKindOfClass:[NSDictionary class]]) {
             DataItemDetail *subDetail = [DataItemDetail detailFromDictionary:obj];
@@ -297,7 +302,7 @@ static BOOL _data_item_detail_malloc = 0;
 }
 
 - (NSObject *)getObject:(NSString *)key {
-    if (key.length == 0) {
+    if (SBStringIsEmpty(key)) {
         return nil;
     }
     return [self objectForCaseInsensitiveKey:key.lowercaseString];

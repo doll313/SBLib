@@ -387,7 +387,7 @@ static BOOL _data_item_result_malloc = 0;
     for(int i = 0; i<self.dataList.count; i++) {
         DataItemDetail *item = [self getItem:i];
         NSString *string = [item getString:key];
-        if (string.length == 0) {
+        if (SBStringIsEmpty(string)) {
             string = @"";
         }
         [aArray addObject:string];

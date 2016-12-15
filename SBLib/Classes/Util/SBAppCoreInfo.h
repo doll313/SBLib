@@ -55,6 +55,7 @@
 @property (nonatomic, copy) NSString *appDisplayName;/** 获取字符形式的应用名 */
 @property (nonatomic, copy) NSString *appVersionName;/** 获取字符形式的应用版本号 */
 @property (nonatomic, copy) NSString *appProductName;/** 获取字符形式的工程名 */
+@property (nonatomic, copy) NSString *appBuildVersion;/** 获取字符形式的build版本  */
 @property (nonatomic, copy) NSString *appClientName;/** 获取客户端名称 */
 @property (nonatomic, copy) NSString *deviceToken;/** 获取应用的推送token */
 @property (nonatomic, assign) NSInteger appVersionCode;/** 获取整数型应用版本号 */

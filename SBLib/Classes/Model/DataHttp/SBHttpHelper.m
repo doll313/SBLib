@@ -45,7 +45,7 @@ static NSInteger netWorkIndicatorCount = 0;             //加载网络的个数
 /** 获取url的参数键值对 */
 - (NSDictionary *)sb_httpGetMethodParams {
     NSString *urlStrFooter = [self sb_httpGetMethodParamsString];
-    if (urlStrFooter.length == 0) {
+    if (SBStringIsEmpty(urlStrFooter)) {
         return @{};
     }
     //通过URL(GET形式)的参数得到一个dictionary

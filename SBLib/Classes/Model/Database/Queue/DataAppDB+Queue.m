@@ -17,10 +17,10 @@
 
 /** 清理表中的无效数据 */
 - (void)deleteTypeItem:(NSString *)tableName dataType:(NSString *)dataType dataKey:(NSString *)dataKey inSeconds:(NSInteger)seconds withBlock:(nullable void(^)(FMDatabase *db, BOOL success))completeBlock {
-    if(dataType.length == 0 || dataKey.length == 0){
+    if(SBStringIsEmpty(dataType) || SBStringIsEmpty(dataKey)){
         completeBlock(self.db, NO);
     } else {
-    
+
         NSMutableString *whereParam = [NSMutableString stringWithCapacity:0];
         
         [whereParam appendFormat:@"`DATA_TYPE`='%@'", dataType];
@@ -45,7 +45,7 @@
 
 //删除指定表中符合条件的数据
 - (void)deleteData:(NSString *)tableName whereParam:(NSString *)whereParam withBlock:(nullable void(^)(FMDatabase *db, BOOL success))completeBlock {
-    if (nil == tableName || [tableName length] < 1) {
+    if (SBStringIsEmpty(tableName)) {
         completeBlock(self.db, NO);
     } else {
     
@@ -65,13 +65,13 @@
 
 //删除数据库中存在某个键值对
 - (void)deleteTypeItem:(NSString *)tableName dataType:(NSString *)dataType dataKey:(NSString *)dataKey withBlock:(nullable void(^)(FMDatabase *db, BOOL success))completeBlock {
-    if(dataType.length == 0){
+    if(SBStringIsEmpty(dataType)){
         completeBlock(self.db, NO);
     } else {
     
         NSString *whereParam;
     
-        if (dataKey.length == 0) {
+        if (SBStringIsEmpty(dataKey)) {
             whereParam = [NSString stringWithFormat:@"`DATA_TYPE`='%@'", dataType];
         } else {
             whereParam = [NSString stringWithFormat:@"`DATA_TYPE`='%@' and `DATA_KEY`='%@'", dataType, dataKey];
@@ -155,7 +155,7 @@
 
 //设置条数据的值
 - (void)setItemValue:(nullable NSString *)tableName dataType:(nullable NSString *)dataType dataKey:(nullable NSString *)dataKey dataValue:(id)dataValue withBlock:(nullable void(^)(FMDatabase *__nonnull, sqlite3_int64 retVal))completeBlock {
-    if(dataType.length == 0 || dataKey.length == 0 || nil == dataValue || nil == tableName || [tableName length] < 1) {
+    if(SBStringIsEmpty(dataType) || SBStringIsEmpty(dataKey) || SBStringIsEmpty(tableName)) {
         completeBlock(self.db, 0);
     } else {
         [self.queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
@@ -198,7 +198,7 @@
 
 //保存 DataItemDetail 结构的数据到数据库缓存中
 - (void)setDetailValue:(nullable NSString *)dataType dataKey:(nullable NSString *)dataKey data:(nullable DataItemDetail *)data withBlock:(nullable void(^)(FMDatabase *__nonnull, sqlite3_int64 retVal))completeBlock {
-    if(nil == dataKey || [dataKey length] < 1 || nil == data){
+    if(SBStringIsEmpty(dataKey) || nil == data){
         completeBlock(self.db, 0);
     } else {
         [self setBinValue:dataType dataKey:[NSString stringWithFormat:@"item.%@", dataKey] dataValue:[data toData] withBlock:completeBlock];
@@ -208,7 +208,7 @@
 
 //保存 DataItemResult 结构的数据到数据库缓存中
 - (void)setResultValue:(nullable NSString *)dataType dataKey:(nullable NSString *)dataKey data:(nullable DataItemResult *)data withBlock:(nullable void(^)(FMDatabase *__nonnull, sqlite3_int64 retVal))completeBlock {
-    if(nil == dataKey || [dataKey length] < 1 || nil == data){
+    if(SBStringIsEmpty(dataKey) || nil == data){
         completeBlock(self.db, 0);
     } else {
         [self setBinValue:dataType dataKey:[NSString stringWithFormat:@"items.%@", dataKey] dataValue:[data toData] withBlock:completeBlock];
@@ -220,7 +220,7 @@
 
 //获取一条整型数据
 - (void)getIntValue:(nullable NSString *)dataType dataKey:(nullable NSString *)dataKey withBlock:(nullable void(^)(FMDatabase *__nonnull, NSInteger intValue))completeBlock {
-    if(dataType.length == 0 || dataKey.length == 0){
+    if(SBStringIsEmpty(dataType) || SBStringIsEmpty(dataKey)){
         completeBlock(self.db, 0);
     } else {
         NSString *whereParam = [NSString stringWithFormat:@"`DATA_TYPE`='%@' and `DATA_KEY`='%@'", dataType, dataKey];
@@ -240,7 +240,7 @@
 
 //获取一条字符串数据
 - (void)getStrValue:(nullable NSString *)dataType dataKey:(nullable NSString *)dataKey withBlock:(nullable void(^)(FMDatabase *__nonnull, NSString * __nullable))completeBlock {
-    if(dataType.length == 0 || dataKey.length == 0){
+    if(SBStringIsEmpty(dataType) || SBStringIsEmpty(dataKey)){
         completeBlock(self.db, @"");
     } else {
         NSString *whereParam = [NSString stringWithFormat:@"`DATA_TYPE`='%@' and `DATA_KEY`='%@'", dataType, dataKey];
@@ -262,7 +262,7 @@
 
 //获取一条二进制数据
 - (void)getBinValue:(nullable NSString *)dataType dataKey:(nullable NSString *)dataKey withBlock:(nullable void(^)(FMDatabase *__nonnull, NSData * __nullable))completeBlock {
-    if(dataType.length == 0 || dataKey.length == 0){
+    if(SBStringIsEmpty(dataType) || SBStringIsEmpty(dataKey)){
         completeBlock(self.db, nil);
     } else {
         NSString *whereParam = [NSString stringWithFormat:@"`DATA_TYPE`='%@' and `DATA_KEY`='%@'", dataType, dataKey];
@@ -309,7 +309,7 @@
 
 //从数据库缓存中读取 DataItemDetail 数据结构，如果不存在则返回 nil
 - (void)getDetailValue:(nullable NSString *)dataType dataKey:(nullable NSString *)dataKey withBlock:(nullable void(^)(FMDatabase *__nonnull, DataItemDetail * __nullable))completeBlock {
-    if(nil == dataKey || [dataKey length] < 1){
+    if(SBStringIsEmpty(dataKey)){
         completeBlock(self.db, nil);
     } else {
         NSData *data = [self getBinValue:dataType dataKey:[NSString stringWithFormat:@"item.%@", dataKey]];
@@ -324,7 +324,7 @@
 
 //从数据库缓存中读取 DataItemResult 数据结构，如果不存在则返回 nil
 - (void)getResultValue:(nullable NSString *)dataType dataKey:(nullable NSString *)dataKey withBlock:(nullable void(^)(FMDatabase *__nonnull, DataItemResult * __nullable))completeBlock {
-    if(nil == dataKey || [dataKey length] < 1){
+    if(SBStringIsEmpty(dataKey)){
         completeBlock(self.db, nil);
     } else {
         NSData *data = [self getBinValue:dataType dataKey:[NSString stringWithFormat:@"items.%@", dataKey]];
@@ -342,16 +342,16 @@
 
 //数据库中是否存在某个键值对
 - (void)hasTypeItem:(NSString *)tableName dataType:(NSString *)dataType dataKey:(NSString *)dataKey withBlock:(nullable void(^)(FMDatabase *__nonnull, BOOL success))completeBlock {
-    if(dataType.length == 0){
+    if(SBStringIsEmpty(dataType)){
         completeBlock(self.db, NO);
     } else {
         NSString *whereParam;
-        if (dataKey.length == 0) {
+        if (SBStringIsEmpty(dataKey)) {
             whereParam = [NSString stringWithFormat:@"`DATA_TYPE`='%@'", dataType];
         } else {
             whereParam = [NSString stringWithFormat:@"`DATA_TYPE`='%@' and `DATA_KEY`='%@'", dataType, dataKey];
         }
-        if (nil == tableName || [tableName length] < 1) {
+        if (SBStringIsEmpty(tableName)) {
             completeBlock(self.db, NO);
         } else {
             [self tableRows:tableName whereParam:whereParam withBlock:completeBlock];
@@ -379,7 +379,7 @@
 
 //获取指定表中符合条件的数据条数
 - (void)tableRows:(NSString *)tableName whereParam:(NSString *)whereParam withBlock:(nullable void(^)(FMDatabase *__nonnull, BOOL success))completeBlock {
-    if (nil == tableName || [tableName length] < 1) {
+    if (SBStringIsEmpty(tableName)) {
         completeBlock(self.db, 0);
     } else {
         NSMutableString *countStr = [NSMutableString stringWithCapacity:0];
@@ -487,7 +487,7 @@
 
 /** 清空一张表 */
 - (void)truncateTableWithQueue:(nullable NSString *)tableName {
-    if([tableName length] < 1){
+    if(SBStringIsEmpty(tableName)){
         return;
     }
     

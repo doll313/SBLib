@@ -86,7 +86,7 @@ SB_ARC_SINGLETON_IMPLEMENT(SBExceptionLog);
 
 /** 记录 */
 - (void)record:(NSString *)log key:(NSString *)key {
-    if (log.length == 0 || ![log isKindOfClass:[NSString class]]) {
+    if (SBStringIsEmpty(log) || ![log isKindOfClass:[NSString class]]) {
         return;
     }
     

@@ -74,13 +74,16 @@ SB_ARC_SINGLETON_IMPLEMENT(SBAppCoreInfo);
     self.appClientName = [[UIDevice currentDevice] model];
     
     /** 获取字符形式的应用名 */
-    self.appDisplayName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+    self.appDisplayName = SBAppDisplayName;
     
     /** 获取字符形式的应用版本号 */
-    self.appVersionName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    self.appVersionName = SBAppVersion;
     
     /** 获取字符形式的工程名 */
-    self.appProductName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"];
+    self.appProductName = SBAppBundleName;
+
+    /** 获取字符形式的build版本 */
+    self.appBuildVersion = SBAppBuildVersion;
     
     // 获取当前系统浮点型版本号
     self.systemVersionCode = [[[UIDevice currentDevice] systemVersion] floatValue];
@@ -146,14 +149,14 @@ SB_ARC_SINGLETON_IMPLEMENT(SBAppCoreInfo);
 /** 当前应用的版本 */
 + (NSString *)shortVersionString {
     NSString *shortVersionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-    if (shortVersionString.length == 0) {
+    if (SBStringIsEmpty(shortVersionString)) {
         shortVersionString = @"";
     }
     return shortVersionString;
 }
 
 - (void)setDeviceToken:(NSString *)deviceToken {
-    if (deviceToken.length == 0) {
+    if (SBStringIsEmpty(deviceToken)) {
         _deviceToken = @"";
     } else {
         _deviceToken = [NSString stringWithFormat:@"%@", deviceToken];
@@ -165,10 +168,10 @@ SB_ARC_SINGLETON_IMPLEMENT(SBAppCoreInfo);
 /** 推送用的标识码 */
 + (NSString *)deviceToken {
     NSString *dt = [SBAppCoreInfo sharedSBAppCoreInfo].deviceToken;
-    if (dt.length == 0) {
+    if (SBStringIsEmpty(dt)) {
         dt = [[SBAppCoreInfo getCoreDB] getStrValue:STORE_KEY_DEVICE_UUID dataKey:@"deviceToken"];
     }
-    if (dt.length == 0) {
+    if (SBStringIsEmpty(dt)) {
         return @"";
     }
     return dt;
@@ -337,7 +340,7 @@ SB_ARC_SINGLETON_IMPLEMENT(SBAppCoreInfo);
     if (telInfo.subscriberCellularProvider) {
         carrierName = telInfo.subscriberCellularProvider.carrierName;
     }
-    if (carrierName.length == 0) {
+    if (SBStringIsEmpty(carrierName)) {
         carrierName = @"无";
     }
     
@@ -403,6 +406,7 @@ SB_ARC_SINGLETON_IMPLEMENT(SBAppCoreInfo);
     [dc appendFormat:@"网络状态  =  %@\n", networkType];
     [dc appendFormat:@"应用名  =  %@\n", info.appDisplayName];
     [dc appendFormat:@"应用版本号  =  %@\n", info.appVersionName];
+    [dc appendFormat:@"编译版本号  =  %@\n", info.appBuildVersion];
     [dc appendFormat:@"工程名  =  %@\n", info.appProductName];
     [dc appendFormat:@"客户端名称  =  %@\n", info.appClientName];
     [dc appendFormat:@"系统浮点型版本号=%f\n", info.systemVersionCode];

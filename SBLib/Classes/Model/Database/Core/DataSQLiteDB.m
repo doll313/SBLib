@@ -57,7 +57,7 @@
 }
 //获取指定表中符合条件的数据条数
 - (sqlite3_int64)tableRows:(NSString *)tableName whereParam:(NSString *)whereParam {
-    if (nil == tableName || [tableName length] < 1) {
+    if (SBStringIsEmpty(tableName)) {
         return 0;
     }
     
@@ -90,7 +90,7 @@
 
 /** 清空一张表 */
 - (void)truncateTable:(NSString *)tableName {
-    if([tableName length] < 1){
+    if(SBStringIsEmpty(tableName)){
         return;
     }
     

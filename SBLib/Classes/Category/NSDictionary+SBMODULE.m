@@ -41,7 +41,7 @@
     NSMutableDictionary *ret = [NSMutableDictionary dictionary];
     NSArray *components = [argString componentsSeparatedByString:@"&"];
     [components enumerateObjectsUsingBlock:^(NSString *component, NSUInteger idx, BOOL *stop) {
-        if (component.length == 0) {
+        if (SBStringIsEmpty(component)) {
             return;
         }
         NSRange pos = [component rangeOfString:@"="];
