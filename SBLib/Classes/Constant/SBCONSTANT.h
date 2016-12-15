@@ -25,6 +25,10 @@
 #define __KEY_CELL_ICON      @"<&__KEY_CELL_ICON&>"     //表示图标
 #define __KEY_CELL_CODE       @"<&__KEY_CELL_CODE&>"             //表示代码
 #define __KEY_CELL_SKIN       @"<&__KEY_CELL_SKIN&>"             //表示皮肤
+#define __KEY_CELL_SUBTITLE      @"<&__KEY_CELL_SUBTITLE&>"           //表示副标题
+#define __KEY_CELL_TIME      @"<&__KEY_CELL_TIME&>"           //表示时间
+#define __KEY_CELL_LOCATION      @"<&__KEY_CELL_LOCATION&>"           //表示地点
+#define __KEY_CELL_USER      @"<&__KEY_CELL_USER&>"           //表示用户
 
 #define __KEY_CELL_EMPTY      @"<&__KEY_CELL_EMPTY&>"                //表示空数据
 #define __KEY_CELL_SELECTED   @"<&__KEY_CELL_SELECTED&>"             //表示是否选中
@@ -87,17 +91,14 @@
 #define SBTempPath NSTemporaryDirectory()//获取沙盒temp路径
 #define SBCachePath [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject]//获取沙盒Cache路径
 
-
-
-#define APPCONFIG_APP_MSG_RELOAD_INTERVAL   300                         // 提示信息多长事件重新刷新一次（当前定为5分钟，调试时可修改）。
-#define APPCONFIG_APP_LOGIN_INTERVAL        900                         // 挂起多长时间后，激活时重新登录，单位秒（约定为15分钟，调试时可修改）。
-#define APPCONFIG_APP_VERSION_INTERVAL      7200                        // 版本检测间隔时间，单位秒（约定值为2小时，调试时可修改）
-#define APPCONFIG_APP_IMAGE_CACHE           86400                       // 图片缓存的秒数 (调试时可修改)
-#define APPCONFIG_APP_ONEMINUTE_INTERVAL    60                          // 一分钟的秒数 (调试时可修改)
-#define APPCONFIG_APP_ONEDAY_INTERVAL       86400                       // 一天的秒数 (调试时可修改)
-#define APPCONFIG_APP_ONEMONTH_INTERVAL     2592000                     // 30天的秒数 (调试时可修改)
-#define APPCONFIG_APP_TWOMONTH_INTERVAL     5184000                     // 60天的秒数 (调试时可修改)
-#define APPCONFIG_APP_SIXMONTH_INTERVAL     15552000                    // 180天的秒数 (调试时可修改)
+//版本
+#define APPCONFIG_VERSION_OVER_5                 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0f)
+#define APPCONFIG_VERSION_OVER_6                 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0f)
+#define APPCONFIG_VERSION_OVER_7                 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0f)
+#define APPCONFIG_VERSION_OVER_8                 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0f)
+#define APPCONFIG_VERSION_OVER_9                 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0f)
+#define APPCONFIG_VERSION_OVER_10                 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 10.0f)
+#define APPCONFIG_VERSION_OVER_(x)                 ([[[UIDevice currentDevice] systemVersion] floatValue] >= x)
 
 // UI控件常规像素
 #define APPCONFIG_UI_TABLE_CELL_HEIGHT      44.0f                       // UITableView 单元格默认高度
@@ -110,30 +111,16 @@
 
 #define APPCONFIG_UI_TABLE_PADDING          10.0f                       // UITableView 的默认边距
 #define APPCONFIG_UI_WIDGET_PADDING          5.0f                       // 控件 的默认边距
-#define APPCONFIG_UI_THUMBNAIL_BOARD        120.0f                      // 缩略图的长宽 的默认边距
-#define APPCONFIG_UI_CELL_STATUS_PADDING    7.0f                        // 常用cell 背景边距
-#define APPCONFIG_UI_STATUS_PADDING         12.0f                       //新版常用边距
-#define APPCONFIG_UI_STATUS_SPACING         15.0f                       //间距
-#define APPCONFIG_UI_TABLE_X_PADDING        12.0f                       // UITableView 的默认边距
 
 
 // UI 界面大小
-#define APPCONFIG_UI_SCREEN_SIZE                ([UIScreen mainScreen].bounds.size)         //屏幕大小
-#define APPCONFIG_UI_SCREEN_FHEIGHT             ([UIScreen mainScreen].bounds.size.height)              //界面的高度 iphone5 568 其他480
-#define APPCONFIG_UI_SCREEN_FWIDTH              ([UIScreen mainScreen].bounds.size.width)               //界面的宽度 iphone 320
-#define APPCONFIG_UI_CONTROLLER_FHEIGHT         (self.view.frame.size.height)                           //界面的高度 iphone5 548 其他460
-#define APPCONFIG_UI_CONTROLLER_FWIDTH          (self.view.frame.size.width)                              //界面的宽度 iphone 320
-#define APPCONFIG_UI_VIEW_FHEIGHT               (self.frame.size.height)                                //界面的高度 iphone5 548 其他460
-#define APPCONFIG_UI_VIEW_FWIDTH                (self.frame.size.width)                              //界面的宽度 iphone 320
-
-#define APPCONFIG_VERSION_OVER_5                 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0f)
-#define APPCONFIG_VERSION_OVER_6                 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0f)
-#define APPCONFIG_VERSION_OVER_7                 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0f)
-#define APPCONFIG_VERSION_OVER_8                 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0f)
-#define APPCONFIG_VERSION_OVER_9                 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0f)
-#define APPCONFIG_VERSION_OVER_10                 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 10.0f)
-#define APPCONFIG_VERSION_OVER_(x)                 ([[[UIDevice currentDevice] systemVersion] floatValue] >= x)
-
+#define APPCONFIG_UI_SCREEN_SIZE                ([UIScreen mainScreen].bounds.size)             //屏幕大小
+#define APPCONFIG_UI_SCREEN_FHEIGHT             ([UIScreen mainScreen].bounds.size.height)              //界面的高度
+#define APPCONFIG_UI_SCREEN_FWIDTH              ([UIScreen mainScreen].bounds.size.width)               //界面的宽度
+#define APPCONFIG_UI_CONTROLLER_FHEIGHT         (self.view.frame.size.height)                           //界面的高度
+#define APPCONFIG_UI_CONTROLLER_FWIDTH          (self.view.frame.size.width)                              //界面的宽度
+#define APPCONFIG_UI_VIEW_FHEIGHT               (self.frame.size.height)                                //界面的高度
+#define APPCONFIG_UI_VIEW_FWIDTH                (self.frame.size.width)                              //界面的宽度
 
 #define APPCONFIG_UNIT_LINE_WIDTH                (1/[UIScreen mainScreen].scale)       //常用线宽
 
