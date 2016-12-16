@@ -241,7 +241,13 @@
 //表格端的顶部视图 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     SBTableData *sectionData = [self dataOfSection:section];
+
     if (sectionData) {
+        //有文字 返回nil
+        if (sectionData.headerTitle.length > 0) {
+            return nil;
+        }
+
         if (self.headerForSection && sectionData.hasHeaderView) {
             return self.headerForSection(self, section);
         }

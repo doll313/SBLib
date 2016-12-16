@@ -105,6 +105,9 @@
 - (CGFloat)sb_heightWithContentWidth:(CGFloat)width font:(UIFont *)font;
 - (CGFloat)sb_widthWithContentHeight:(CGFloat)height font:(UIFont *)font;
 
+//中文的拼音首字母
+- (NSString *)sb_cnFirstLetter;
+
 @end
 
 //这些是从带链接Label那拷贝过来的代码

@@ -21,12 +21,15 @@
 
 @interface SBIndexTableView : SBTableView {
 @private
-    NSArray                     *compositorArray;   //排序后的索引数组
 }
 
+//不要赋值
+@property (nonatomic, strong) NSArray *compositorArray;  //排序后的索引数组
+
+//赋值
 @property (nonatomic, assign) BOOL isFirstLetter;       //是否是显示首字母
 @property (nonatomic, assign) BOOL isIndexUppercase;       //索引是否大写 只有isFirstLetter为YES时 才生效
-@property (nonatomic, strong) NSString   *indexKey;
+@property (nonatomic, strong) NSString   *indexKey;         //索引字段的key
 @property (nonatomic, assign)Class<SBTableViewCellDelegate> listDataCellClass;
 
 //中文的拼音首字母
