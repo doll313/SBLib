@@ -24,10 +24,15 @@
     NSArray                     *compositorArray;   //排序后的索引数组
 }
 
-@property (nonatomic, copy)NSString   *indexKey;
-@property (assign)Class<SBTableViewCellDelegate> listDataCellClass;
+@property (nonatomic, assign) BOOL isFirstLetter;       //是否是显示首字母
+@property (nonatomic, strong) NSString   *indexKey;
+@property (nonatomic, assign)Class<SBTableViewCellDelegate> listDataCellClass;
 
-- (void)appendResult:(DataItemResult *)result;//添加数据
+//中文的拼音首字母
+- (NSString *)firstLetter:(NSString *)hanzi;
+
+//添加数据
+- (void)appendResult:(DataItemResult *)result;
 
 @end
 

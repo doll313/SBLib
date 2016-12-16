@@ -40,7 +40,7 @@
     self.animTable.ctrl = self;
     [self.view addSubview:self.animTable];
 
-    SBWS(__self)
+//    SBWS(__self)
 
     // 计算单元格高度
     self.animTable.heightForRow = ^CGFloat(SBTableView *tableView, NSIndexPath *indexPath) {
@@ -52,23 +52,11 @@
         DataItemDetail *cellDetail = [tableView dataOfIndexPath:indexPath];
         NSString *titleStr = [cellDetail getString:__KEY_CELL_TITLE];
 
-        if ([titleStr isEqualToString:@"1"]) {
-            [__self clicked1];
+        if ([titleStr isEqualToString:@"alert"]) {
+            [tableView.ctrl sb_quickOpenCtrl:@"SBAlertDemoController"];
         }
-        else if ([titleStr isEqualToString:@"2"]) {
-            [__self clicked2];
-        }
-        else if ([titleStr isEqualToString:@"3"]) {
-            [__self clicked3];
-        }
-        else if ([titleStr isEqualToString:@"4"]) {
-            [__self clicked4];
-        }
-        else if ([titleStr isEqualToString:@"5"]) {
-            [__self clicked5];
-        }
-        else if ([titleStr isEqualToString:@"6"]) {
-            [__self clicked6];
+        else if ([titleStr isEqualToString:@"index"]) {
+            [tableView.ctrl sb_quickOpenCtrl:@"SBIndexTableController"];
         }
     };
 
@@ -77,12 +65,8 @@
     sectionData.mDataCellClass = [SBTitleCell class];
     [self.animTable addSectionWithData:sectionData];
 
-    NSArray *titleArray = @[@"1",
-                            @"2",
-                            @"3",
-                            @"4",
-                            @"5",
-                            @"6",
+    NSArray *titleArray = @[@"alert",
+                            @"index",
                             ];
 
     //单元格
@@ -93,27 +77,6 @@
     }
 
     [self.animTable reloadData];
-}
-
-- (void)clicked1 {
-    [UIWindow sb_showTips:@"jjjjj" hiddenAfterSeconds:2];
-}
-- (void)clicked2 {
-    [self.view sb_showTips:@"jjjjj" hiddenAfterSeconds:2];
-}
-- (void)clicked3 {
-    [self sb_showTips:@"jjjjj" hiddenAfterSeconds:2];
-}
-- (void)clicked4 {
-    [UIWindow sb_showTips:@""];
-}
-- (void)clicked5 {
-    [UIWindow sb_showTips:@"abc" showIndicator:YES hiddenAfterSeconds:2];
-}
-- (void)clicked6 {
-    [self sb_showAlert:@"asdfa" handler:^(UIAlertAction *action) {
-        NSLog(@"56789");
-    }];
 }
 
 @end

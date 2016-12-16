@@ -35,6 +35,7 @@
 #define __KEY_CELL_TAG        @"<&__KEY_CELL_TAG&>"                  //表示标记
 #define __KEY_CELL_WIDTH      @"<&__KEY_CELL_WIDTH&>"               //单元格宽度
 #define __KEY_CELL_HEIGHT     @"<&__KEY_CELL_HEIGHT&>"               //单元格高度
+#define __KEY_CELL_INDEXTITLE      @"<&__KEY_CELL_INDEXTITLE&>"           //表示索引标题
 
 
 #define __KEY_SECTION_HEADER_HEIGHT        @"<&__KEY_SECTION_HEADER_HEIGHT&>"       //表示段头的高度
