@@ -32,11 +32,14 @@
 @property (nonatomic, strong) NSString   *indexKey;         //索引字段的key
 @property (nonatomic, assign)Class<SBTableViewCellDelegate> listDataCellClass;
 
-//中文的拼音首字母
-- (NSString *)firstLetter:(NSString *)hanzi;
-
 //添加数据
 - (void)appendResult:(DataItemResult *)result;
+
+
+// 索引目录
+@property (nonatomic, copy) NSArray * (^sectionIndexTitles)(SBTableView *tableView);
+// 查看索引
+@property (nonatomic, copy) NSInteger (^fetchIndexTitle)(SBTableView *tableView, NSString *title, NSInteger index);
 
 @end
 

@@ -125,10 +125,16 @@
 
 //  返回索引列表
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+    if (self.sectionIndexTitles) {
+        return self.sectionIndexTitles(tableView);
+    }
     return self.compositorArray;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
+    if (self.fetchIndexTitle) {
+        return self.fetchIndexTitle(tableView, title, index);
+    }
     return index;
 }
 @end
