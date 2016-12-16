@@ -25,6 +25,7 @@
 }
 
 @property (nonatomic, assign) BOOL isFirstLetter;       //是否是显示首字母
+@property (nonatomic, assign) BOOL isIndexUppercase;       //索引是否大写 只有isFirstLetter为YES时 才生效
 @property (nonatomic, strong) NSString   *indexKey;
 @property (nonatomic, assign)Class<SBTableViewCellDelegate> listDataCellClass;
 

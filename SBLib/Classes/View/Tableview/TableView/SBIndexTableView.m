@@ -44,6 +44,9 @@
         //获取首字母
         if (self.isFirstLetter) {
             tempTitle = [self firstLetter:tempTitle];
+            if (self.isIndexUppercase) {
+                tempTitle = [tempTitle uppercaseString];
+            }
         }
         else {
             tempTitle = [tempTitle lowercaseString];
