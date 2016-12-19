@@ -54,7 +54,7 @@
 
 
 //设置某条整型数据
-- (void)setIntValue:(nullable NSString *)dataType dataKey:(nullable NSString *)dataKey dataValue:(int)dataValue withBlock:(nullable void(^)(FMDatabase *__nonnull, sqlite3_int64 retVal))completeBlock;
+- (void)setIntValue:(nullable NSString *)dataType dataKey:(nullable NSString *)dataKey dataValue:(NSInteger)dataValue withBlock:(nullable void(^)(FMDatabase *__nonnull, sqlite3_int64 retVal))completeBlock;
 
 //设置某条字符串数据
 - (void)setStrValue:(nullable NSString *)dataType dataKey:(nullable NSString *)dataKey dataValue:(nullable NSString *)dataValue withBlock:(nullable void(^)(FMDatabase *__nonnull, sqlite3_int64 retVal))completeBlock;

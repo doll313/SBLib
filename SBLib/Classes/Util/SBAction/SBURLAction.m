@@ -21,7 +21,7 @@ static BOOL sbIsCtrlAnimating = NO;
 @implementation SBURLAction
 
 + (id)actionWithClassName:(NSString *)className {
-    NSString *urlString = [NSString stringWithFormat:@"stockbar://%@", className];
+    NSString *urlString = [NSString stringWithFormat:@"sblib://%@", className];
     return [[self alloc] initWithURLString:urlString];
 }
 
@@ -38,10 +38,10 @@ static BOOL sbIsCtrlAnimating = NO;
         _url = url;
         
         NSDictionary *dic = [url parseQuery];
-        _params = [NSMutableDictionary dictionary];
+        self.params = [NSMutableDictionary dictionary];
         for (NSString *key in [dic allKeys]) {
             id value = [dic objectForKey:key];
-            [_params setObject:value forKey:key];
+            [self.params setObject:value forKey:key];
         }
     }
     return self;
@@ -53,33 +53,33 @@ static BOOL sbIsCtrlAnimating = NO;
 }
 
 - (void)setInteger:(NSInteger)intValue forKey:(NSString *)key {
-    [_params setObject:[NSNumber numberWithInteger:intValue] forKey:key];
+    [self.params setObject:[NSNumber numberWithInteger:intValue] forKey:key];
 }
 
 - (void)setDouble:(double)doubleValue forKey:(NSString *)key {
-    [_params setObject:[NSNumber numberWithDouble:doubleValue] forKey:key];
+    [self.params setObject:[NSNumber numberWithDouble:doubleValue] forKey:key];
 }
 
 - (void)setString:(NSString *)string forKey:(NSString *)key {
     if (string.length > 0) {
-        [_params setObject:string forKey:key];
+        [self.params setObject:string forKey:key];
     }
 }
 
 - (void)setObject:(NSObject *)object forKey:(NSString *)key {
     if(object) {
-        [_params setObject:object forKey:key];
+        [self.params setObject:object forKey:key];
     }
 }
 
 - (void)setAnyObject:(id)object forKey:(NSString *)key {
     if(object) {
-        [_params setObject:object forKey:key];
+        [self.params setObject:object forKey:key];
     }
 }
 
 - (NSInteger)integerForKey:(NSString *)key {
-    NSString *urlStr = [_params objectForKey:key];
+    NSString *urlStr = [self.params objectForKey:key];
     if(urlStr) {
         if ([urlStr isKindOfClass:[NSString class]]) {
             return [urlStr integerValue];
@@ -91,7 +91,7 @@ static BOOL sbIsCtrlAnimating = NO;
 }
 
 - (double)doubleForKey:(NSString *)key {
-    NSString *urlStr = [_params objectForKey:key];
+    NSString *urlStr = [self.params objectForKey:key];
     if(urlStr) {
         if ([urlStr isKindOfClass:[NSString class]]) {
             return [urlStr doubleValue];
@@ -103,7 +103,7 @@ static BOOL sbIsCtrlAnimating = NO;
 }
 
 - (NSString *)stringForKey:(NSString *)key {
-    NSString *urlStr = [_params objectForKey:key];
+    NSString *urlStr = [self.params objectForKey:key];
     if(urlStr) {
         if ([urlStr isKindOfClass:[NSString class]]) {
             return urlStr;
@@ -112,7 +112,7 @@ static BOOL sbIsCtrlAnimating = NO;
     return nil;
 }
 - (NSObject *)objectForKey:(NSString *)key {
-    NSString *urlStr = [_params objectForKey:key];
+    NSString *urlStr = [self.params objectForKey:key];
     if(urlStr) {
         if ([urlStr isKindOfClass:[NSObject class]]) {
             return (NSObject *)urlStr;
@@ -122,23 +122,24 @@ static BOOL sbIsCtrlAnimating = NO;
 }
 
 - (id)anyObjectForKey:(NSString *)key {
-    return [_params objectForKey:key];
+    return [self.params objectForKey:key];
 }
 
 - (NSString *)description {
-    if([_params count]) {
-        NSMutableArray *paramsDesc = [NSMutableArray arrayWithCapacity:_params.count];
-        for(NSString *key in [_params keyEnumerator]) {
-            id value = [_params objectForKey:key];
+    if([self.params count]) {
+        NSMutableArray *paramsDesc = [NSMutableArray arrayWithCapacity:self.params.count];
+        for(NSString *key in [self.params keyEnumerator]) {
+            id value = [self.params objectForKey:key];
             if ([value isKindOfClass:[NSObject class]]) {
                 [paramsDesc addObject:[NSString stringWithFormat:@"%@=[Obj]", key]];
             } else if ([value isKindOfClass:[NSString class]]) {
+                value = [value sbSubStringToIndex:256];
                 [paramsDesc addObject:[NSString stringWithFormat:@"%@=%@", key, [value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
             } else {
                 [paramsDesc addObject:[NSString stringWithFormat:@"%@=%@", key, value]];
             }
         }
-        NSString *urlString = [_url absoluteString];
+        NSString *urlString = [self.url absoluteString];
         NSRange range = [urlString rangeOfString:@"?"];
         if (range.location != NSNotFound) {
             NSString *pureURLStirng = [urlString substringToIndex:range.location];
@@ -147,19 +148,19 @@ static BOOL sbIsCtrlAnimating = NO;
             return [urlString stringByAppendingFormat:@"?%@",[paramsDesc componentsJoinedByString:@"&"]];
         }
     } else {
-        return [_url absoluteString];
+        return [self.url absoluteString];
     }
 }
 
 - (NSDictionary *)queryDictionary {
-    return _params;
+    return self.params;
 }
 
 - (void)addEntriesFromDictionary:(NSDictionary *)otherDictionary {
     if (!otherDictionary) {
         return;
     }
-    [_params addEntriesFromDictionary:otherDictionary];
+    [self.params addEntriesFromDictionary:otherDictionary];
 }
 
 - (void)addParamsFromURLAction:(SBURLAction *)otherURLAction {
@@ -172,16 +173,11 @@ static BOOL sbIsCtrlAnimating = NO;
     if (!urlAction || !urlAction.url) {
         return nil;
     }
-    
-    NSURL *url = urlAction.url;
-    
+
     //记录
-    NSString *ctrlURL = url.absoluteString;
-    if (url.absoluteString.length > 257) {
-        ctrlURL = [ctrlURL substringToIndex:256];
-    }
-    [SBExceptionLog record:ctrlURL key:SBKEY_RECORD_CTRL];
-    
+    [SBExceptionLog record:[urlAction description] key:SBKEY_RECORD_CTRL];
+
+    NSURL *url = urlAction.url;
     Class ctrlClass = NSClassFromString(url.host);
     NSAssert(ctrlClass != nil, @"确保是工程中有的controller类");
     UIViewController *controller = [ctrlClass new];

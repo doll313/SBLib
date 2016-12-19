@@ -58,31 +58,31 @@
 - (BOOL)hasBinItem:(NSString *)dataType dataKey:(NSString *)dataKey;
 
 //清除 [TABLE_INT_VALUE] 表中的某类数据
-- (int)deleteIntData:(NSString *)dataType;
+- (BOOL)deleteIntData:(NSString *)dataType;
 
 //清除 [TABLE_STR_VALUE] 表中的某类数据
-- (int)deleteStrData:(NSString *)dataType;
+- (BOOL)deleteStrData:(NSString *)dataType;
 
 //清除 [TABLE_BIN_VALUE] 表中的某类数据
-- (int)deleteBinData:(NSString *)dataType;
+- (BOOL)deleteBinData:(NSString *)dataType;
 
 //删除一条整型数据
-- (int)deleteIntValue:(NSString *)dataType dataKey:(NSString *)dataKey;
+- (BOOL)deleteIntValue:(NSString *)dataType dataKey:(NSString *)dataKey;
 
 //删除一条整型数据
-- (int)deleteIntValue:(NSString *)dataType dataKey:(NSString *)dataKey inSeconds:(NSInteger)seconds;
+- (BOOL)deleteIntValue:(NSString *)dataType dataKey:(NSString *)dataKey inSeconds:(NSInteger)seconds;
 
 //删除一条字符串数据
-- (int)deleteStrValue:(NSString *)dataType dataKey:(NSString *)dataKey;
+- (BOOL)deleteStrValue:(NSString *)dataType dataKey:(NSString *)dataKey;
 
 //删除一条字符串数据 时间段
-- (int)deleteStrValue:(NSString *)dataType dataKey:(NSString *)dataKey inSeconds:(NSInteger)seconds;
+- (BOOL)deleteStrValue:(NSString *)dataType dataKey:(NSString *)dataKey inSeconds:(NSInteger)seconds;
 
 //删除一条二进制数据
-- (int)deleteBinValue:(NSString *)dataType dataKey:(NSString *)dataKey;
+- (BOOL)deleteBinValue:(NSString *)dataType dataKey:(NSString *)dataKey;
 
 //删除一条二进制数据 时间段
-- (int)deleteBinValue:(NSString *)dataType dataKey:(NSString *)dataKey inSeconds:(NSInteger)seconds;
+- (BOOL)deleteBinValue:(NSString *)dataType dataKey:(NSString *)dataKey inSeconds:(NSInteger)seconds;
 
 /** 清空某类型数据在INT/BIN/STR三个表中的数据 */
 - (void)deleteAllDataWithDataType:(NSString *)dataType;
@@ -91,7 +91,7 @@
 - (BOOL)refreshTypeTime:(NSString *)tableName dataType:(NSString *)dataType dataKey:(NSString *)dataKey;
 
 //设置某条整型数据
-- (sqlite3_int64)setIntValue:(NSString *)dataType dataKey:(NSString *)dataKey dataValue:(int)dataValue;
+- (sqlite3_int64)setIntValue:(NSString *)dataType dataKey:(NSString *)dataKey dataValue:(NSInteger)dataValue;
 
 //设置某条字符串数据
 - (sqlite3_int64)setStrValue:(NSString *)dataType dataKey:(NSString *)dataKey dataValue:(NSString *)dataValue;
@@ -100,7 +100,7 @@
 - (sqlite3_int64)setBinValue:(NSString *)dataType dataKey:(NSString *)dataKey dataValue:(NSData *)dataValue;
 
 //获取一条整型数据
-- (int)getIntValue:(NSString *)dataType dataKey:(NSString *)dataKey;
+- (NSInteger)getIntValue:(NSString *)dataType dataKey:(NSString *)dataKey;
 
 //获取一条字符串数据
 - (NSString *)getStrValue:(NSString *)dataType dataKey:(NSString *)dataKey;
@@ -115,10 +115,10 @@
 - (BOOL)setDetailValue:(NSString *)dataType dataKey:(NSString *)dataKey data:(DataItemDetail *)data;
 
 /** 清除DataItemDetail缓存 */
-- (int)deleteDetailValue:(NSString *)dataType dataKey:(NSString *)dataKey;
+- (BOOL)deleteDetailValue:(NSString *)dataType dataKey:(NSString *)dataKey;
 
 /** 清除DataItemDetail缓存 */
-- (int)deleteDetailValue:(NSString *)dataType dataKey:(NSString *)dataKey inSeconds:(NSInteger)seconds;
+- (BOOL)deleteDetailValue:(NSString *)dataType dataKey:(NSString *)dataKey inSeconds:(NSInteger)seconds;
 
 // 从数据库缓存中读取 DataItemResult 数据结构，如果不存在则返回 nil
 - (DataItemResult *)getResultValue:(NSString *)dataType dataKey:(NSString *)dataKey;
@@ -127,9 +127,9 @@
 - (BOOL)setResultValue:(NSString *)dataType dataKey:(NSString *)dataKey data:(DataItemResult *)data;
 
 /** 清除DataItemResult缓存 */
-- (int)deleteResultValue:(NSString *)dataType dataKey:(NSString *)dataKey;
+- (BOOL)deleteResultValue:(NSString *)dataType dataKey:(NSString *)dataKey;
 
 //清除DataItemResult缓存
-- (int)deleteResultValue:(NSString *)dataType dataKey:(NSString *)dataKey inSeconds:(NSInteger)seconds;
+- (BOOL)deleteResultValue:(NSString *)dataType dataKey:(NSString *)dataKey inSeconds:(NSInteger)seconds;
 
 @end

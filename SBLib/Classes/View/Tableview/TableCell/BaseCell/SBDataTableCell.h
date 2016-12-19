@@ -41,10 +41,10 @@
 - (BOOL)tableCellIsSelected;
 
 /** 设定单元格标记 */
-- (void)setTableCellTag:(int)tag;
+- (void)setTableCellTag:(NSInteger)tag;
 
 /** 获取单元格标记 */
-- (int)tableCellTag;
+- (NSInteger)tableCellTag;
 
 @end
 

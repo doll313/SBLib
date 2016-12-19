@@ -202,8 +202,8 @@ static BOOL _data_item_result_malloc = 0;
 /** 调试接口，在console中打印出当前对象包含的元素 */
 - (void)dump {
 	NSLog(@"Dump:==========  [basicInfo] ==========");
-	NSLog(@"Dump:  .statusCode: %d", (int)self.statusCode);
-	NSLog(@"Dump:  .maxCount:   %d", (int)self.maxCount);
+	NSLog(@"Dump:  .statusCode: %@", @(self.statusCode));
+	NSLog(@"Dump:  .maxCount:   %@", @(self.maxCount));
 	NSLog(@"Dump:  .hasError:   %@", _hasError   ? @"true" : @"false");
 	NSLog(@"Dump:  .localError: %@", _localError ? @"true" : @"false");
 	NSLog(@"Dump:  .message:    %@", _message);
@@ -219,7 +219,7 @@ static BOOL _data_item_result_malloc = 0;
 		NSLog(@"Dump:==========  [dataList] ==========");
         
 		for(int i=0; i< dataListCount; i++){
-			NSLog(@"Dump: ----------  [item:%d] ----------", i +1);
+			NSLog(@"Dump: ----------  [item:%@] ----------", @(i +1));
 			DataItemDetail *item = [_dataList objectAtIndex:i];
 			[item dump];
 		}
@@ -234,8 +234,8 @@ static BOOL _data_item_result_malloc = 0;
     NSString *what = @"====begin====\r\n";
     
     NSString *line1 = [NSString stringWithFormat:@"==========  [basicInfo] ========== \r\n"];
-    NSString *line2 = [NSString stringWithFormat:@".statusCode: %d \r\n", (int)self.statusCode];
-    NSString *line3 = [NSString stringWithFormat:@".maxCount:   %d \r\n", (int)self.maxCount];
+    NSString *line2 = [NSString stringWithFormat:@".statusCode: %@ \r\n", @(self.statusCode)];
+    NSString *line3 = [NSString stringWithFormat:@".maxCount:   %@ \r\n", @(self.maxCount)];
     NSString *line4 = [NSString stringWithFormat:@".hasError:   %@ \r\n", _hasError   ? @"true" : @"false"];
     NSString *line5 = [NSString stringWithFormat:@".localError: %@ \r\n", _localError ? @"true" : @"false"];
     NSString *line6 = [NSString stringWithFormat:@".message:    %@ \r\n", _message];
@@ -261,7 +261,7 @@ static BOOL _data_item_result_malloc = 0;
         what = [what stringByAppendingString:line9];
         
         for(int i=0; i< dataListCount; i++){
-            NSString *line10 = [NSString stringWithFormat:@"----------  [item:%d] ----------", i +1];
+            NSString *line10 = [NSString stringWithFormat:@"----------  [item:%@] ----------", @(i +1)];
             DataItemDetail *item = [_dataList objectAtIndex:i];
             NSString *line11 = [item whatInThis];
             
@@ -331,7 +331,7 @@ static BOOL _data_item_result_malloc = 0;
 }
 
 /** 把所有元素的指定键名的值都置成整数型值 */
-- (BOOL)setAllItemsKey:(NSString *)key withInt:(int)value {
+- (BOOL)setAllItemsKey:(NSString *)key withInt:(NSInteger)value {
     if(nil == _dataList){
         return NO;
     }

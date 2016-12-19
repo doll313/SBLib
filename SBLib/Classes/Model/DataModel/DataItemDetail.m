@@ -210,7 +210,7 @@ static BOOL _data_item_detail_malloc = 0;
 }
 
 /** 获取int值 */
-- (int)getInt:(NSString *)key {
+- (NSInteger)getInt:(NSString *)key {
     NSNumber *value = (NSNumber *)[self getObject:key];
     if (value && ([value isKindOfClass:[NSNumber class]] || [value isKindOfClass:[NSString class]])) {
         return [value intValue];

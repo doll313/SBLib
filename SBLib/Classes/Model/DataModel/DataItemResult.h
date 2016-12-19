@@ -71,7 +71,7 @@
 - (BOOL)setAllItemsKey:(NSString *)key withFloat:(CGFloat)value;
 
 /** 把所有元素的指定键名的值都置成整数型值 */
-- (BOOL)setAllItemsKey:(NSString *)key withInt:(int)value;
+- (BOOL)setAllItemsKey:(NSString *)key withInt:(NSInteger)value;
 
 /** 获取指定键名对应的元素队列 */
 - (NSArray *)arrayForKey:(NSString *)key;

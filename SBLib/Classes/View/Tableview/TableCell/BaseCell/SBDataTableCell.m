@@ -48,12 +48,12 @@
 }
 
 /** 设定单元格标记 */
-- (void)setTableCellTag:(int)tag {
+- (void)setTableCellTag:(NSInteger)tag {
     [self setInt:tag forKey:__KEY_CELL_TAG];
 }
 
 /** 获取单元格标记 */
-- (int)tableCellTag {
+- (NSInteger)tableCellTag {
     return [self getInt:__KEY_CELL_TAG];
 }
 

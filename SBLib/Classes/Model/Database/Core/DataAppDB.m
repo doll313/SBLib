@@ -66,7 +66,7 @@
 }
 
 //更新一条数据库记录
-- (int)updateData:(NSString *)tableName data:(NSDictionary *)data whereParam:(NSString *)whereParam {
+- (NSInteger)updateData:(NSString *)tableName data:(NSDictionary *)data whereParam:(NSString *)whereParam {
     if (nil ==  tableName || SBStringIsEmpty(tableName) || nil == data || [data count] < 1) {
         return 0;
     }
@@ -164,7 +164,7 @@
 }
 
 //删除指定表中符合条件的数据
-- (int)deleteData:(NSString *)tableName whereParam:(NSString *)whereParam {
+- (BOOL)deleteData:(NSString *)tableName whereParam:(NSString *)whereParam {
     if (SBStringIsEmpty(tableName)) {
         return 0;
     }
@@ -180,7 +180,7 @@
 }
 
 //删除数据库中存在某个键值对
-- (int)deleteTypeItem:(NSString *)tableName dataType:(NSString *)dataType dataKey:(NSString *)dataKey {
+- (BOOL)deleteTypeItem:(NSString *)tableName dataType:(NSString *)dataType dataKey:(NSString *)dataKey {
 	if(SBStringIsEmpty(dataType)){
 		return 0;
 	}
@@ -197,46 +197,46 @@
 }
 
 //清除 [TABLE_INT_VALUE] 表中的某类数据
-- (int)deleteIntData:(NSString *)dataType {
+- (BOOL)deleteIntData:(NSString *)dataType {
 	return [self deleteTypeItem:_dbIntValueTable dataType:dataType dataKey:nil];
 }
 
 //清除 [TABLE_STR_VALUE] 表中的某类数据
-- (int)deleteStrData:(NSString *)dataType {
+- (BOOL)deleteStrData:(NSString *)dataType {
 	return [self deleteTypeItem:_dbStrValueTable dataType:dataType dataKey:nil];
 }
 
 //清除 [TABLE_BIN_VALUE] 表中的某类数据
-- (int)deleteBinData:(NSString *)dataType {
+- (BOOL)deleteBinData:(NSString *)dataType {
 	return [self deleteTypeItem:_dbBinValueTable dataType:dataType dataKey:nil];
 }
 
 //删除一条整型数据
-- (int)deleteIntValue:(NSString *)dataType dataKey:(NSString *)dataKey {
+- (BOOL)deleteIntValue:(NSString *)dataType dataKey:(NSString *)dataKey {
 	return [self deleteTypeItem:_dbIntValueTable dataType:dataType dataKey:dataKey];
 }
 //删除一条整型数据
-- (int)deleteIntValue:(NSString *)dataType dataKey:(NSString *)dataKey inSeconds:(NSInteger)seconds {
+- (BOOL)deleteIntValue:(NSString *)dataType dataKey:(NSString *)dataKey inSeconds:(NSInteger)seconds {
 	return [self deleteTypeItem:_dbIntValueTable dataType:dataType dataKey:dataKey inSeconds:seconds];
 }
 
 //删除一条字符串数据
-- (int)deleteStrValue:(NSString *)dataType dataKey:(NSString *)dataKey {
+- (BOOL)deleteStrValue:(NSString *)dataType dataKey:(NSString *)dataKey {
 	return [self deleteTypeItem:_dbStrValueTable dataType:dataType dataKey:dataKey];
 }
 
 //删除一条字符串数据 时间段
-- (int)deleteStrValue:(NSString *)dataType dataKey:(NSString *)dataKey inSeconds:(NSInteger)seconds {
+- (BOOL)deleteStrValue:(NSString *)dataType dataKey:(NSString *)dataKey inSeconds:(NSInteger)seconds {
     return [self deleteTypeItem:_dbStrValueTable dataType:dataType dataKey:dataKey inSeconds:seconds];
 }
 
 //删除一条二进制数据
-- (int)deleteBinValue:(NSString *)dataType dataKey:(NSString *)dataKey {
+- (BOOL)deleteBinValue:(NSString *)dataType dataKey:(NSString *)dataKey {
 	return [self deleteTypeItem:_dbBinValueTable dataType:dataType dataKey:dataKey];
 }
 
 //删除一条二进制数据 时间段
-- (int)deleteBinValue:(NSString *)dataType dataKey:(NSString *)dataKey inSeconds:(NSInteger)seconds {
+- (BOOL)deleteBinValue:(NSString *)dataType dataKey:(NSString *)dataKey inSeconds:(NSInteger)seconds {
 	return [self deleteTypeItem:_dbBinValueTable dataType:dataType dataKey:dataKey inSeconds:seconds];
 }
 
@@ -297,7 +297,7 @@
 }
 
 //设置某条整型数据
-- (sqlite3_int64)setIntValue:(NSString *)dataType dataKey:(NSString *)dataKey dataValue:(int)dataValue {
+- (sqlite3_int64)setIntValue:(NSString *)dataType dataKey:(NSString *)dataKey dataValue:(NSInteger)dataValue {
     return [self setItemValue:_dbIntValueTable dataType:dataType dataKey:dataKey dataValue:@(dataValue)];
 }
 
@@ -321,7 +321,7 @@
 #pragma mark -
 #pragma mark 查询操作
 //获取一条整型数据
-- (int)getIntValue:(NSString *)dataType dataKey:(NSString *)dataKey {
+- (NSInteger)getIntValue:(NSString *)dataType dataKey:(NSString *)dataKey {
     if(SBStringIsEmpty(dataType) || SBStringIsEmpty(dataKey)){
         return 0;
     }
@@ -417,12 +417,12 @@
 }
 
 //清除DataItemDetail缓存
-- (int)deleteDetailValue:(NSString *)dataType dataKey:(NSString *)dataKey {
+- (BOOL)deleteDetailValue:(NSString *)dataType dataKey:(NSString *)dataKey {
 	return [self deleteBinValue:dataType dataKey:[NSString stringWithFormat:@"item.%@", dataKey]];
 }
 
 //清除DataItemDetail缓存
-- (int)deleteDetailValue:(NSString *)dataType dataKey:(NSString *)dataKey inSeconds:(NSInteger)seconds{
+- (BOOL)deleteDetailValue:(NSString *)dataType dataKey:(NSString *)dataKey inSeconds:(NSInteger)seconds{
 	return [self deleteBinValue:dataType dataKey:[NSString stringWithFormat:@"item.%@", dataKey] inSeconds:seconds];
 }
 
@@ -451,12 +451,12 @@
 }
 
 //清除DataItemResult缓存
-- (int)deleteResultValue:(NSString *)dataType dataKey:(NSString *)dataKey {
+- (BOOL)deleteResultValue:(NSString *)dataType dataKey:(NSString *)dataKey {
 	return [self deleteBinValue:dataType dataKey:[NSString stringWithFormat:@"items.%@", dataKey]];
 }
 
 //清除DataItemResult缓存 
-- (int)deleteResultValue:(NSString *)dataType dataKey:(NSString *)dataKey inSeconds:(NSInteger)seconds{
+- (BOOL)deleteResultValue:(NSString *)dataType dataKey:(NSString *)dataKey inSeconds:(NSInteger)seconds{
 	return [self deleteBinValue:dataType dataKey:[NSString stringWithFormat:@"items.%@", dataKey] inSeconds:seconds];
 }
 

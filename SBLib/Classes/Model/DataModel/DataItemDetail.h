@@ -67,7 +67,7 @@
 - (BOOL)setInt:(NSInteger)value forKey:(NSString *)key;
 
 /** 获取int值 */
-- (int)getInt:(NSString *)key;
+- (NSInteger)getInt:(NSString *)key;
 
 /** 设定float值 */
 - (BOOL)setFloat:(float)value forKey:(NSString *)key;
