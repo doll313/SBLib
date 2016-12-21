@@ -210,16 +210,16 @@ static BOOL sbIsCtrlAnimating = NO;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self animationIsOver];
     });
-    
+
     if (sbIsCtrlAnimating) {
         return nil;
     }
     sbIsCtrlAnimating = YES;
     
     UIViewController *controller = [SBURLAction sb_initCtrl:urlAction];
-    controller.urlAction = urlAction;
-    [controller sb_setPropertyForController:urlAction];
-    
+//    controller.urlAction = urlAction;
+//    [controller sb_setPropertyForController:urlAction];
+
     return controller;
 }
 

@@ -113,6 +113,15 @@ SB_ARC_SINGLETON_DEFINE(SBAppCoreInfo);
 /** 语言包提取函数 */
 + (NSString *)getLocalizedString:(NSString *)key;
 
+/** 获取应用当前的 CPU */
++ (CGFloat)getCpuUsage;
+
+/** 获取当前应用的内存 */
++ (CGFloat)getUsedMemory;
+
+/** 流量消耗状态 **/
++ (NSString *)getNetflow;
+
 /** 获取app的描述 **/
 +(NSString *)sb_description;
 

@@ -77,6 +77,9 @@
     }
 
     [self.animTable reloadData];
+
+    NSString *ss = [SBAppCoreInfo sb_description];
+    NSLog(@"%@",ss);
 }
 
 @end
