@@ -451,10 +451,10 @@ SB_ARC_SINGLETON_IMPLEMENT(SBAppCoreInfo);
     const struct ifaddrs *cursor;
     const struct if_data *networkStatisc;
 
-    int WiFiSent = 0;
-    int WiFiReceived = 0;
-    int WWANSent = 0;
-    int WWANReceived = 0;
+    u_int32_t WiFiSent = 0;
+    u_int32_t WiFiReceived = 0;
+    u_int32_t WWANSent = 0;
+    u_int32_t WWANReceived = 0;
 
     NSString *name = @"";
 
@@ -487,12 +487,13 @@ SB_ARC_SINGLETON_IMPLEMENT(SBAppCoreInfo);
         freeifaddrs(addrs);
     }
 
+    CGFloat ws = WiFiSent / 1024.0f / 1024.0f;
+    CGFloat wr = WiFiReceived / 1024.0f / 1024.0f;
+    CGFloat ms = WWANSent / 1024.0f / 1024.0f;
+    CGFloat mr = WWANReceived / 1024.0f / 1024.0f;
+
     NSString *s = [NSString stringWithFormat:
-                   @"WIFI上传: %d bytes\n"
-                   "WIFI下载: %d bytes\n"
-                   "移动上传: %d bytes\n"
-                   "移动下载: %d bytes\n",
-                   WiFiSent, WiFiReceived, WWANSent, WWANReceived];
+                   @"WIFI上传: %.2fmb\t WIFI下载: %.2fmb\t 移动上传: %.2fmb\t 移动下载: %.2fmb", ws, wr, ms, mr];
 
     return s;
 }
