@@ -264,12 +264,18 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 #pragma mark 网络方法
 //终止数据加载
 - (void)stopLoading {
-    [self onFinished:nil];
-    
+
+    //停转子
+    [SBHttpHelper hiddenNetworkIndicator];
+
+    //停止网络请求
+    [self.sessionDataTask cancel];
+
     //这步很重要 调试了n久
     if(self.sbHttpTaskState == SBHttpTaskStateExecuting) {
         self.sbHttpTaskState = SBHttpTaskStateFinished;
     }
+    [self cancel];
 }
 
 

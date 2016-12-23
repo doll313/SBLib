@@ -12,6 +12,7 @@
 @interface SBViewController ()
 
 @property (nonatomic, strong) SBTableView *animTable;
+@property (nonatomic, strong) SBNetworkFlow *netFlow;
 
 @end
 
@@ -28,6 +29,11 @@
     [super viewDidLoad];
 
     [self tableDidLoad];
+
+    self.netFlow = [[SBNetworkFlow alloc] init];
+    [self.netFlow startblock:^(u_int32_t sendFlow, u_int32_t receivedFlow) {
+        NSLog(@"%@, %@", @(sendFlow),@(receivedFlow));
+    }];
 
     // Do any additional setup after loading the view, typically from a nib.
 }
@@ -58,6 +64,17 @@
         else if ([titleStr isEqualToString:@"index"]) {
             [tableView.ctrl sb_quickOpenCtrl:@"SBIndexTableController"];
         }
+        else if ([titleStr isEqualToString:@"http"]) {
+            NSURL *url = [NSURL URLWithString:@"https://liveavatar.eastmoney.com/qface/1095014665825048/1024?v=1478249720"];
+            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+
+            NSURLSession *session = [NSURLSession sharedSession];
+            // 由于要先对request先行处理,我们通过request初始化task
+            NSURLSessionTask *task = [session dataTaskWithRequest:request
+                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                }];
+            [task resume];
+        }
     };
 
     // 帐户资料
@@ -67,6 +84,7 @@
 
     NSArray *titleArray = @[@"alert",
                             @"index",
+                            @"http",
                             ];
 
     //单元格

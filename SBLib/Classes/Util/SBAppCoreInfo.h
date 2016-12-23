@@ -119,9 +119,6 @@ SB_ARC_SINGLETON_DEFINE(SBAppCoreInfo);
 /** 获取当前应用的内存 */
 + (CGFloat)getUsedMemory;
 
-/** 流量消耗状态 **/
-+ (NSString *)getNetflow;
-
 /** 获取app的描述 **/
 +(NSString *)sb_description;
 

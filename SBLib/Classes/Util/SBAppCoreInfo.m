@@ -444,59 +444,6 @@ SB_ARC_SINGLETON_IMPLEMENT(SBAppCoreInfo);
     return taskInfo.resident_size / 1024.0 / 1024.0;
 }
 
-/** 流量消耗状态 **/
-+ (NSString *)getNetflow {
-    BOOL   success;
-    struct ifaddrs *addrs;
-    const struct ifaddrs *cursor;
-    const struct if_data *networkStatisc;
-
-    u_int32_t WiFiSent = 0;
-    u_int32_t WiFiReceived = 0;
-    u_int32_t WWANSent = 0;
-    u_int32_t WWANReceived = 0;
-
-    NSString *name = @"";
-
-    success = getifaddrs(&addrs) == 0;
-    if (success)
-    {
-        cursor = addrs;
-        while (cursor != NULL)
-        {
-            name=[NSString stringWithFormat:@"%s",cursor->ifa_name];
-
-            // names of interfaces: en0 is WiFi ,pdp_ip0 is WWAN
-            if (cursor->ifa_addr->sa_family == AF_LINK)
-            {
-                if ([name hasPrefix:@"en"])
-                {
-                    networkStatisc = (const struct if_data *) cursor->ifa_data;
-                    WiFiSent+=networkStatisc->ifi_obytes;
-                    WiFiReceived+=networkStatisc->ifi_ibytes;
-                }
-                if ([name hasPrefix:@"pdp_ip"])
-                {
-                    networkStatisc = (const struct if_data *) cursor->ifa_data;
-                    WWANSent+=networkStatisc->ifi_obytes;
-                    WWANReceived+=networkStatisc->ifi_ibytes;
-                }
-            }
-            cursor = cursor->ifa_next;
-        }
-        freeifaddrs(addrs);
-    }
-
-    CGFloat ws = WiFiSent / 1024.0f / 1024.0f;
-    CGFloat wr = WiFiReceived / 1024.0f / 1024.0f;
-    CGFloat ms = WWANSent / 1024.0f / 1024.0f;
-    CGFloat mr = WWANReceived / 1024.0f / 1024.0f;
-
-    NSString *s = [NSString stringWithFormat:
-                   @"WIFI上传: %.2fmb\t WIFI下载: %.2fmb\t 移动上传: %.2fmb\t 移动下载: %.2fmb", ws, wr, ms, mr];
-
-    return s;
-}
 
 /** 语言包提取函数 */
 + (NSString *)getLocalizedString:(NSString *)key {
@@ -554,11 +501,7 @@ SB_ARC_SINGLETON_IMPLEMENT(SBAppCoreInfo);
     [dc appendFormat:@"屏幕参数  =  %@\n", [SBAppCoreInfo screenResolution]];
     [dc appendFormat:@"是否越狱  =  %@\n", info.isJailBreak ? @"是" : @"否"];
     [dc appendFormat:@"应用的推送token  =  %@\n", info.deviceToken];
-    [dc appendFormat:@"当前应用使用CPU  =  %@\n", @([SBAppCoreInfo getCpuUsage])];
-    [dc appendFormat:@"当前应用使用内存  =  %@\n", @([SBAppCoreInfo getUsedMemory])];
-    [dc appendFormat:@"网络流量状态  =  %@\n", [SBAppCoreInfo getNetflow]];
 
-    
     return dc;
 }
 
