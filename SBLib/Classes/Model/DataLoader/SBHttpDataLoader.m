@@ -51,8 +51,9 @@
     if (nil != self.httpTask) {
         [self.httpTask stopLoading];
     }
-    
-    [self onFinished];
+
+    //stop 不需要回调
+//    [self onFinished];
 }
 
 //释放资源
