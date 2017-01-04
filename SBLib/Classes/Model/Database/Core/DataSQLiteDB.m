@@ -95,7 +95,7 @@
     }
     
     [self.db executeUpdate:[NSString stringWithFormat:@"DELETE FROM '%@'", tableName]];
-    [self.db executeUpdate:[NSString stringWithFormat:@"UPDATE sqlite_sequence SET seq=0 WHERE name='%@'", tableName]];
+//    [self.db executeUpdate:[NSString stringWithFormat:@"UPDATE sqlite_sequence SET seq=0 WHERE name='%@'", tableName]];
 }
 
 /** 清理并压缩数据库 */
