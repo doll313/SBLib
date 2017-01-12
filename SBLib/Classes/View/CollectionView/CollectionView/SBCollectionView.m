@@ -350,6 +350,31 @@
         self.didUnhighlightItem(self, indexPath);
     }
 }
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.willDisplayCell) {
+        self.willDisplayCell(self, cell, indexPath);
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplaySupplementaryView:(UICollectionReusableView *)view forElementKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath {
+    if (self.willDisplaySupplementaryView) {
+        self.willDisplaySupplementaryView(self, view, indexPath);
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.didEndDisplayingCell) {
+        self.didEndDisplayingCell(self, cell, indexPath);
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingSupplementaryView:(UICollectionReusableView *)view forElementOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath {
+    if (self.didEndDisplayingSupplementaryView) {
+        self.didEndDisplayingSupplementaryView(self, view, indexPath);
+    }
+}
+
 #pragma mark -
 #pragma mark 数据方法
 // 自动检测和加载最后一个表格数据段的下一页数据

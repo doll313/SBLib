@@ -69,12 +69,20 @@
 @property (nonatomic, copy) void(^didHighlightItem)(SBCollectionView *collectionView, NSIndexPath *indexPath);
 //高亮消失
 @property (nonatomic, copy) void(^didUnhighlightItem)(SBCollectionView *collectionView, NSIndexPath *indexPath);
-//header or footer
+//头部或底部
 @property (nonatomic, copy) UICollectionReusableView *(^viewForSupplementaryElement)(SBCollectionView *collectionView, NSString *kind, NSIndexPath *indexPath);
 // 空单元格点击事件
 @property (nonatomic, copy) void (^emptyItemClicked)(SBCollectionData *collectionData);
 // 临时修改item的显示样式
 @property (nonatomic, copy) Class(^modifiItemClass)(SBCollectionView *collectionView, Class<SBCollectionCellDelegate> originClass, NSIndexPath *indexPath);
+//将要显示item
+@property (nonatomic, copy) void(^willDisplayCell)(SBCollectionView *collectionView, UICollectionViewCell *cell, NSIndexPath *indexPath);
+//将要显示item
+@property (nonatomic, copy) void(^didEndDisplayingCell)(SBCollectionView *collectionView, UICollectionViewCell *cell, NSIndexPath *indexPath);
+//将要显示补充视图
+@property (nonatomic, copy) void(^willDisplaySupplementaryView)(SBCollectionView *collectionView, UICollectionReusableView *cell, NSIndexPath *indexPath);
+//结束显示补充视图
+@property (nonatomic, copy) void(^didEndDisplayingSupplementaryView)(SBCollectionView *collectionView, UICollectionReusableView *cell, NSIndexPath *indexPath);
 
 
 /** 为表格添加一个表格段 */
