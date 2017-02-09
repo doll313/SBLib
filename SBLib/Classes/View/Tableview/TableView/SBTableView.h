@@ -68,6 +68,8 @@
 @property (nonatomic, copy) BOOL (^commitEditRow)(SBTableView *tableView, UITableViewCellEditingStyle editingStyle, NSIndexPath *indexPath) ;
 //删除Row之后执行
 @property (nonatomic, copy) BOOL (^postCommitEditRow)(SBTableView *tableView, UITableViewCellEditingStyle editingStyle, NSIndexPath *indexPath);
+//编辑选项
+@property (nonatomic, copy) NSArray<UITableViewRowAction *> *(^editActions)(SBTableView *tableView, NSIndexPath *indexPath);
 // 点击箭头
 @property (nonatomic, copy) void (^tapAccessoryButton)(SBTableView *tableView, NSIndexPath *indexPath);
 // 临时修改单元格的显示样式

@@ -93,6 +93,13 @@
     return CGSizeMake(CGRectGetWidth(self.bounds), 0);
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+    if (self.referenceSizeForFooter) {
+        return self.referenceSizeForFooter(self, collectionViewLayout, section);
+    }
+    return CGSizeMake(CGRectGetWidth(self.bounds), 0);
+}
+
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
     if (self.insetForSection) {
         return self.insetForSection(self, collectionViewLayout, section);

@@ -61,6 +61,8 @@
 @property (nonatomic, copy) UIEdgeInsets(^insetForSection)(SBCollectionView *collectionView, UICollectionViewLayout *collectionViewLayout,  NSInteger section);
 //头部大小 默认没有
 @property (nonatomic, copy) CGSize(^referenceSizeForHeader)(SBCollectionView *collectionView, UICollectionViewLayout *collectionViewLayout,  NSInteger section);
+//尾部大小 默认没有
+@property (nonatomic, copy) CGSize(^referenceSizeForFooter)(SBCollectionView *collectionView, UICollectionViewLayout *collectionViewLayout,  NSInteger section);
 //item大小 默认是 屏幕一半小20像素
 @property (nonatomic, copy) CGSize(^sizeForItem)(SBCollectionView *collectionView, UICollectionViewLayout *collectionViewLayout,  NSIndexPath *indexPath);
 //点击

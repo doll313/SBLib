@@ -264,7 +264,6 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 #pragma mark 网络方法
 //终止数据加载
 - (void)stopLoading {
-
     //停转子
     [SBHttpHelper hiddenNetworkIndicator];
 

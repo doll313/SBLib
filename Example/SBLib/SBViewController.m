@@ -70,6 +70,9 @@
         else if ([titleStr isEqualToString:@"index"]) {
             [tableView.ctrl sb_quickOpenCtrl:@"SBIndexTableController"];
         }
+        else if ([titleStr isEqualToString:@"table"]) {
+            [tableView.ctrl sb_quickOpenCtrl:@"SBATableController"];
+        }
         else if ([titleStr isEqualToString:@"http"]) {
             NSURL *url = [NSURL URLWithString:@"https://liveavatar.eastmoney.com/qface/1095014665825048/1024?v=1478249720"];
             NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -91,6 +94,7 @@
     NSArray *titleArray = @[@"alert",
                             @"index",
                             @"http",
+                            @"table",
                             ];
 
     //单元格

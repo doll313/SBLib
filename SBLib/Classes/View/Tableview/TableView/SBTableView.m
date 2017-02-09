@@ -395,6 +395,18 @@
 	}
 }
 
+/** 为列表增加功能 **/
+- (nullable NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSMutableArray *actions = [NSMutableArray array];
+
+    //
+    if (self.editActions) {
+        actions = self.editActions(tableView, indexPath);
+    }
+
+    return actions;
+}
+
 //删除按钮显示
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
     return @"删除";
