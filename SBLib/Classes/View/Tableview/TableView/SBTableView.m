@@ -397,14 +397,12 @@
 
 /** 为列表增加功能 **/
 - (nullable NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSMutableArray *actions = [NSMutableArray array];
-
     //
     if (self.editActions) {
-        actions = self.editActions(tableView, indexPath);
+        return self.editActions(tableView, indexPath);
     }
 
-    return actions;
+    return nil;
 }
 
 //删除按钮显示
