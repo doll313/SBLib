@@ -38,12 +38,12 @@
 
 //获取首字母
 - (NSString *)fetchFirstIndexTitle:(NSString *)title {
-    if (title.length >= 1) {
+    if (title.length >= 0) {
         NSString *tempTitle = [title copy];
 
         //获取首字母
         if (self.isFirstLetter) {
-            tempTitle = [tempTitle sb_cnFirstLetter];
+            tempTitle = [self pinyinFirstLetter:tempTitle];
             if (self.isIndexUppercase) {
                 tempTitle = [tempTitle uppercaseString];
             }
@@ -55,33 +55,65 @@
         return tempTitle;
     }
     else {
-        return @"*";
+        return @"#";
     }
+}
+
+//系统获取首字母
+- (NSString *)pinyinFirstLetter:(NSString*)sourceString {
+    NSMutableString *source = [sourceString mutableCopy];
+    if (source.length > 0) {
+
+        CFStringTransform((__bridge CFMutableStringRef)source, NULL, kCFStringTransformMandarinLatin, NO);
+        CFStringTransform((__bridge CFMutableStringRef)source, NULL, kCFStringTransformStripDiacritics, NO);//这一行是去声调的
+
+        source = [source substringToIndex:1];
+        if ([source isFirstLetter]) {
+            return source;
+        }
+    }
+
+    return @"#";
+}
+
+//判断是不是字母
+- (BOOL)isLetter:(NSString *)str {
+    if ([str characterAtIndex:0] >= 'a' && [str characterAtIndex:0] <= 'z') {
+        return YES;
+    }
+    if ([str characterAtIndex:0] >= 'A' && [str characterAtIndex:0] <= 'Z') {
+        return YES;
+    }
+
+    return NO;
 }
 
 //  添加数据
 - (void)appendResult:(DataItemResult *)result {
+    BOOL hasEmoji = NO;     //有符号
+
     NSMutableSet *lettersSet = [[NSMutableSet alloc] init];
     for (DataItemDetail *item in result.dataList) {
         //获取首字母
         NSString *str = [item getString:self.indexKey];
-        NSString *firstLetter = [self fetchFirstIndexTitle:str];
-        [item setString:firstLetter forKey:__KEY_CELL_INDEXTITLE];
-        [lettersSet addObject:firstLetter];
-    }
-    
-    self.compositorArray = [[lettersSet allObjects] sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-        NSString *string1 = (NSString *)obj1;
-        NSString *string2 = (NSString *)obj2;
+        NSString *it = [self fetchFirstIndexTitle:str];
+        [item setString:it forKey:__KEY_CELL_INDEXTITLE];
 
-        if ([string1 isEqualToString:@"#"] || [string1 isEqualToString:@"*"]) {
-            return NSOrderedDescending;
+        //是字母
+        if ([self isLetter:it]) {
+            [lettersSet addObject:it];
         }
-        //
-        if (string2 < string1)
-            return NSOrderedDescending;
-        return NSOrderedAscending;
-    }];
+        else {
+            hasEmoji = YES;
+        }
+    }
+
+    self.compositorArray = [[lettersSet allObjects] sortedArrayUsingSelector:@selector(compare:)];
+
+    //为了把# 放在最后
+    if (hasEmoji) {
+        self.compositorArray = [self.compositorArray arrayByAddingObject:@"#"];
+    }
 
     [self clearTableData];//由于一开始加过一次数据，所以需要先把数据移除
 
