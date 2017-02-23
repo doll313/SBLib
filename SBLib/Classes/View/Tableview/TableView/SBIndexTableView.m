@@ -168,15 +168,20 @@
 //  重写父类的方法
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     //没有分段
-    if (self.compositorArray.count == 0) {
+    SBTableData *tableData = [self dataOfSection:section];
+    NSUInteger rowCount = [tableData.tableDataResult count];
+
+    //无数据，加载完毕
+    if (rowCount == 0) {
+        //空单元格
         return 1;
     }
-
-    return  [[self dataOfSection:section].tableDataResult.dataList count];
+    //无加载情况，显示数等于数据个数
+    return rowCount;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return MAX(1, [self.compositorArray count]);
+    return [self.arrTableData count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
