@@ -26,8 +26,8 @@
     
     //没箭头，不能点击
     self.selectionStyle = UITableViewCellSelectionStyleNone;
-    self.userInteractionEnabled = NO;
-    
+//    self.userInteractionEnabled = NO;
+
     return self;
 }
 

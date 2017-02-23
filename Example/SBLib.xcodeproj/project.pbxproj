@@ -10,6 +10,8 @@
 		5F7D84DF1E02A5F300AF0AF8 /* SBIndexTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F7D84DE1E02A5F300AF0AF8 /* SBIndexTableController.m */; };
 		5F7D84E21E02A63C00AF0AF8 /* SBAlertDemoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F7D84E11E02A63C00AF0AF8 /* SBAlertDemoController.m */; };
 		5FA19B7E1E4C4DA0006F1F2F /* SBATableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FA19B7D1E4C4DA0006F1F2F /* SBATableController.m */; };
+		5FA19B861E4DABC6006F1F2F /* SBWebpController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FA19B851E4DABC6006F1F2F /* SBWebpController.m */; };
+		5FA19B911E513B88006F1F2F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FA19B901E513B88006F1F2F /* CoreLocation.framework */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -46,6 +48,9 @@
 		5F7D84E11E02A63C00AF0AF8 /* SBAlertDemoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBAlertDemoController.m; sourceTree = "<group>"; };
 		5FA19B7C1E4C4DA0006F1F2F /* SBATableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBATableController.h; sourceTree = "<group>"; };
 		5FA19B7D1E4C4DA0006F1F2F /* SBATableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBATableController.m; sourceTree = "<group>"; };
+		5FA19B841E4DABC6006F1F2F /* SBWebpController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBWebpController.h; sourceTree = "<group>"; };
+		5FA19B851E4DABC6006F1F2F /* SBWebpController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBWebpController.m; sourceTree = "<group>"; };
+		5FA19B901E513B88006F1F2F /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		6003F58A195388D20070C39A /* SBLib_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SBLib_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -77,6 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5FA19B911E513B88006F1F2F /* CoreLocation.framework in Frameworks */,
 				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
 				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F58E195388D20070C39A /* Foundation.framework in Frameworks */,
@@ -121,6 +127,7 @@
 		6003F58C195388D20070C39A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5FA19B901E513B88006F1F2F /* CoreLocation.framework */,
 				6003F58D195388D20070C39A /* Foundation.framework */,
 				6003F58F195388D20070C39A /* CoreGraphics.framework */,
 				6003F591195388D20070C39A /* UIKit.framework */,
@@ -146,6 +153,8 @@
 				5F7D84E11E02A63C00AF0AF8 /* SBAlertDemoController.m */,
 				5FA19B7C1E4C4DA0006F1F2F /* SBATableController.h */,
 				5FA19B7D1E4C4DA0006F1F2F /* SBATableController.m */,
+				5FA19B841E4DABC6006F1F2F /* SBWebpController.h */,
+				5FA19B851E4DABC6006F1F2F /* SBWebpController.m */,
 			);
 			name = "Example for SBLib";
 			path = SBLib;
@@ -353,6 +362,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5F7D84DF1E02A5F300AF0AF8 /* SBIndexTableController.m in Sources */,
+				5FA19B861E4DABC6006F1F2F /* SBWebpController.m in Sources */,
 				5FA19B7E1E4C4DA0006F1F2F /* SBATableController.m in Sources */,
 				6003F59E195388D20070C39A /* SBAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* SBViewController.m in Sources */,

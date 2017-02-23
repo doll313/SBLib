@@ -67,6 +67,8 @@
 @property (nonatomic, copy) CGSize(^sizeForItem)(SBCollectionView *collectionView, UICollectionViewLayout *collectionViewLayout,  NSIndexPath *indexPath);
 //点击
 @property (nonatomic, copy) void(^didSelectItem)(SBCollectionView *collectionView, NSIndexPath *indexPath);
+// 点击完成单元格
+@property (nonatomic, copy) void (^didSelectFinish)(SBCollectionView *collectionView, NSIndexPath *indexPath);
 //高亮
 @property (nonatomic, copy) void(^didHighlightItem)(SBCollectionView *collectionView, NSIndexPath *indexPath);
 //高亮消失

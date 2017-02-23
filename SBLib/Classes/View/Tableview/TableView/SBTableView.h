@@ -52,6 +52,8 @@
 @property (nonatomic, copy) void (^didSelectRow)(SBTableView *tableView, NSIndexPath *indexPath);
 // 点击更多单元格
 @property (nonatomic, copy) void (^didSelectMore)(SBTableView *tableView, NSIndexPath *indexPath);
+// 点击完成单元格
+@property (nonatomic, copy) void (^didSelectFinish)(SBTableView *tableView, NSIndexPath *indexPath);
 // 单元格个数
 @property (nonatomic, copy) CGFloat (^numberOfRow)(SBTableView *tableView, NSInteger section);
 // 单元格高度

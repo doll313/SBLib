@@ -32,6 +32,7 @@
     self.iTable.indexKey = __KEY_CELL_TITLE;
     self.iTable.isFirstLetter = YES;
     self.iTable.listDataCellClass = [SBTitleCell class];
+    self.iTable.listEmptyCellClass = [SBEmptyTableCell class];
     [self.view addSubview:self.iTable];
 
     //计算单元格的高度
@@ -39,11 +40,14 @@
         return 44;
     };
 
-    NSArray *titleArray = @[@"张三",
+    NSArray *titleArray = @[
+                            @"🐱张三",
                             @"张1",
                             @"张2",
                             @"张3",
-                            @"张4",
+                            @"🐵张4",
+                            @"565",
+                            @"99999",
                             @"李3",
                             @"李5",
                             @"李6",
@@ -52,9 +56,11 @@
                             @"王9",
                             @"王101",
                             @"王92",
-                            @"王103",
+                            @"🦇王103",
                             @"王923",
                             @"王105",
+                            @"abc",
+                            @"thomas",
                             ];
 
     DataItemResult *iResult = [[DataItemResult alloc] init];

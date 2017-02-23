@@ -319,13 +319,17 @@
                     //数据出错
                     [sectionData refreshData];
                 }
-                
             }
             //更多
             else {
                 if (![sectionData isLoadDataComplete]) {
                         //更多数据
                     [sectionData loadDataforNextPage];
+                }
+                else {
+                    if (self.didSelectFinish) {
+                        self.didSelectFinish(self, indexPath);
+                    }
                 }
             }
         }

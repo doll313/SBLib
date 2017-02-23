@@ -356,6 +356,20 @@
     return ([scan scanInt:&val] || [scan scanInt:&val]) && [scan isAtEnd];
 }
 
+//判断是不是字母
+- (BOOL)isFirstLetter {
+    NSString *str = [NSString stringWithString:self];
+
+    if ([str characterAtIndex:0] >= 'a' && [str characterAtIndex:0] <= 'z') {
+        return YES;
+    }
+    if ([str characterAtIndex:0] >= 'A' && [str characterAtIndex:0] <= 'Z') {
+        return YES;
+    }
+
+    return NO;
+}
+
 - (NSInteger) indexOfSubStr:(NSString *)subStr {
     if (nil == subStr || [subStr length] <= 0) {
         return -1;
@@ -463,6 +477,10 @@ static inline CGSize ajustedSize(CGSize originalSize) {
     NSString *str = [NSString stringWithString:self];
     if (SBStringIsEmpty(str)) {
         return @"*";
+    }
+
+    else if ([str isFirstLetter] || [str isNumber]) {
+        return [str substringToIndex:1];
     }
 
     return [NSString stringWithFormat:@"%c",pinyinFirstLetter([str characterAtIndex:0])];

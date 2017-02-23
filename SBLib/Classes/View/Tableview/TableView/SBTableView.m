@@ -317,6 +317,14 @@
                         [sectionData loadDataforNextPage];
                     }
                 }
+                else {
+                    if (sectionData.hasFinishCell) {
+                        if (self.didSelectFinish) {
+                            self.didSelectFinish(self, indexPath);
+                        }
+                    }
+
+                }
 			}
 		}
 	}

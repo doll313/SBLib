@@ -77,6 +77,9 @@
 /**判断是否为数字*/
 - (BOOL)isNumber;
 
+//判断第一个字是不是字母
+- (BOOL)isFirstLetter;
+
 //格式化字符数按前缀  eg:@"+0.08"---->@"0.08"
 - (NSString *)formatterStrPrefix;
 

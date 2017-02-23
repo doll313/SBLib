@@ -8,12 +8,15 @@
 
 #import "SBViewController.h"
 #import "SBCONSTANT.h"
+#import <CoreLocation/CoreLocation.h>
+#import <MapKit/MapKit.h>
 
-@interface SBViewController ()
+@interface SBViewController () <CLLocationManagerDelegate,MKReverseGeocoderDelegate>
 
 @property (nonatomic, strong) SBTableView *animTable;
 @property (nonatomic, strong) SBNetworkFlow *netFlow;
 @property (nonatomic, strong) SBFpsHelper *fpsHelper;
+@property (nonatomic, strong) CLLocationManager *locationManager;
 
 @end
 
@@ -38,7 +41,7 @@
 
     self.fpsHelper = [[SBFpsHelper alloc] init];
     [self.fpsHelper startblock:^(CGFloat fps) {
-        NSLog(@"%.f FPS", fps);
+//        NSLog(@"%.f FPS", fps);
     }];
 
     // Do any additional setup after loading the view, typically from a nib.
@@ -52,7 +55,7 @@
     self.animTable.ctrl = self;
     [self.view addSubview:self.animTable];
 
-//    SBWS(__self)
+    SBWS(__self)
 
     // 计算单元格高度
     self.animTable.heightForRow = ^CGFloat(SBTableView *tableView, NSIndexPath *indexPath) {
@@ -73,6 +76,9 @@
         else if ([titleStr isEqualToString:@"table"]) {
             [tableView.ctrl sb_quickOpenCtrl:@"SBATableController"];
         }
+        else if ([titleStr isEqualToString:@"webp"]) {
+            [tableView.ctrl sb_quickOpenCtrl:@"SBWebpController"];
+        }
         else if ([titleStr isEqualToString:@"http"]) {
             NSURL *url = [NSURL URLWithString:@"https://liveavatar.eastmoney.com/qface/1095014665825048/1024?v=1478249720"];
             NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -83,6 +89,9 @@
                                                 completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
                                                 }];
             [task resume];
+        }
+        else if ([titleStr isEqualToString:@"location"]) {
+            [__self doLocation];
         }
     };
 
@@ -95,6 +104,8 @@
                             @"index",
                             @"http",
                             @"table",
+                            @"webp",
+                            @"location",
                             ];
 
     //单元格
@@ -110,4 +121,61 @@
     NSLog(@"%@",ss);
 }
 
+-(void)doLocation {
+
+    self.locationManager = [[CLLocationManager alloc] init];
+    // 设置定位精度，十米，百米，最好
+    [self.locationManager setDesiredAccuracy:kCLLocationAccuracyHundredMeters];
+    self.locationManager.delegate = self;
+
+    // 开始时时定位
+    [self.locationManager startUpdatingLocation];
+}
+
+// 错误信息
+-(void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+    NSLog(@"error");
+}
+
+// 6.0 以上调用这个函数
+-(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+
+    NSLog(@"locations %@", locations);
+
+    CLLocation *newLocation = locations[0];
+    CLLocationCoordinate2D oldCoordinate = newLocation.coordinate;
+    NSLog(@"旧的经度：%f,旧的纬度：%f",oldCoordinate.longitude,oldCoordinate.latitude);
+
+    //    CLLocation *newLocation = locations[1];
+    //    CLLocationCoordinate2D newCoordinate = newLocation.coordinate;
+    //    NSLog(@"经度：%f,纬度：%f",newCoordinate.longitude,newCoordinate.latitude);
+
+    // 计算两个坐标距离
+    //    float distance = [newLocation distanceFromLocation:oldLocation];
+    //    NSLog(@"%f",distance);
+
+    [manager stopUpdatingLocation];
+
+    //------------------位置反编码---5.0之后使用-----------------
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    [geocoder reverseGeocodeLocation:newLocation
+                   completionHandler:^(NSArray *placemarks, NSError *error){
+
+                       for (CLPlacemark *place in placemarks) {
+                           NSLog(@"CLPlacemark %@", place);
+                           //                           NSLog(@"thoroughfare,%@",place.thoroughfare);       // 街道
+                           //                           NSLog(@"subThoroughfare,%@",place.subThoroughfare); // 子街道
+                           //                           NSLog(@"locality,%@",place.locality);               // 市
+                           //                           NSLog(@"subLocality,%@",place.subLocality);         // 区
+                           //                           NSLog(@"country,%@",place.country);                 // 国家
+                       }
+
+                   }];
+
+}
+
+// 6.0 调用此函数
+-(void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
+    NSLog(@"%@", @"ok");
+}
 @end

@@ -21,6 +21,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.view.backgroundColor = [UIColor whiteColor];
+
     SBWS(__self)
 
     //
@@ -44,9 +46,15 @@
         return [__self editActions];
     };
 
+    self.iTable.didSelectFinish = ^(SBTableView *tableView, NSIndexPath *indexPath) {
+        NSLog(@"didSelectFinish");
+    };
+
     // 帐户资料
     SBTableData *sectionData = [[SBTableData alloc] init];
     sectionData.mDataCellClass = [SBTitleCell class];
+    sectionData.hasFinishCell = YES;
+    sectionData.httpStatus = SBTableDataStatusFinished;
     [self.iTable addSectionWithData:sectionData];
 
     NSArray *titleArray = @[@"a",
