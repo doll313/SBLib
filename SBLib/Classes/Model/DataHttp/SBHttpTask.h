@@ -28,6 +28,7 @@
 
 #import <Foundation/Foundation.h>
 #import <Foundation/NSObject.h>
+#import "AFNetworking.h"
 
 
 typedef enum {
@@ -35,29 +36,6 @@ typedef enum {
     SBHttpTaskStateExecuting = 2,           //执行中
     SBHttpTaskStateFinished = 3             //结束
 } SBHttpTaskState;
-
-/**
- 缓存类型
- */
-typedef enum {
-    // 不使用缓存
-    SBCacheTypeDisabled = 0,
-    
-    // 标准缓存，过期会被清除
-    SBCacheTypeNormal = 1,
-    
-    // 持久化缓存，不会过期，超过一定时间会自动更新
-    SBCacheTypePersistent = 2,
-    
-    // 关键业务缓存，不会过期，当网络失效的情况下才会命中
-    SBCacheTypeCritical = 3,
-    
-    // 和SBCacheTypeNormal类似，但持续时间为当天，每天0:00:00过期
-    SBCacheTypeDaily = 4,
-    
-    // SBCacheTypeThumbnail	5
-    // SBCacheTypePhoto		6
-} SBCacheType;
 
 // 网络连接用到的常量
 #define APPCONFIG_CONN_ADD_PREFIX           @"/"                    // WAP 接口前缀 东方财富网没有专门为客户端的接口前缀
@@ -95,11 +73,7 @@ typedef enum {
 @interface SBHttpTask : NSOperation
 
 /** 网络*/
-@property (nonatomic, strong) NSURLSession *urlSession;
-@property (nonatomic, strong) NSURLSessionConfiguration *sessionConfiguration;
 @property (nonatomic, strong) NSURLSessionTask *sessionDataTask;
-@property (nonatomic, strong) NSMutableURLRequest *urlRequest;
-@property (nonatomic, strong) NSURLResponse *urlResponse;
 
 /** url为最基本的参数，必须指定 */
 @property (nonatomic, strong) NSString *aURLString;
@@ -116,23 +90,14 @@ typedef enum {
 /** 网络请求状态码 */
 @property (nonatomic, assign) NSInteger statusCode;
 
-/** 网络下载数据预估大小 */
-@property (nonatomic, assign) NSUInteger expectedContentLength;
-
 /** 错误信息 */
 @property (strong, nonatomic) NSError *httpError;
 
 /** 标签，用以区分同一个delegate的不同task */
 @property (nonatomic, assign) NSInteger tag;
 
-///** 是否加载完毕 */
-@property (nonatomic, assign) BOOL completed;
-
 /** 附带的用户信息 */
 @property (nonatomic, retain) id userInfo;
-
-/**  带缓存的类型 */
-@property (nonatomic, assign) SBCacheType defaultCacheType;
 
 /** post请求的post数据 */
 @property (nonatomic, strong) NSData *postData;
@@ -159,8 +124,5 @@ typedef enum {
 
 /** 终止数据加载 */
 - (void)stopLoading;
-
-/** 网络任务描述 */
-- (NSString *)sbHttpDescribe;
 
 @end

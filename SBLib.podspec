@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'SBLib'
-  s.version          = '0.3.2'
+  s.version          = '0.3.3'
   s.summary          = 'A short description of SBLib.'
 
   s.description      = <<-DESC
@@ -24,6 +24,7 @@ Pod::Spec.new do |s|
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
 
+  s.dependency 'AFNetworking'
   s.dependency 'FMDB'
   s.dependency 'MBProgressHUD'
   s.dependency 'MJRefresh'

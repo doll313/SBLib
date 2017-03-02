@@ -64,6 +64,12 @@
     if (self.httpStatus == SBTableDataStatusLoading) {
         return;
     }
+
+    //是否显示
+    BOOL isViewVisible = [self.collectionView.ctrl isViewLoaded] && [self.collectionView window] != nil;
+    if (!isViewVisible) {
+        return;
+    }
     
     //从第一页开始
     self.pageAt = 1;

@@ -20,12 +20,9 @@
 
 #import "SBHttpTask.h"
 #import "SBHttpHelper.h"
-#import "SBAppCoreInfo.h"
-#import "DataAppCacheDB.h"
-#import "SBExceptionLog.h"      //异常记录
 #import "SBNetworkReachability.h"
-#import <netdb.h>
-#import <arpa/inet.h>
+#import "SBAppCoreInfo.h"
+#import "SBExceptionLog.h"      //异常记录
 
 static BOOL _url_print_debug;             //调试url输出
 static BOOL _recieve_data_ram_debug;             //调试接收数据大小
@@ -70,7 +67,6 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 //释放资源
 - (void)dealloc {
     [self stopLoading];
-    self.urlRequest = nil;
 }
 
 - (void)start {
@@ -87,105 +83,47 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     self.sbHttpTaskState = SBHttpTaskStateExecuting;
 }
 
+- (AFHTTPSessionManager *)manager{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer.timeoutInterval = self.timeout;// 超时时间
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer]; // 上传普通格式
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer]; // AFN不会解析,数据是data，需要自己解析
+
+    /** 设定用户代理名 */
+    NSString *deviceType = [SBAppCoreInfo sharedSBAppCoreInfo].clientMachine;
+    NSString *uuid = [SBAppCoreInfo sharedSBAppCoreInfo].idfv;
+    NSString *userAgent = [NSString stringWithFormat:@"%@-%@-%@", APPCONFIG_CONN_USER_AGENT, deviceType, uuid];
+    [manager.requestSerializer setValue:userAgent forHTTPHeaderField:@"User-Agent"];
+
+    //header参数
+    for (NSString *filedkey in self.aHTTPHeaderField) {
+        [manager.requestSerializer setValue:self.aHTTPHeaderField[filedkey] forHTTPHeaderField:filedkey];
+    }
+
+    //gzip
+    if (self.gzip) {
+        [manager.requestSerializer setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
+    }
+    return manager;
+}
+
 - (void)doStartRequest {
-    
+
     void (^startBlock)() = ^void(){
         //请求时间
         self.startDate = [NSDate date];
-        
-        //request
-        NSURL *aURL = nil;
-        if ([self.HTTPMethod isEqualToString:@"POST"]) {
-            NSString *domainURL = [self.aURLString sb_httpGetMethodDomain];
-            aURL = [NSURL URLWithString:domainURL];
-        } else {
-            aURL = [NSURL URLWithString:self.aURLString];
-            //使用get方法传入code有xxx|xxx这种带“|”的会使url初始化失败。
-            if (aURL == nil) {
-                NSString *newUrlString = [self.aURLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-                aURL = [NSURL URLWithString:newUrlString];
-            }
-        }
-        
-        self.urlRequest = [NSMutableURLRequest requestWithURL:aURL
-                                                  cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
-                                              timeoutInterval:self.timeout];
-        
-        /** 如果post数据为空，则用GET方式提交数据 */
-        [self.urlRequest setHTTPMethod:self.HTTPMethod];
-        
-        //POST 加入POST数据
-        if ([self.HTTPMethod isEqualToString:@"POST"]) {
-            //json
-            if (self.jsonDict) {
-                [self.urlRequest addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];  //设置请求头
-                [self.urlRequest addValue:@"application/json" forHTTPHeaderField:@"Accept"];        //设置请求头
-                
-                NSError *error;
-                self.postData = [NSJSONSerialization dataWithJSONObject:self.jsonDict options:0 error:&error];
-                
-            } else {
-                NSString *paramURL = [self.aURLString sb_httpGetMethodParamsString];
-                self.postData = [paramURL dataUsingEncoding:NSUTF8StringEncoding];
-                self.jsonDict = [[self.aURLString sb_httpGetMethodParams] mutableCopy];
-            }
-            
-            [self.urlRequest setHTTPBody:self.postData];
-        }else{
-            NSString *paramURL = [self.aURLString sb_httpGetMethodParamsString];
-            self.jsonDict = [[paramURL sb_httpGetMethodParams] mutableCopy];
-        }
-        
-        /** 不支持cookies */
-        [self.urlRequest setHTTPShouldHandleCookies:NO];
-        
-        /** 设定用户代理名 */
-        NSString *deviceType = [SBAppCoreInfo sharedSBAppCoreInfo].clientMachine;
-        NSString *uuid = [SBAppCoreInfo sharedSBAppCoreInfo].idfv;
-        NSString *userAgent = [NSString stringWithFormat:@"%@-%@-%@", APPCONFIG_CONN_USER_AGENT, deviceType, uuid];
-        [self.urlRequest setValue:userAgent forHTTPHeaderField:@"User-Agent"];
-        
-        //header参数
-        for (NSString *filedkey in self.aHTTPHeaderField) {
-            [self.urlRequest addValue:self.aHTTPHeaderField[filedkey] forHTTPHeaderField:filedkey];
-        }
-        
-        //gzip
-        if (self.gzip) {
-            [self.urlRequest addValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
-        }
-        
-        //
-        self.sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
-        self.urlSession = [NSURLSession sessionWithConfiguration:self.sessionConfiguration];
-        self.sessionDataTask = [self.urlSession dataTaskWithRequest:self.urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-            //网络请求返回
-            self.urlResponse = response;
-            //状态码
-            self.statusCode = ((NSHTTPURLResponse *)response).statusCode;
-            //错误
-            self.httpError = error;
-            //赋值数据
-            [self.recieveData appendData:data];
-            //请求时间
-            self.durationTime = [[NSDate date] timeIntervalSinceDate:self.startDate];
-            //完成
-            [self onFinished:error];
-            //状态修改
-            self.sbHttpTaskState = SBHttpTaskStateFinished;
-        }];
-        
+
         //开始请求
         if (self.delegate != nil && [self.delegate respondsToSelector:@selector(taskWillStart:)]) {
             [self.delegate taskWillStart:self];
         }
-        
-        [self.sessionDataTask resume];
-        
-        //打印网址
-        _url_print_debug = [[NSUserDefaults standardUserDefaults] boolForKey:DEBUG_HTTP_REQUEST_URL_PRINT];
-        if (_url_print_debug) {
-            NSLog(@"URL: %@", self.aURLString);
+
+        //request
+        NSURL *aURL = nil;
+        if ([self.HTTPMethod isEqualToString:@"POST"]) {
+            [self doPost];
+        } else {
+            [self doGet];
         }
     };
     
@@ -197,14 +135,59 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     }
 }
 
+- (void)doPost {
+    //request
+    NSString *domainURL = [self.aURLString sb_httpGetMethodDomain];
+
+    if (!self.jsonDict) {
+        NSString *paramURL = [self.aURLString sb_httpGetMethodParamsString];
+        self.postData = [paramURL dataUsingEncoding:NSUTF8StringEncoding];
+        self.jsonDict = [[self.aURLString sb_httpGetMethodParams] mutableCopy];
+    }
+
+    // 请求的manager
+    AFHTTPSessionManager *manager = [self manager];
+    //网络请求返回
+    self.sessionDataTask = [manager POST:domainURL parameters:self.jsonDict constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [self doResponse:task responseObject:responseObject error:nil];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        [self doResponse:task responseObject:nil error:error];
+    }];
+
+}
+
+- (void)doGet {
+    NSString *paramURL = [self.aURLString sb_httpGetMethodParamsString];
+    self.jsonDict = [[paramURL sb_httpGetMethodParams] mutableCopy];
+
+    // 请求的manager
+    AFHTTPSessionManager *manager = [self manager];
+    //网络请求返回
+    self.sessionDataTask = [manager GET:self.aURLString parameters:self.jsonDict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [self doResponse:task responseObject:responseObject error:nil];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        [self doResponse:task responseObject:nil error:error];
+    }];
+}
+
+//接收到数据
+- (void)doResponse:(NSURLSessionDataTask * _Nonnull)task responseObject:(id  _Nullable)responseObject error:(NSError * _Nonnull)error {
+    //状态码
+    self.statusCode = ((NSHTTPURLResponse *)task.response).statusCode;
+    //赋值数据
+    [self.recieveData appendData:responseObject];
+    //完成
+    [self onFinished:error];
+}
+
 - (void)cancel {
     if (self.isFinished) {
         return;
     }
-    
+
     self.delegate = nil;
     [self.sessionDataTask cancel];
-    
+
     [super cancel];
 }
 
@@ -274,6 +257,7 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     if(self.sbHttpTaskState == SBHttpTaskStateExecuting) {
         self.sbHttpTaskState = SBHttpTaskStateFinished;
     }
+
     [self cancel];
 }
 
@@ -282,17 +266,13 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 - (void)onFinished:(NSError *)error {
     
     [SBHttpHelper hiddenNetworkIndicator];
-    
-    if (self.completed) {
-        return;
-    }
-    
+
     void (^finishBlock)() = ^void(){
-        self.completed = YES;
+        //请求时间
+        self.durationTime = [[NSDate date] timeIntervalSinceDate:self.startDate];
         
         //记录
         NSMutableString *dc = [[NSMutableString alloc] initWithCapacity:1000];
-        [dc appendFormat:@"网络请求=%@\n\n", self.urlRequest];
         [dc appendFormat:@"请求时间=%f\n\n", self.durationTime];
         [dc appendFormat:@"请求参数=%@\n\n", self.jsonDict];
         [dc appendFormat:@"请求地址=%@\n\n", self.aURLString];
@@ -307,23 +287,22 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
             if (nil != error) {
                 //出错的回调
                 [self.delegate task:self onError:error];
-                
-                //记录错误日志
-                [SBExceptionLog logSBHttpException:self];
-                
             } else {
                 //正确接收数据的回调
                 [self.delegate task:self onReceived:self.recieveData];
             }
         }
         
-        [self cancel];
-        
         //打印接收字节
         _recieve_data_ram_debug = [[NSUserDefaults standardUserDefaults] boolForKey:DEBUG_HTTP_RECIEVE_RAM];
         if (_recieve_data_ram_debug) {
             NSLog(@"接收到的数据大小:%fk", self.recieveData.length / 1024.0f);
         }
+
+        [self cancel];
+
+        //状态修改
+        self.sbHttpTaskState = SBHttpTaskStateFinished;
     };
     
     if ([NSThread currentThread] != [NSThread mainThread]) {
@@ -333,50 +312,4 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     }
 }
 
-#pragma mark -
-#pragma mark 私有方法
-//设置 HTTP 请求头报错时的错误信息
-- (void)onHttpStatusCodeError:(NSString *)errorDomain {
-    if (SBStringIsEmpty(errorDomain)) {
-        errorDomain = [SBHttpHelper httpStatusErrorStr:self.statusCode];
-    }
-    NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:0];
-    userInfo[APPCONFIG_CONN_ERROR_MSG_DOMAIN] = errorDomain;
-    
-    NSError *statusError = [NSError errorWithDomain:APPCONFIG_CONN_ERROR_MSG_DOMAIN code:self.statusCode userInfo:userInfo];
-    [self onFinished:statusError];
-}
-
-/** 网络任务描述 */
-- (NSString *)sbHttpDescribe {
-    @try {
-        
-        NSMutableString *dc = [[NSMutableString alloc] initWithCapacity:1000];
-        
-        NSString *networkType = SBGetNetworkReachabilityDescribe();
-        
-        [dc appendFormat:@"触发时间=%@\n\n", [NSDate date]];
-        [dc appendFormat:@"请求时间=%f\n\n", self.durationTime];
-        [dc appendFormat:@"网络请求=%@\n\n", self.urlRequest];
-        [dc appendFormat:@"网络接收=%@\n\n", self.urlResponse];
-        [dc appendFormat:@"网络状态=%@\n\n", networkType];
-        [dc appendFormat:@"接收到的网络数据=%@\n\n", [[NSString alloc] initWithData:self.recieveData encoding:NSUTF8StringEncoding]];
-        [dc appendFormat:@"是否压缩数据=%@\n\n", self.gzip ? @"是" : @"否"];
-        [dc appendFormat:@"是否加载完毕=%@\n\n", self.completed ? @"是" : @"否"];
-        [dc appendFormat:@"错误信息=%@\n\n", [self.httpError description]];
-        [dc appendFormat:@"网络请求错误解释=%@\n\n", [SBHttpHelper httpStatusErrorStr:self.statusCode]];
-        [dc appendFormat:@"超时时间=%f\n\n", self.timeout];
-        
-        [dc appendFormat:@"\r\n\r\n--------------------------------\r\n\r\n"];
-        [dc appendFormat:@"\r\n\r\n--------------------------------\r\n\r\n"];
-        
-        return dc;
-    }
-    @catch (NSException *exception) {
-        
-    }
-    @finally {
-        
-    }
-}
 @end

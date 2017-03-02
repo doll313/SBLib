@@ -167,7 +167,7 @@ SB_ARC_SINGLETON_IMPLEMENT(SBExceptionLog);
     NSString *oldExcetionReport = [SBExceptionLog getSBHttpException];
     
     //异常报告
-    NSMutableString *exceptionReport = [NSMutableString stringWithString: [httpTask sbHttpDescribe]];
+    NSMutableString *exceptionReport = [NSMutableString stringWithString:[httpTask.sessionDataTask description]];
     
     /** 若旧的 SB Exception 报告不为空，则把旧的 SB Exception 报告追加到新的 SB Exception 报告后面，用短杆线隔开 **/
     if(oldExcetionReport.length > 0){

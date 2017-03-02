@@ -11,7 +11,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
 
-@interface SBViewController () <CLLocationManagerDelegate,MKReverseGeocoderDelegate>
+@interface SBViewController () <CLLocationManagerDelegate>
 
 @property (nonatomic, strong) SBTableView *animTable;
 @property (nonatomic, strong) SBNetworkFlow *netFlow;
@@ -76,19 +76,8 @@
         else if ([titleStr isEqualToString:@"table"]) {
             [tableView.ctrl sb_quickOpenCtrl:@"SBATableController"];
         }
-        else if ([titleStr isEqualToString:@"webp"]) {
-            [tableView.ctrl sb_quickOpenCtrl:@"SBWebpController"];
-        }
         else if ([titleStr isEqualToString:@"http"]) {
-            NSURL *url = [NSURL URLWithString:@"https://liveavatar.eastmoney.com/qface/1095014665825048/1024?v=1478249720"];
-            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-
-            NSURLSession *session = [NSURLSession sharedSession];
-            // 由于要先对request先行处理,我们通过request初始化task
-            NSURLSessionTask *task = [session dataTaskWithRequest:request
-                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                }];
-            [task resume];
+            [tableView.ctrl sb_quickOpenCtrl:@"SBHttpTaskController"];
         }
         else if ([titleStr isEqualToString:@"location"]) {
             [__self doLocation];
@@ -104,7 +93,6 @@
                             @"index",
                             @"http",
                             @"table",
-                            @"webp",
                             @"location",
                             ];
 
@@ -116,9 +104,6 @@
     }
 
     [self.animTable reloadData];
-
-    NSString *ss = [SBAppCoreInfo sb_description];
-    NSLog(@"%@",ss);
 }
 
 -(void)doLocation {
