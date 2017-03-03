@@ -62,8 +62,8 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
 
     //代理自己处理获取时间
-    if (self.parentController != nil && [self.parentController respondsToSelector:@selector(didFinishPickingMediaWithInfo:)]) {
-        [self.parentController didFinishPickingMediaWithInfo:info];
+    if (self.delegate != nil && [self.delegate respondsToSelector:@selector(didFinishPickingMediaWithInfo:)]) {
+        [self.delegate didFinishPickingMediaWithInfo:info];
     }
     else {
         UIImage *image = info[UIImagePickerControllerOriginalImage];
@@ -76,10 +76,12 @@
             return;
         }
 
-        if (self.imagePickerType == SBImagePickerTypeForEdit) { //修改头像
+        //修改头像
+        if (self.imagePickerType == SBImagePickerTypeForEdit && self.parentController != nil) {
             [self dismissViewControllerAnimated:YES completion:^{
                 //剪裁图片 简历的图片和粉丝团的图片尺寸不一样
                 SBImageEditorController *eCtrl = [[SBImageEditorController alloc] initWithImage:image];
+                eCtrl.delegate = self.delegate;
                 eCtrl.parentCtrl = self.parentController;
                 eCtrl.sourceType = self.sourceType;
                 [self.parentController.navigationController pushViewController:eCtrl animated:YES];
@@ -87,8 +89,8 @@
         }else{
             //选取照片
             assert(self.imagePickerType == SBImagePickerTypeForPick);
-            if (self.parentController != nil && [self.parentController respondsToSelector:@selector(pickedImage:)]) {
-                [self.parentController pickedImage:image];
+            if (self.delegate != nil && [self.delegate respondsToSelector:@selector(pickedImage:)]) {
+                [self.delegate pickedImage:image];
             }
             
             [self dismissViewControllerAnimated:YES completion:nil];
@@ -98,8 +100,8 @@
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    if (self.parentController != nil && [self.parentController respondsToSelector:@selector(cancelImagePicker:)]) {
-        [self.parentController cancelImagePicker:picker];
+    if (self.delegate != nil && [self.delegate respondsToSelector:@selector(cancelImagePicker:)]) {
+        [self.delegate cancelImagePicker:picker];
     }
     else {
         [self dismissViewControllerAnimated:YES completion:nil];

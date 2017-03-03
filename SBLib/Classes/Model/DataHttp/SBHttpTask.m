@@ -168,56 +168,69 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
         [request addValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
     }
 
-    //
-//    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-//    self.sessionDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-//        [self doResponse:data error:error];
-//    }];
-//
-//    [self.sessionDataTask resume];
-
-
-    // 请求的manager
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer]; // 上传普通格式
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer]; // AFN不会解析,数据是data，需要自己解析
-
-    //网络请求返回
-    self.sessionDataTask =[manager dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
-        [self doResponse:responseObject error:error];
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
+    self.sessionDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        [self doResponse:data error:error];
     }];
 
     [self.sessionDataTask resume];
 
+
+//    // 请求的manager
+//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+//    manager.requestSerializer = [AFHTTPRequestSerializer serializer]; // 上传普通格式
+//    manager.responseSerializer = [AFHTTPResponseSerializer serializer]; // AFN不会解析,数据是data，需要自己解析
+//
+//    //网络请求返回
+//    self.sessionDataTask =[manager dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+//        [self doResponse:responseObject error:error];
+//    }];
+//
+//    [self.sessionDataTask resume];
+
 }
 
 - (void)doGet {
+    NSURL *aURL = [NSURL URLWithString:self.aURLString];
+    //使用get方法传入code有xxx|xxx这种带“|”的会使url初始化失败。
+    if (aURL == nil) {
+        NSString *newUrlString = [self.aURLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        aURL = [NSURL URLWithString:newUrlString];
+    }
+
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:aURL
+                                              cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                                          timeoutInterval:self.timeout];
+
+    /** 如果post数据为空，则用GET方式提交数据 */
+    [request setHTTPMethod:@"GET"];
+
     NSString *paramURL = [self.aURLString sb_httpGetMethodParamsString];
     self.jsonDict = [[paramURL sb_httpGetMethodParams] mutableCopy];
 
-    // 请求的manager
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer]; // 上传普通格式
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer]; // AFN不会解析,数据是data，需要自己解析
-    manager.requestSerializer.timeoutInterval = self.timeout;// 超时时间
+    /** 不支持cookies */
+    [request setHTTPShouldHandleCookies:NO];
 
-    [manager.requestSerializer setValue:[self userAgent] forHTTPHeaderField:@"User-Agent"];
+    [request setValue:[self userAgent] forHTTPHeaderField:@"User-Agent"];
 
     //header参数
     for (NSString *filedkey in self.aHTTPHeaderField) {
-        [manager.requestSerializer setValue:self.aHTTPHeaderField[filedkey] forHTTPHeaderField:filedkey];
+        [request addValue:self.aHTTPHeaderField[filedkey] forHTTPHeaderField:filedkey];
     }
 
     //gzip
     if (self.gzip) {
-        [manager.requestSerializer setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
+        [request addValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
     }
-    //网络请求返回
-    self.sessionDataTask = [manager GET:self.aURLString parameters:self.jsonDict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        [self doResponse:responseObject error:nil];
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        [self doResponse:nil error:error];
+
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
+    self.sessionDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        [self doResponse:data error:error];
     }];
+
+    [self.sessionDataTask resume];
 }
 
 //接收到数据

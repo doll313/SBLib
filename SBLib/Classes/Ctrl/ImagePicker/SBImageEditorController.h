@@ -24,6 +24,7 @@
     @private
 }
 @property (nonatomic, assign) UIImagePickerControllerSourceType sourceType;
+@property (nonatomic, assign) id<SBImagePickerDelegate> delegate;
 @property (nonatomic, strong) UIViewController<SBImagePickerDelegate> *parentCtrl;
 
 /** 唯一初始化方法 */

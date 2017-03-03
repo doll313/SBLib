@@ -60,8 +60,9 @@ typedef enum {
 @interface SBImagePickerController : UIImagePickerController <UINavigationControllerDelegate, UIImagePickerControllerDelegate> {
 }
 
-@property (nonatomic,assign) SBImagePickerType imagePickerType;
-@property (nonatomic,weak) UIViewController<SBImagePickerDelegate> *parentController;
+@property (nonatomic, assign) SBImagePickerType imagePickerType;
+@property (nonatomic, assign) id<SBImagePickerDelegate> delegate;
+@property (nonatomic, assign) UIViewController<SBImagePickerDelegate> *parentController;        //如果需要编辑图片 必传
 
 // 压缩图片
 + (UIImage *)scalePicture:(UIImage *)image;

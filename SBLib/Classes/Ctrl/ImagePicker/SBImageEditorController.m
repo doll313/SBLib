@@ -278,8 +278,8 @@
 - (void)cutImageAndSend {
     UIImage *image = [self getCutImageNew];
 
-    if (self.parentCtrl != nil && [self.parentCtrl respondsToSelector:@selector(pickedImage:)]) {
-        [self.parentCtrl pickedImage:image];
+    if (self.delegate != nil && [self.delegate respondsToSelector:@selector(pickedImage:)]) {
+        [self.delegate pickedImage:image];
     }
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.navigationController popViewControllerAnimated:YES];
