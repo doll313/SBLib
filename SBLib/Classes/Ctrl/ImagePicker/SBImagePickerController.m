@@ -62,8 +62,8 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
 
     //代理自己处理获取时间
-    if (self.delegate != nil && [self.delegate respondsToSelector:@selector(didFinishPickingMediaWithInfo:)]) {
-        [self.delegate didFinishPickingMediaWithInfo:info];
+    if (self.protocol != nil && [self.protocol respondsToSelector:@selector(didFinishPickingMediaWithInfo:)]) {
+        [self.protocol didFinishPickingMediaWithInfo:info];
     }
     else {
         UIImage *image = info[UIImagePickerControllerOriginalImage];
@@ -81,7 +81,7 @@
             [self dismissViewControllerAnimated:YES completion:^{
                 //剪裁图片 简历的图片和粉丝团的图片尺寸不一样
                 SBImageEditorController *eCtrl = [[SBImageEditorController alloc] initWithImage:image];
-                eCtrl.delegate = self.delegate;
+                eCtrl.protocol = self.protocol;
                 eCtrl.parentCtrl = self.parentController;
                 eCtrl.sourceType = self.sourceType;
                 [self.parentController.navigationController pushViewController:eCtrl animated:YES];
@@ -89,8 +89,8 @@
         }else{
             //选取照片
             assert(self.imagePickerType == SBImagePickerTypeForPick);
-            if (self.delegate != nil && [self.delegate respondsToSelector:@selector(pickedImage:)]) {
-                [self.delegate pickedImage:image];
+            if (self.protocol != nil && [self.protocol respondsToSelector:@selector(pickedImage:)]) {
+                [self.protocol pickedImage:image];
             }
             
             [self dismissViewControllerAnimated:YES completion:nil];
@@ -100,8 +100,8 @@
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    if (self.delegate != nil && [self.delegate respondsToSelector:@selector(cancelImagePicker:)]) {
-        [self.delegate cancelImagePicker:picker];
+    if (self.protocol != nil && [self.protocol respondsToSelector:@selector(cancelImagePicker:)]) {
+        [self.protocol cancelImagePicker:picker];
     }
     else {
         [self dismissViewControllerAnimated:YES completion:nil];

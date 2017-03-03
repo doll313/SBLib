@@ -7,12 +7,15 @@
 //
 
 #import "SBAppDelegate.h"
+#import "SBURLProtocol.h"/** 响应URL 协议 **/
 
 @implementation SBAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    [NSURLProtocol registerClass:[SBURLProtocol class]];
+
     return YES;
 }
 

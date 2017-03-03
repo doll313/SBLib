@@ -61,8 +61,8 @@ typedef enum {
 }
 
 @property (nonatomic, assign) SBImagePickerType imagePickerType;
-@property (nonatomic, assign) id<SBImagePickerDelegate> delegate;
-@property (nonatomic, assign) UIViewController<SBImagePickerDelegate> *parentController;        //如果需要编辑图片 必传
+@property (nonatomic, assign) id<SBImagePickerDelegate> protocol;
+@property (nonatomic, assign) UIViewController *parentController;        //如果需要编辑图片 必传
 
 // 压缩图片
 + (UIImage *)scalePicture:(UIImage *)image;

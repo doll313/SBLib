@@ -10,6 +10,7 @@
 #import "SBCONSTANT.h"
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
+#import "AFNetworking.h"
 
 @interface SBViewController () <CLLocationManagerDelegate>
 
@@ -113,13 +114,18 @@
 
 -(void)doLocation {
 
-    self.locationManager = [[CLLocationManager alloc] init];
-    // 设置定位精度，十米，百米，最好
-    [self.locationManager setDesiredAccuracy:kCLLocationAccuracyHundredMeters];
-    self.locationManager.delegate = self;
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager GET:@"http://api.douban.com/v2/book/isbn/9787505715660" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 
-    // 开始时时定位
-    [self.locationManager startUpdatingLocation];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+
+    }];//    self.locationManager = [[CLLocationManager alloc] init];
+//    // 设置定位精度，十米，百米，最好
+//    [self.locationManager setDesiredAccuracy:kCLLocationAccuracyHundredMeters];
+//    self.locationManager.delegate = self;
+//
+//    // 开始时时定位
+//    [self.locationManager startUpdatingLocation];
 }
 
 // 错误信息
