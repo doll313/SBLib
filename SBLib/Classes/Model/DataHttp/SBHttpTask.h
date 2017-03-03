@@ -125,4 +125,7 @@ typedef enum {
 /** 终止数据加载 */
 - (void)stopLoading;
 
+/** URL协议 */
++ (void)protocolName:(NSString *)nam;
+
 @end

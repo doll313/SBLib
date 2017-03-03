@@ -26,6 +26,7 @@
 
 static BOOL _url_print_debug;             //调试url输出
 static BOOL _recieve_data_ram_debug;             //调试接收数据大小
+static NSString *_protocolName;             //调试url输出
 
 @interface SBHttpTask ()
 
@@ -127,6 +128,16 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     return userAgent;
 }
 
+- (NSURLSession *)session {
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    if (_protocolName.length > 0) {
+        NSArray *protocolArray = @[NSClassFromString(_protocolName)];
+        config.protocolClasses = protocolArray;
+    }
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
+    return session;
+}
+
 - (void)doPost {
     NSString *domainURL = [self.aURLString sb_httpGetMethodDomain];
     NSURL *aURL = [NSURL URLWithString:domainURL];
@@ -168,8 +179,7 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
         [request addValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
     }
 
-    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
+    NSURLSession *session = [self session];
     self.sessionDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         [self doResponse:data error:error];
     }];
@@ -224,8 +234,7 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
         [request addValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
     }
 
-    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
+    NSURLSession *session = [self session];
     self.sessionDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         [self doResponse:data error:error];
     }];
@@ -375,4 +384,8 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     }
 }
 
+/** URL协议 */
++ (void)protocolName:(NSString *)name {
+    _protocolName = name;
+}
 @end

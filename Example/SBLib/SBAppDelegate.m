@@ -7,6 +7,7 @@
 //
 
 #import "SBAppDelegate.h"
+#import "SBHttpTask.h"
 #import "SBURLProtocol.h"/** 响应URL 协议 **/
 
 @implementation SBAppDelegate
@@ -15,6 +16,7 @@
 {
     // Override point for customization after application launch.
     [NSURLProtocol registerClass:[SBURLProtocol class]];
+//    [SBHttpTask protocolName:@"SBURLProtocol"];
 
     return YES;
 }
