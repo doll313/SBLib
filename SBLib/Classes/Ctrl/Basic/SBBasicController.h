@@ -22,8 +22,6 @@
 @interface SBBasicController : UIViewController {
 }
 
-@property (nonatomic, assign) BOOL observerKeyboard;        //检测键盘
-
 
 /** 初始化UI界面 */
 - (void)customView;

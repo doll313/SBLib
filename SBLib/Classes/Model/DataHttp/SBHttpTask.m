@@ -74,40 +74,16 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
         self.sbHttpTaskState = SBHttpTaskStateFinished;
         return;
     }
-    
-    [SBHttpHelper showNetworkIndicator];
-    
     //开启网络
     [self doStartRequest];
     
     self.sbHttpTaskState = SBHttpTaskStateExecuting;
 }
 
-- (AFHTTPSessionManager *)manager{
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.requestSerializer.timeoutInterval = self.timeout;// 超时时间
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer]; // 上传普通格式
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer]; // AFN不会解析,数据是data，需要自己解析
-
-    /** 设定用户代理名 */
-    NSString *deviceType = [SBAppCoreInfo sharedSBAppCoreInfo].clientMachine;
-    NSString *uuid = [SBAppCoreInfo sharedSBAppCoreInfo].idfv;
-    NSString *userAgent = [NSString stringWithFormat:@"%@-%@-%@", APPCONFIG_CONN_USER_AGENT, deviceType, uuid];
-    [manager.requestSerializer setValue:userAgent forHTTPHeaderField:@"User-Agent"];
-
-    //header参数
-    for (NSString *filedkey in self.aHTTPHeaderField) {
-        [manager.requestSerializer setValue:self.aHTTPHeaderField[filedkey] forHTTPHeaderField:filedkey];
-    }
-
-    //gzip
-    if (self.gzip) {
-        [manager.requestSerializer setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
-    }
-    return manager;
-}
-
 - (void)doStartRequest {
+
+    [SBHttpHelper showNetworkIndicator];
+
 
     void (^startBlock)() = ^void(){
         //请求时间
@@ -125,6 +101,12 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
         } else {
             [self doGet];
         }
+
+        //打印网址
+        _url_print_debug = [[NSUserDefaults standardUserDefaults] boolForKey:DEBUG_HTTP_REQUEST_URL_PRINT];
+        if (_url_print_debug) {
+            NSLog(@"URL: %@", self.aURLString);
+        }
     };
     
     //确保在主线程
@@ -135,24 +117,77 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     }
 }
 
-- (void)doPost {
-    //request
-    NSString *domainURL = [self.aURLString sb_httpGetMethodDomain];
+/** agent **/
+- (NSString *)userAgent {
+    /** 设定用户代理名 */
+    NSString *deviceType = [SBAppCoreInfo sharedSBAppCoreInfo].clientMachine;
+    NSString *uuid = [SBAppCoreInfo sharedSBAppCoreInfo].idfv;
+    NSString *userAgent = [NSString stringWithFormat:@"%@-%@-%@", APPCONFIG_CONN_USER_AGENT, deviceType, uuid];
 
-    if (!self.jsonDict) {
+    return userAgent;
+}
+
+- (void)doPost {
+    NSString *domainURL = [self.aURLString sb_httpGetMethodDomain];
+    NSURL *aURL = [NSURL URLWithString:domainURL];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:aURL
+                                              cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                                          timeoutInterval:self.timeout];
+
+    /** 如果post数据为空，则用GET方式提交数据 */
+    [request setHTTPMethod:@"POST"];
+
+    //json
+    if (self.jsonDict) {
+        [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];  //设置请求头
+        [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];        //设置请求头
+
+        NSError *error;
+        self.postData = [NSJSONSerialization dataWithJSONObject:self.jsonDict options:0 error:&error];
+
+    } else {
         NSString *paramURL = [self.aURLString sb_httpGetMethodParamsString];
         self.postData = [paramURL dataUsingEncoding:NSUTF8StringEncoding];
         self.jsonDict = [[self.aURLString sb_httpGetMethodParams] mutableCopy];
     }
 
+    [request setHTTPBody:self.postData];
+
+    /** 不支持cookies */
+    [request setHTTPShouldHandleCookies:NO];
+
+    [request setValue:[self userAgent] forHTTPHeaderField:@"User-Agent"];
+
+    //header参数
+    for (NSString *filedkey in self.aHTTPHeaderField) {
+        [request addValue:self.aHTTPHeaderField[filedkey] forHTTPHeaderField:filedkey];
+    }
+
+    //gzip
+    if (self.gzip) {
+        [request addValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
+    }
+
+    //
+//    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+//    self.sessionDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+//        [self doResponse:data error:error];
+//    }];
+//
+//    [self.sessionDataTask resume];
+
+
     // 请求的manager
-    AFHTTPSessionManager *manager = [self manager];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer]; // 上传普通格式
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer]; // AFN不会解析,数据是data，需要自己解析
+
     //网络请求返回
-    self.sessionDataTask = [manager POST:domainURL parameters:self.jsonDict constructingBodyWithBlock:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        [self doResponse:task responseObject:responseObject error:nil];
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        [self doResponse:task responseObject:nil error:error];
+    self.sessionDataTask =[manager dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+        [self doResponse:responseObject error:error];
     }];
+
+    [self.sessionDataTask resume];
 
 }
 
@@ -161,19 +196,34 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     self.jsonDict = [[paramURL sb_httpGetMethodParams] mutableCopy];
 
     // 请求的manager
-    AFHTTPSessionManager *manager = [self manager];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer]; // 上传普通格式
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer]; // AFN不会解析,数据是data，需要自己解析
+    manager.requestSerializer.timeoutInterval = self.timeout;// 超时时间
+
+    [manager.requestSerializer setValue:[self userAgent] forHTTPHeaderField:@"User-Agent"];
+
+    //header参数
+    for (NSString *filedkey in self.aHTTPHeaderField) {
+        [manager.requestSerializer setValue:self.aHTTPHeaderField[filedkey] forHTTPHeaderField:filedkey];
+    }
+
+    //gzip
+    if (self.gzip) {
+        [manager.requestSerializer setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
+    }
     //网络请求返回
     self.sessionDataTask = [manager GET:self.aURLString parameters:self.jsonDict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        [self doResponse:task responseObject:responseObject error:nil];
+        [self doResponse:responseObject error:nil];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        [self doResponse:task responseObject:nil error:error];
+        [self doResponse:nil error:error];
     }];
 }
 
 //接收到数据
-- (void)doResponse:(NSURLSessionDataTask * _Nonnull)task responseObject:(id  _Nullable)responseObject error:(NSError * _Nonnull)error {
+- (void)doResponse:(id  _Nullable)responseObject error:(NSError * _Nonnull)error {
     //状态码
-    self.statusCode = ((NSHTTPURLResponse *)task.response).statusCode;
+    self.statusCode = ((NSHTTPURLResponse *)self.sessionDataTask.response).statusCode;
     //赋值数据
     [self.recieveData appendData:responseObject];
     //完成

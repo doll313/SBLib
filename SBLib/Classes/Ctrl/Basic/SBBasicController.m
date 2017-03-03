@@ -24,7 +24,6 @@ static BOOL _ctrl_alloc_debug;
 @interface SBBasicController() {
 @private
     BOOL _customed;
-    CGFloat viewHeight;       /**界面高度**/
 }
 
 @end;
@@ -55,21 +54,10 @@ static BOOL _ctrl_alloc_debug;
     if (_ctrl_alloc_debug) {
         NSLog(@"ctrl-malloc[dealloc]: %@", NSStringFromClass([self class]));
     }
-    
-    
-    if (self.observerKeyboard) {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-    }
 }
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
-    
-    //记录界面的高度
-    if (viewHeight == 0) {
-        viewHeight = CGRectGetHeight(self.view.frame);
-    }
 }
 
 /** 初始化UI界面 */
@@ -105,61 +93,6 @@ static BOOL _ctrl_alloc_debug;
 //返回上一级
 - (void)sbCtrlPopNav:(id)sender {
     [self sb_colseCtrl];
-}
-
-/** 监听键盘 **/
-- (void)setObserverKeyboard:(BOOL)observerKeyboard {
-    _observerKeyboard=observerKeyboard;
-    if (observerKeyboard) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(observerKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(observerKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-        
-        //键盘
-        [self.view sb_setTapGesture:self action:@selector(hideKeyBoard)];
-    } else {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-    }
-}
-
-//隐藏键盘
-- (void)hideKeyBoard {
-    [self.view endEditing:YES];
-}
-
-#pragma mark -
-#pragma mark 键盘
-//键盘弹出
-- (void)observerKeyboardDidShow:(NSNotification *)notification {
-    NSDictionary *userInfo = [notification userInfo];
-    NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
-    CGRect keyboardRect = [aValue CGRectValue];
-    CGFloat keyBoardHeight = CGRectGetHeight(keyboardRect);
-//    keyBoardHeight = MIN(216, keyBoardHeight);
-    
-    if (keyBoardHeight != 0) {
-        CGFloat newHeight = viewHeight - keyBoardHeight;
-        [self.view sb_setHeight:newHeight];
-        [UIView animateWithDuration:0.1f animations:^{
-        } completion:^(BOOL finished) {
-            [self keyboardDidShow:notification];
-        }];
-    }
-}
-
-//键盘弹出
-- (void)keyboardDidShow:(NSNotification *)notification {
-    
-}
-
-//键盘消失
-- (void)observerKeyboardWillHide:(NSNotification *)notification {
-    [self.view sb_setHeight:viewHeight];
-    [self keyboardWillHide:notification];
-}
-//键盘消失
-- (void)keyboardWillHide:(NSNotification *)notification {
-    
 }
 
 @end
