@@ -79,6 +79,10 @@
         else if ([titleStr isEqualToString:@"http"]) {
             [tableView.ctrl sb_quickOpenCtrl:@"SBHttpTaskController"];
         }
+        else if ([titleStr isEqualToString:@"refresh"]) {
+            [tableView.ctrl sb_quickOpenCtrl:@"SBRefreshTableController"];
+        }
+
         else if ([titleStr isEqualToString:@"location"]) {
             [__self doLocation];
         }
@@ -93,6 +97,7 @@
                             @"index",
                             @"http",
                             @"table",
+                            @"refresh",
                             @"location",
                             ];
 

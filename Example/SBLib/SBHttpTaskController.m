@@ -56,7 +56,7 @@
 //    self.httpLoader.httpTask.jsonDict = [mParams mutableCopy];
 //    self.httpLoader.httpTask.aHTTPHeaderField = @{@"em_clt_uiid":uniqueId};
 
-//    self.httpLoader = [[SBHttpDataLoader alloc] initWithURL:@"https://lvbsns.eastmoney.com/LVB/api/Channel/GetNearHotLiveList?version=1.7.0&pi=&plat=Iphone&product=emlive&longitude=121.440619655658&sdkversion=1,9,1951&latitude=31.197635968628&ctoken=aR8OepluiKR31Btio253JUsEH4KDkZAkqfaT7FMOhLMhIca-xJrs1J1DXWc_zwAjPhMLR1bfQDcUOgZYlMpnv6JybGYKM3lXi9M0C_8_eo3gW7HDC4sS39t-9tgmVgxn2BRqK7aouJL6Hxb4h2yNmGHbAq-nZOGk5iy_JYHPvaM&device_id=D8ad2E04781F-5330-40F8-9645-EF556CF9ED83da9B&network=Wifi&model=iPhone7,1&osversion=10.2.1&utoken=s3wlV4neEHu1vDZ_rhCBLdQe5gnWUo4FAhpDaUsN8RqbukQ5reThrgG3Wp7PHoV7D2ebcuvA4afz8SobY-e7NJYXS5stDdsUnray1RacnePVKEINuX_NaqGvs6ifCp4gIkL-gi2wcEy6T18pJUxMJszI7TGQ-K-Pt1A3rA8NI9QMxGmgRw5dZAsNhxG8ugt-nREfDzfoT4DuKoexKubpgxu7SdM30Mi1anX5L1R-hfA3yiSIGWfqiExh3IbpfTZ3-a0ebhJdBQwDiUYzVBphdnbKt8y6gCk5MZMizyCRKXc20v-Bz31hvQ" httpMethod:@"POST" delegate:self];
+//    self.httpLoader = [[SBHttpDataLoader alloc] initWithURL:@"https://lvbsns.eastmoney.com/LVB/api/Channel/GetLiveChannelInfo?network=Wifi&version=1.7.0&pi=&count=30&product=emlive&plat=Iphone&sdkversion=1,9,1951&device_id=De88d2C89111-9987-48F6-9CFE-72FCFE7C5F0a01dB&page=1&model=Simulator&osversion=10.2" httpMethod:@"POST" delegate:self];
 
 }
 

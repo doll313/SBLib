@@ -82,24 +82,25 @@
         return;
     }
 
-    //是否显示
-    BOOL isViewVisible = [self.tableView.ctrl isViewLoaded] && [self.tableView window] != nil;
-    if (!isViewVisible) {
-        return;
+    void (^refreshBlock)() = ^void(){
+        //从第一页开始
+        self.pageAt = 1;
+
+        //下拉刷新效果
+        if (self.tableView.isRefreshType) {
+            //这里beginrefersh后会自动进入 回调 不要人为再发起请求
+            [self.tableView.mj_header beginRefreshing];
+        }else {
+            //加载数据
+            [self loadData];
+        }
+    };
+    
+    if ([NSThread currentThread] != [NSThread mainThread]) {
+        dispatch_sync(dispatch_get_main_queue(), refreshBlock);
+    }else{
+        refreshBlock();
     }
-    
-    //从第一页开始
-    self.pageAt = 1;
-    
-    //下拉刷新效果
-    if (self.tableView.isRefreshType) {
-        //这里beginrefersh后会自动进入 回调 不要人为再发起请求
-        [self.tableView.mj_header beginRefreshing];
-    }else {
-        //加载数据
-        [self loadData];
-    }
-    
 }
 
 //加载数据
