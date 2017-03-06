@@ -33,12 +33,6 @@
 
 SB_ARC_SINGLETON_DEFINE(SBExceptionLog);
 
-/** 记录接口错误日志 */
-+ (void)logSBHttpException:(SBHttpTask *)httpTask;
-
-/** 记录崩溃日志 */
-+ (void)logSBCrashException:(NSException *)exception;
-
 /** * 获取接口错误日志 */
 + (NSString *)getSBHttpException;
 

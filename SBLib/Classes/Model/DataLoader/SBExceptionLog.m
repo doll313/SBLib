@@ -149,64 +149,6 @@ SB_ARC_SINGLETON_IMPLEMENT(SBExceptionLog);
     return ss;
 }
 
-/**
- * 记录股吧的接口错误日志
- */
-+ (void)logSBHttpException:(SBHttpTask *)httpTask {
-    //没有网络这种情况，不算需要记录下来的异常
-    if (SBGetNetworkReachability() == SBNetworkReachabilityNone) {
-        return;
-    }
-    
-    //本地财付通记录保留
-    NSLog(@"网络请求错误 HTTP错误；错误码：%ld \r\n请求地址：%@ \r\n请求参数：%@\r\n", (long)httpTask.statusCode, httpTask.aURLString, httpTask.jsonDict);
-    
-    //数据库
-    DataAppCoreDB *coreDB = [SBAppCoreInfo getCoreDB];
-    //获取旧的未发送成功的异常
-    NSString *oldExcetionReport = [SBExceptionLog getSBHttpException];
-    
-    //异常报告
-    NSMutableString *exceptionReport = [NSMutableString stringWithString:[httpTask.sessionDataTask description]];
-    
-    /** 若旧的 SB Exception 报告不为空，则把旧的 SB Exception 报告追加到新的 SB Exception 报告后面，用短杆线隔开 **/
-    if(oldExcetionReport.length > 0){
-        // 如果 SB Exception 日志超过512k，则丢弃
-        if([oldExcetionReport lengthOfBytesUsingEncoding:NSUTF8StringEncoding] > 512 * 1024){
-            oldExcetionReport = [NSMutableString stringWithString:@""];
-        }
-        
-        [exceptionReport appendString:@"\r\n----- ----- ----- ----- ----- ----- -----\r\n"];
-        [exceptionReport appendString:oldExcetionReport];
-    }
-    
-    //存入数据库
-    [coreDB setStrValue:STORE_EXCEPTION_INFO dataKey:SBHttpRequestExceptionCacheKey dataValue:exceptionReport];
-}
-
-/** 记录股吧的崩溃日志 */
-+ (void)logSBCrashException:(NSException *)exception {
-    //存入数据库
-    DataAppCoreDB *coreDB = [SBAppCoreInfo getCoreDB];
-    
-    //异常报告
-    NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    [df setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    NSDate *now = [NSDate date];
-    NSString *crashTime = [df stringFromDate:now];
-    
-    NSString *operations = [SBExceptionLog getRecord:SBKEY_RECORD_OPERATION];
-    
-    NSMutableString *exceptionReport = [NSMutableString stringWithString:exception.description];
-    [exceptionReport appendString:@"\r\n崩溃时间:\r\n"];
-    [exceptionReport appendString:crashTime];
-    [exceptionReport appendString:@"\r\n用户行为:\r\n"];
-    [exceptionReport appendString:operations];
-    
-    [coreDB setStrValue:STORE_EXCEPTION_INFO dataKey:SBUncaughtExceptionCacheKey dataValue:exceptionReport];
-    
-}
-
 /** * 获取股吧的接口错误日志 */
 + (NSString *)getSBHttpException {
     //获取旧的未发送成功的异常

@@ -31,7 +31,6 @@ static NSString *_protocolName;             //调试url输出
 @interface SBHttpTask ()
 
 @property (nonatomic, copy) NSString *HTTPMethod;
-@property (nonatomic, copy) NSDate *startDate;
 
 @end
 
@@ -87,9 +86,6 @@ static NSString *_protocolName;             //调试url输出
 
 
     void (^startBlock)() = ^void(){
-        //请求时间
-        self.startDate = [NSDate date];
-
         //开始请求
         if (self.delegate != nil && [self.delegate respondsToSelector:@selector(taskWillStart:)]) {
             [self.delegate taskWillStart:self];
@@ -340,17 +336,6 @@ static NSString *_protocolName;             //调试url输出
     [SBHttpHelper hiddenNetworkIndicator];
 
     void (^finishBlock)() = ^void(){
-        //请求时间
-        self.durationTime = [[NSDate date] timeIntervalSinceDate:self.startDate];
-        
-        //记录
-        NSMutableString *dc = [[NSMutableString alloc] initWithCapacity:1000];
-        [dc appendFormat:@"请求时间=%f\n\n", self.durationTime];
-        [dc appendFormat:@"请求参数=%@\n\n", self.jsonDict];
-        [dc appendFormat:@"请求地址=%@\n\n", self.aURLString];
-        [dc appendFormat:@"收到的数据=%@\n\n", [[NSString alloc] initWithData:self.recieveData encoding:NSUTF8StringEncoding]];
-        
-        [SBExceptionLog record:dc key:SBKEY_RECORD_HTTP];
         
         //错误
         self.httpError = error;
