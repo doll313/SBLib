@@ -72,8 +72,8 @@ typedef enum {
  */
 @interface SBHttpTask : NSOperation
 
-/** 网络*/
-@property (nonatomic, strong) NSURLSessionTask *sessionDataTask;
+
+////// 以下参数可以设置
 
 /** url为最基本的参数，必须指定 */
 @property (nonatomic, strong) NSString *aURLString;
@@ -81,11 +81,28 @@ typedef enum {
 /** http header 参数 */
 @property (nonatomic, strong) NSDictionary *aHTTPHeaderField;
 
-/** 接收到的网络数据 */
-@property (nonatomic, strong) NSMutableData *recieveData;
+/** json方式传参  */
+@property (nonatomic, strong) NSMutableDictionary *jsonDict;
+
+/** 标签，用以区分同一个delegate的不同task */
+@property (nonatomic, assign) NSInteger tag;
+
+/** 附带的用户信息 */
+@property (nonatomic, strong) id userInfo;
 
 /** 代理 */
-@property (nonatomic, weak) id<SBHttpTaskDelegate> delegate;
+@property (nonatomic, assign) id<SBHttpTaskDelegate> delegate;
+
+/** 数据压缩  */
+@property (nonatomic, assign) BOOL gzip;
+
+////// 以下参数读取 不要
+
+/** 网络*/
+@property (nonatomic, strong) NSURLSessionTask *sessionDataTask;
+
+/** 接收到的网络数据 */
+@property (nonatomic, strong) NSMutableData *recieveData;
 
 /** 网络请求状态码 */
 @property (nonatomic, assign) NSInteger statusCode;
@@ -93,26 +110,20 @@ typedef enum {
 /** 错误信息 */
 @property (strong, nonatomic) NSError *httpError;
 
-/** 标签，用以区分同一个delegate的不同task */
-@property (nonatomic, assign) NSInteger tag;
-
-/** 附带的用户信息 */
-@property (nonatomic, retain) id userInfo;
-
 /** post请求的post数据 */
 @property (nonatomic, strong) NSData *postData;
 
 /** 超时时间，默认为xx秒 */
 @property (nonatomic, assign) NSTimeInterval timeout;
 
+/** 开始时间 */
+@property (nonatomic, strong) NSDate *startDate;
+
+/** 结束时间 */
+@property (nonatomic, strong) NSDate *endDate;
+
 /** 超时时间，默认为xx秒 */
 @property (nonatomic, assign) NSTimeInterval durationTime;
-
-/** 数据压缩  */
-@property (nonatomic, assign) BOOL gzip;
-
-/** json方式传参  */
-@property (nonatomic, strong) NSMutableDictionary *jsonDict;
 
 /** 网络操作状态 */
 @property (nonatomic, assign) SBHttpTaskState sbHttpTaskState;

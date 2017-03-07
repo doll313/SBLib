@@ -91,6 +91,8 @@ static NSString *_protocolName;             //调试url输出
             [self.delegate taskWillStart:self];
         }
 
+        self.startDate = [NSDate date];
+
         //request
         NSURL *aURL = nil;
         if ([self.HTTPMethod isEqualToString:@"POST"]) {
@@ -253,10 +255,76 @@ static NSString *_protocolName;             //调试url输出
         return;
     }
 
+    self.endDate = [NSDate date];
+    self.durationTime = [self.endDate timeIntervalSinceDate:self.startDate];
+
     self.delegate = nil;
     [self.sessionDataTask cancel];
 
     [super cancel];
+}
+
+#pragma mark -
+#pragma mark 网络方法
+//终止数据加载
+- (void)stopLoading {
+    //停转子
+    [SBHttpHelper hiddenNetworkIndicator];
+
+    //停止网络请求
+    [self.sessionDataTask cancel];
+
+    //这步很重要 调试了n久
+    if(self.sbHttpTaskState == SBHttpTaskStateExecuting) {
+        self.sbHttpTaskState = SBHttpTaskStateFinished;
+    }
+
+    [self cancel];
+}
+
+
+//请求结束时调用的事件，只调用一次
+- (void)onFinished:(NSError *)error {
+    
+    [SBHttpHelper hiddenNetworkIndicator];
+
+    void (^finishBlock)() = ^void(){
+        self.endDate = [NSDate date];
+        self.durationTime = [self.endDate timeIntervalSinceDate:self.startDate];
+        
+        //错误
+        self.httpError = error;
+        
+        if(nil != self.delegate){
+            if (nil != error) {
+                //出错的回调
+                [self.delegate task:self onError:error];
+            } else {
+                //正确接收数据的回调
+                [self.delegate task:self onReceived:self.recieveData];
+            }
+        }
+        
+        //打印接收字节
+        _recieve_data_ram_debug = [[NSUserDefaults standardUserDefaults] boolForKey:DEBUG_HTTP_RECIEVE_RAM];
+        if (_recieve_data_ram_debug) {
+            NSLog(@"接收到的数据大小:%fk", self.recieveData.length / 1024.0f);
+        }
+
+        //状态修改
+        self.sbHttpTaskState = SBHttpTaskStateFinished;
+    };
+    
+    if ([NSThread currentThread] != [NSThread mainThread]) {
+        dispatch_sync(dispatch_get_main_queue(), finishBlock);
+    }else{
+        finishBlock();
+    }
+}
+
+/** URL协议 */
++ (void)protocolName:(NSString *)name {
+    _protocolName = name;
 }
 
 - (BOOL)isConcurrent {
@@ -292,9 +360,9 @@ static NSString *_protocolName;             //调试url输出
                 [self willChangeValueForKey:@"isFinished"];
                 break;
         }
-        
+
         _sbHttpTaskState = networkOperationState;
-        
+
         switch (networkOperationState) {
             case SBHttpTaskStateReady:
                 [self didChangeValueForKey:@"isReady"];
@@ -311,66 +379,5 @@ static NSString *_protocolName;             //调试url输出
     }
 }
 
-#pragma mark -
-#pragma mark 网络方法
-//终止数据加载
-- (void)stopLoading {
-    //停转子
-    [SBHttpHelper hiddenNetworkIndicator];
 
-    //停止网络请求
-    [self.sessionDataTask cancel];
-
-    //这步很重要 调试了n久
-    if(self.sbHttpTaskState == SBHttpTaskStateExecuting) {
-        self.sbHttpTaskState = SBHttpTaskStateFinished;
-    }
-
-    [self cancel];
-}
-
-
-//请求结束时调用的事件，只调用一次
-- (void)onFinished:(NSError *)error {
-    
-    [SBHttpHelper hiddenNetworkIndicator];
-
-    void (^finishBlock)() = ^void(){
-        
-        //错误
-        self.httpError = error;
-        
-        if(nil != self.delegate){
-            if (nil != error) {
-                //出错的回调
-                [self.delegate task:self onError:error];
-            } else {
-                //正确接收数据的回调
-                [self.delegate task:self onReceived:self.recieveData];
-            }
-        }
-        
-        //打印接收字节
-        _recieve_data_ram_debug = [[NSUserDefaults standardUserDefaults] boolForKey:DEBUG_HTTP_RECIEVE_RAM];
-        if (_recieve_data_ram_debug) {
-            NSLog(@"接收到的数据大小:%fk", self.recieveData.length / 1024.0f);
-        }
-
-        [self cancel];
-
-        //状态修改
-        self.sbHttpTaskState = SBHttpTaskStateFinished;
-    };
-    
-    if ([NSThread currentThread] != [NSThread mainThread]) {
-        dispatch_sync(dispatch_get_main_queue(), finishBlock);
-    }else{
-        finishBlock();
-    }
-}
-
-/** URL协议 */
-+ (void)protocolName:(NSString *)name {
-    _protocolName = name;
-}
 @end

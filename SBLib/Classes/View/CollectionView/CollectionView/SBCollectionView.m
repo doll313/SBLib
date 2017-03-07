@@ -400,7 +400,7 @@
     }
     
     //最底部的表段数据
-    SBTableData *lastSectionData = self.arrCollectionData[[self.arrCollectionData count] - 1];
+    SBCollectionData *lastSectionData = self.arrCollectionData[[self.arrCollectionData count] - 1];
     
     
     //加载中或者无后续数据不用去处理
