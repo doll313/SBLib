@@ -177,25 +177,25 @@ static NSString *_protocolName;             //调试url输出
         [request addValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
     }
 
-    NSURLSession *session = [self session];
-    self.sessionDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        [self doResponse:data error:error];
-    }];
-
-    [self.sessionDataTask resume];
-
-
-//    // 请求的manager
-//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-//    manager.requestSerializer = [AFHTTPRequestSerializer serializer]; // 上传普通格式
-//    manager.responseSerializer = [AFHTTPResponseSerializer serializer]; // AFN不会解析,数据是data，需要自己解析
-//
-//    //网络请求返回
-//    self.sessionDataTask =[manager dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
-//        [self doResponse:responseObject error:error];
+//    NSURLSession *session = [self session];
+//    self.sessionDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+//        [self doResponse:data error:error];
 //    }];
 //
 //    [self.sessionDataTask resume];
+
+
+    // 请求的manager
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer]; // 上传普通格式
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer]; // AFN不会解析,数据是data，需要自己解析
+
+    //网络请求返回
+    self.sessionDataTask =[manager dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+        [self doResponse:responseObject error:error];
+    }];
+
+    [self.sessionDataTask resume];
 
 }
 
@@ -232,9 +232,21 @@ static NSString *_protocolName;             //调试url输出
         [request addValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
     }
 
-    NSURLSession *session = [self session];
-    self.sessionDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        [self doResponse:data error:error];
+//    NSURLSession *session = [self session];
+//    self.sessionDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+//        [self doResponse:data error:error];
+//    }];
+//
+//    [self.sessionDataTask resume];
+
+    // 请求的manager
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer]; // 上传普通格式
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer]; // AFN不会解析,数据是data，需要自己解析
+
+    //网络请求返回
+    self.sessionDataTask =[manager dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+        [self doResponse:responseObject error:error];
     }];
 
     [self.sessionDataTask resume];
@@ -255,11 +267,11 @@ static NSString *_protocolName;             //调试url输出
         return;
     }
 
-    self.endDate = [NSDate date];
-    self.durationTime = [self.endDate timeIntervalSinceDate:self.startDate];
-
     self.delegate = nil;
     [self.sessionDataTask cancel];
+
+    self.endDate = [NSDate date];
+    self.durationTime = [self.endDate timeIntervalSinceDate:self.startDate];
 
     [super cancel];
 }
@@ -285,6 +297,9 @@ static NSString *_protocolName;             //调试url输出
 
 //请求结束时调用的事件，只调用一次
 - (void)onFinished:(NSError *)error {
+    if (self.isFinished) {
+        return;
+    }
     
     [SBHttpHelper hiddenNetworkIndicator];
 

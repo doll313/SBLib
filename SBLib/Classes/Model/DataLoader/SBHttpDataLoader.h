@@ -47,13 +47,13 @@
  */
 @interface SBHttpDataLoader : NSOperation <SBHttpTaskDelegate, NSCoding> {
 @private
-    BOOL _hasFinishedLoad;              //确保自动释放一次的标志位
+    BOOL hasFinishedLoad;              //确保自动释放一次的标志位
 }
 
 
 @property (nonatomic, strong) SBHttpTask *httpTask;         //网络加载
 @property (nonatomic, strong) DataItemResult *dataItemResult; //解析的数据放入数据容器中
-@property (assign) id<SBHttpDataLoaderDelegate> delegate;   //解析回调
+@property (nonatomic, assign) id<SBHttpDataLoaderDelegate> delegate;   //解析回调
 
 /** 用来识别这个SBHttpDataLoader */
 @property (nonatomic, copy) NSString *identifier;

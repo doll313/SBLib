@@ -37,7 +37,6 @@
 	if(nil != self){
         self.dataItemResult = [[DataItemResult alloc] init];
         self.delegate = target;
-        
         self.httpTask = [[SBHttpTask alloc] initWithURLString:URL httpMethod:httpMethod delegate:self];
 	}
 
@@ -46,14 +45,17 @@
 
 //停止加载和解析数据，停止事件响应
 - (void)stopLoading {
-    _delegate = nil;
-    
-    if (nil != self.httpTask) {
-        [self.httpTask stopLoading];
+    if (hasFinishedLoad) {
+        return;
     }
 
-    //stop 不需要回调
-//    [self onFinished];
+    hasFinishedLoad = YES;
+
+    self.delegate = nil;
+    
+    if (self.httpTask) {
+        [self.httpTask cancel];
+    }
 }
 
 //释放资源
@@ -65,7 +67,7 @@
 #pragma mark 获取数据
 //获取本地解析好的数据
 - (DataItemResult *)getDataItemResult {
-    if (!_hasFinishedLoad) {
+    if (!hasFinishedLoad) {
         return nil;
     }
     
@@ -75,11 +77,11 @@
 //数据装载事件完成后调用的函数，自动释放一次
 - (void)onFinished {
     @synchronized(self){
-        if (_hasFinishedLoad) {
+        if (hasFinishedLoad) {
             return;
         }
         
-        _hasFinishedLoad = YES;
+        hasFinishedLoad = YES;
         
         if (self.delegate && [self.delegate respondsToSelector:@selector(dataLoader:onReceived:)]) {
             [self.delegate dataLoader:self onReceived:self.dataItemResult];
