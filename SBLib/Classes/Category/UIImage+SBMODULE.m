@@ -187,6 +187,8 @@
             //缩放到这个尺寸
             return [self sb_scalingForSize:CGSizeMake(imageWidth * scale, imageHeight * scale)];
         }
+
+        return self;
     }
     @catch (NSException *exception) {
         //        NSLog(@"exception %@", [exception description]);
