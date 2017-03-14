@@ -31,18 +31,17 @@
     [self.view addSubview:self.iTable];
 
     self.iTable.requestData = ^SBHttpDataLoader*(SBTableData *tableViewData) {
-        NSString *url = [NSString stringWithFormat:@"https://lvbsns.eastmoney.com/LVB/api/Channel/GetLiveChannelInfo?network=Wifi&version=1.7.0&pi=&count=%@&product=emlive&plat=Iphone&sdkversion=1,9,1951&device_id=De88d2C89111-9987-48F6-9CFE-72FCFE7C5F0a01dB&page=%@&model=Simulator&osversion=10.2", @(tableViewData.pageSize), @(tableViewData.pageAt)];
-        return [[SBHttpDataLoader alloc] initWithURL:url httpMethod:@"POST" delegate:tableViewData];
-
+        return [[SBHttpDataLoader alloc] initWithURL:@"http://www.weather.com.cn/data/cityinfo/101010100.html" httpMethod:@"GET" delegate:tableViewData];
     };
 
     self.iTable.receiveData = ^(SBTableView *tableView, SBTableData *tableViewData, DataItemResult *result) {
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:result.rawData options:NSJSONReadingMutableContainers error:nil];
 
-        NSDictionary *data = dict[@"data"];
-        NSArray *livelist = data[@"livelist"];
-        for (NSDictionary *live in livelist) {
-            DataItemDetail *info = [DataItemDetail detailFromDictionary:live];
+        NSDictionary *weatherinfo = dict[@"weatherinfo"];
+        for (NSString *key in weatherinfo.allKeys) {
+            DataItemDetail *info = [DataItemDetail new];
+            [info setString:key forKey:__KEY_CELL_TITLE];
+            [info setString:weatherinfo[key] forKey:__KEY_CELL_VALUE];
             [result.dataList addObject:info];
         }
         result.maxCount = [dict[@"count"] integerValue];
