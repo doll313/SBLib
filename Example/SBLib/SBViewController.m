@@ -15,8 +15,6 @@
 @interface SBViewController () <CLLocationManagerDelegate>
 
 @property (nonatomic, strong) SBTableView *animTable;
-@property (nonatomic, strong) SBNetworkFlow *netFlow;
-@property (nonatomic, strong) SBFpsHelper *fpsHelper;
 @property (nonatomic, strong) CLLocationManager *locationManager;
 
 @end
@@ -34,18 +32,6 @@
     [super viewDidLoad];
 
     [self tableDidLoad];
-
-    self.netFlow = [[SBNetworkFlow alloc] init];
-    [self.netFlow startblock:^(u_int32_t sendFlow, u_int32_t receivedFlow) {
-//        NSLog(@"%@, %@", @(sendFlow),@(receivedFlow));
-    }];
-
-    self.fpsHelper = [[SBFpsHelper alloc] init];
-    [self.fpsHelper startblock:^(CGFloat fps) {
-//        NSLog(@"%.f FPS", fps);
-    }];
-
-    // Do any additional setup after loading the view, typically from a nib.
 }
 
 #pragma mark -

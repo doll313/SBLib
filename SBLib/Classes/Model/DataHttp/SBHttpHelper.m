@@ -8,8 +8,7 @@
 
 #import "SBHttpHelper.h"
 #import "NSDictionary+SBMODULE.h"
-
-static NSInteger netWorkIndicatorCount = 0;             //加载网络的个数
+#import "SBHttpTaskQueue.h"         //网络请求队列
 
 @implementation NSString(sbhttphelper)
 /** 获取url 请求 */
@@ -54,35 +53,6 @@ static NSInteger netWorkIndicatorCount = 0;             //加载网络的个数
 @end
 
 @implementation SBHttpHelper
-/** 在状态栏上显示网络连接状态的转子 */
-+ (void)showNetworkIndicator {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        netWorkIndicatorCount++;
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    //    NSLog(@"netWorkIndicatorCount %ld", (long)netWorkIndicatorCount);
-        
-        /** 注释掉禁止锁频 原因：有在底层循环的网络链接请求，如果不注释掉，手机将永远常亮 add by thomas*/
-        // [UIApplication sharedApplication].idleTimerDisabled = YES;
-    });
-}
-
-/** 在状态栏上隐藏网络连接状态的转子 */
-+ (void)hiddenNetworkIndicator {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (netWorkIndicatorCount > 0) {
-            netWorkIndicatorCount--;
-    //        NSLog(@"netWorkIndicatorCount %ld", (long)netWorkIndicatorCount);
-            
-            if (netWorkIndicatorCount < 1) {
-                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                
-                /** 注释掉禁止锁频 原因：有在底层循环的网络链接请求，如果不注释掉，手机将永远常亮 add by thomas*/
-                // [UIApplication sharedApplication].idleTimerDisabled = NO;
-            }
-        }
-    });
-}
-
 // HTTP 请求头报错时的错误信息
 + (NSString *)httpStatusErrorStr:(NSInteger)statusCode {
     NSString *statusErrorStr = @"";

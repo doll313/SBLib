@@ -55,6 +55,7 @@
     
     if (self.httpTask) {
         [self.httpTask cancel];
+        self.httpTask = nil;
     }
 }
 
@@ -86,6 +87,8 @@
         if (self.delegate && [self.delegate respondsToSelector:@selector(dataLoader:onReceived:)]) {
             [self.delegate dataLoader:self onReceived:self.dataItemResult];
         }
+
+        self.httpTask = nil;
     }
 }
 

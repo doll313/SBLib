@@ -75,7 +75,7 @@ typedef enum {
 
 ////// 以下参数可以设置
 
-/** url为最基本的参数，必须指定 */
+/** url为最基本的参数，需指定 */
 @property (nonatomic, strong) NSString *aURLString;
 
 /** http header 参数 */
@@ -83,6 +83,12 @@ typedef enum {
 
 /** json方式传参  */
 @property (nonatomic, strong) NSMutableDictionary *jsonDict;
+
+/** request  */
+@property (nonatomic, strong) NSURLRequest *aURLrequest;
+
+/** 上传的文件数据 */
+@property (nonatomic, strong) NSData *fileData;
 
 /** 标签，用以区分同一个delegate的不同task */
 @property (nonatomic, assign) NSInteger tag;
@@ -128,15 +134,16 @@ typedef enum {
 /** 网络操作状态 */
 @property (nonatomic, assign) SBHttpTaskState sbHttpTaskState;
 
-/** 初始化一个HTTP请求 */
+/** 初始化一个HTTP请求 通过参数去拼 */
 - (id)initWithURLString:(NSString *)aURLString
              httpMethod:(NSString *)method
                delegate:(id<SBHttpTaskDelegate>)delegate;
 
+/** 初始化一个HTTP请求 直接用 request  */
+- (id)initWithRequest:(NSMutableURLRequest *)request
+               delegate:(id<SBHttpTaskDelegate>)delegate;
+
 /** 终止数据加载 */
 - (void)stopLoading;
-
-/** URL协议 */
-+ (void)protocolName:(NSString *)nam;
 
 @end

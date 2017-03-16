@@ -187,8 +187,6 @@
 //方法集合
 #import "SBPureColorImageGenerator.h"       //纯色图  ps 能不用就不要用了
 #import "SBURLAction.h"                 //界面跳转 （url形式）
-#import "SBNetworkFlow.h"       //流量信息
-#import "SBFpsHelper.h"         //fps 监听
 
 //界面
 #import "SBBasicController.h"

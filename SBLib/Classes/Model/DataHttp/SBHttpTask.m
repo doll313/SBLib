@@ -22,14 +22,15 @@
 #import "SBHttpHelper.h"
 #import "SBNetworkReachability.h"
 #import "SBAppCoreInfo.h"
+#import "SBHttpTaskQueue.h"         //网络请求队列
 #import "SBExceptionLog.h"      //异常记录
 
 static BOOL _url_print_debug;             //调试url输出
 static BOOL _recieve_data_ram_debug;             //调试接收数据大小
-static NSString *_protocolName;             //调试url输出
 
 @interface SBHttpTask ()
 
+@property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, copy) NSString *HTTPMethod;
 
 @end
@@ -39,33 +40,56 @@ static NSString *_protocolName;             //调试url输出
 #pragma mark -
 #pragma mark 生命周期
 
+- (void)commonInit {
+    self.sbHttpTaskState = SBHttpTaskStateReady;
+    self.timeout = APPCONFIG_CONN_TIMEOUT;
+    self.recieveData = [[NSMutableData alloc] initWithCapacity:0];
+}
+
 /** 初始化一个HTTP请求 */
 - (id)initWithURLString:(NSString *)aURLString
              httpMethod:(NSString *)method
                delegate:(id<SBHttpTaskDelegate>)delegate {
     self = [super init];
-    
-    self.sbHttpTaskState = SBHttpTaskStateReady;
+
+    [self commonInit];
     
     self.aURLString = aURLString;
     self.HTTPMethod = method;
     self.delegate = delegate;
-    
+
     self.gzip = YES;
     
-    self.timeout = APPCONFIG_CONN_TIMEOUT;
-
-    self.recieveData = [[NSMutableData alloc] initWithCapacity:0];
-    
     //进入queue
-    NSOperationQueue *queue = [SBAppCoreInfo getCoreQueue];
+    NSOperationQueue *queue = [SBHttpTaskQueue sharedSBHttpTaskQueue];
     [queue addOperation:self];
     
     return self;
 }
 
+
+/** 初始化一个HTTP请求 直接用 request  */
+- (id)initWithRequest:(NSMutableURLRequest *)request
+             delegate:(id<SBHttpTaskDelegate>)delegate {
+    self = [super init];
+
+    self.aURLrequest = request;
+    self.aURLString = request.URL.absoluteString;
+    self.HTTPMethod = request.HTTPMethod;
+    self.delegate = delegate;
+
+    //进入queue
+    NSOperationQueue *queue = [SBHttpTaskQueue sharedSBHttpTaskQueue];
+    [queue addOperation:self];
+
+    return self;
+}
+
 //释放资源
 - (void)dealloc {
+    [self.timer invalidate];
+    self.timer = nil;
+
     [self stopLoading];
 }
 
@@ -74,16 +98,15 @@ static NSString *_protocolName;             //调试url输出
         self.sbHttpTaskState = SBHttpTaskStateFinished;
         return;
     }
+
+    //正在执行
+    self.sbHttpTaskState = SBHttpTaskStateExecuting;
+
     //开启网络
     [self doStartRequest];
-    
-    self.sbHttpTaskState = SBHttpTaskStateExecuting;
 }
 
 - (void)doStartRequest {
-
-    [SBHttpHelper showNetworkIndicator];
-
 
     void (^startBlock)() = ^void(){
         //开始请求
@@ -93,11 +116,22 @@ static NSString *_protocolName;             //调试url输出
 
         self.startDate = [NSDate date];
 
+        //超时 双保险
+        self.timer = [NSTimer timerWithTimeInterval:APPCONFIG_CONN_TIMEOUT + 1 repeats:NO block:^(NSTimer * _Nonnull timer) {
+            [self stopLoading];
+        }];
+
         //request
-        NSURL *aURL = nil;
-        if ([self.HTTPMethod isEqualToString:@"POST"]) {
+        if (self.aURLrequest) {
+            [self doRequest];
+        }
+        else if ([self.HTTPMethod isEqualToString:@"UPLOAD"]) {
+            [self doUpload];
+        }
+        else if ([self.HTTPMethod isEqualToString:@"POST"]) {
             [self doPost];
-        } else {
+        }
+        else {
             [self doGet];
         }
 
@@ -126,14 +160,21 @@ static NSString *_protocolName;             //调试url输出
     return userAgent;
 }
 
+/**  **/
 - (NSURLSession *)session {
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
-    if (_protocolName.length > 0) {
-        NSArray *protocolArray = @[NSClassFromString(_protocolName)];
-        config.protocolClasses = protocolArray;
-    }
     NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
     return session;
+}
+
+/**  **/
+- (AFHTTPSessionManager *)sessionManager {
+    // 请求的manager
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer]; // 上传普通格式
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer]; // AFN不会解析,数据是data，需要自己解析
+
+    return manager;
 }
 
 - (void)doPost {
@@ -186,9 +227,7 @@ static NSString *_protocolName;             //调试url输出
 
 
     // 请求的manager
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer]; // 上传普通格式
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer]; // AFN不会解析,数据是data，需要自己解析
+    AFHTTPSessionManager *manager = [self sessionManager];
 
     //网络请求返回
     self.sessionDataTask =[manager dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
@@ -240,9 +279,7 @@ static NSString *_protocolName;             //调试url输出
 //    [self.sessionDataTask resume];
 
     // 请求的manager
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer]; // 上传普通格式
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer]; // AFN不会解析,数据是data，需要自己解析
+    AFHTTPSessionManager *manager = [self sessionManager];
 
     //网络请求返回
     self.sessionDataTask =[manager dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
@@ -250,6 +287,37 @@ static NSString *_protocolName;             //调试url输出
     }];
 
     [self.sessionDataTask resume];
+}
+
+//上传
+- (void)doUpload {
+    // 请求的manager
+    AFHTTPSessionManager *manager = [self sessionManager];
+    NSError *serializationError = nil;
+    NSMutableURLRequest *request = [manager.requestSerializer multipartFormRequestWithMethod:@"POST"
+                                                                                      URLString:self.aURLString parameters:self.jsonDict
+                                                                      constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+                                                                          [formData appendPartWithFileData:self.fileData
+                                                                                                      name:@"uploadfile"
+                                                                                                  fileName:@"uploadfile"
+                                                                                                  mimeType:@"application/octet-stream"];
+                                                                      } error:&serializationError];
+
+    //网络请求返回
+    self.sessionDataTask =[manager dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+        [self doResponse:responseObject error:error];
+    }];
+}
+
+/** 用request 请求 **/
+- (void)doRequest {
+    // 请求的manager
+    AFHTTPSessionManager *manager = [self sessionManager];
+
+    //网络请求返回
+    self.sessionDataTask =[manager dataTaskWithRequest:self.aURLrequest completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+        [self doResponse:responseObject error:error];
+    }];
 }
 
 //接收到数据
@@ -280,9 +348,6 @@ static NSString *_protocolName;             //调试url输出
 #pragma mark 网络方法
 //终止数据加载
 - (void)stopLoading {
-    //停转子
-    [SBHttpHelper hiddenNetworkIndicator];
-
     //停止网络请求
     [self.sessionDataTask cancel];
 
@@ -300,8 +365,6 @@ static NSString *_protocolName;             //调试url输出
     if (self.isFinished) {
         return;
     }
-    
-    [SBHttpHelper hiddenNetworkIndicator];
 
     void (^finishBlock)() = ^void(){
         self.endDate = [NSDate date];
@@ -326,8 +389,8 @@ static NSString *_protocolName;             //调试url输出
             NSLog(@"接收到的数据大小:%fk", self.recieveData.length / 1024.0f);
         }
 
-        //状态修改
-        self.sbHttpTaskState = SBHttpTaskStateFinished;
+        //
+        [self stopLoading];
     };
     
     if ([NSThread currentThread] != [NSThread mainThread]) {
@@ -335,11 +398,6 @@ static NSString *_protocolName;             //调试url输出
     }else{
         finishBlock();
     }
-}
-
-/** URL协议 */
-+ (void)protocolName:(NSString *)name {
-    _protocolName = name;
 }
 
 - (BOOL)isConcurrent {
@@ -361,7 +419,6 @@ static NSString *_protocolName;             //调试url输出
 //设置状态
 - (void)setSbHttpTaskState:(SBHttpTaskState)networkOperationState {
     @synchronized(self){
-        //        NSLog(@"%@ state:%d",self, networkOperationState);
         switch (networkOperationState) {
             case SBHttpTaskStateReady:
                 [self willChangeValueForKey:@"isReady"];

@@ -23,12 +23,6 @@
 
 @interface SBHttpHelper : NSObject
 
-/** 在状态栏上显示网络连接状态的转子 */
-+ (void)showNetworkIndicator;
-
-/** 在状态栏上隐藏网络连接状态的转子 */
-+ (void)hiddenNetworkIndicator;
-
 /** HTTP 请求头报错时的错误信息 */
 + (NSString *)httpStatusErrorStr:(NSInteger)statusCode;
 
