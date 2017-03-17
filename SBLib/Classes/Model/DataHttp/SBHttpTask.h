@@ -61,7 +61,7 @@ typedef enum {
 /** 请求即将开始 第一次开始，不包括重试） */
 - (void)taskWillStart:(SBHttpTask *)task;
 
-/** 请求已经发出字节 */
+/** 请求已经发出字节 （没实现。。） */
 - (void)task:(SBHttpTask *)task didSendData:(NSInteger)sendedBytes totalData:(NSInteger)totalBytes;
 
 @end
@@ -70,7 +70,7 @@ typedef enum {
  *   1.该类用于响应网络请求。
  *   2.该类会封装超时时间，用户代理和处理请求异常。
  */
-@interface SBHttpTask : NSOperation
+@interface SBHttpTask : NSOperation <NSCoding,NSCopying>
 
 
 ////// 以下参数可以设置
@@ -128,7 +128,7 @@ typedef enum {
 /** 结束时间 */
 @property (nonatomic, strong) NSDate *endDate;
 
-/** 超时时间，默认为xx秒 */
+/** 执行时间 */
 @property (nonatomic, assign) NSTimeInterval durationTime;
 
 /** 网络操作状态 */

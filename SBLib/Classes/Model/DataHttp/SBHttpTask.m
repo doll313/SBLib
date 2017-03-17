@@ -452,4 +452,55 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 }
 
 
+/** 反序列化函数 */
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super init];
+
+    //这就是我讨厌自定义模型的原因
+    _aURLString = [aDecoder decodeObjectForKey:@"aURLString"];
+    _aHTTPHeaderField = [aDecoder decodeObjectForKey:@"aHTTPHeaderField"];
+    _jsonDict = [aDecoder decodeObjectForKey:@"jsonDict"];
+    _aURLrequest = [aDecoder decodeObjectForKey:@"aURLrequest"];
+    _fileData = [aDecoder decodeObjectForKey:@"fileData"];
+    _tag = [aDecoder decodeIntegerForKey:@"tag"];
+    _userInfo = [aDecoder decodeObjectForKey:@"userInfo"];
+    _delegate = [aDecoder decodeObjectForKey:@"delegate"];
+    _gzip = [aDecoder decodeBoolForKey:@"gzip"];
+    _sessionDataTask = [aDecoder decodeObjectForKey:@"sessionDataTask"];
+    _recieveData = [aDecoder decodeObjectForKey:@"recieveData"];
+    _statusCode = [aDecoder decodeIntegerForKey:@"statusCode"];
+    _httpError = [aDecoder decodeObjectForKey:@"httpError"];
+    _postData = [aDecoder decodeObjectForKey:@"postData"];
+    _timeout = [aDecoder decodeDoubleForKey:@"timeout"];
+    _startDate = [aDecoder decodeObjectForKey:@"startDate"];
+    _endDate = [aDecoder decodeObjectForKey:@"endDate"];
+    _durationTime = [aDecoder decodeDoubleForKey:@"durationTime"];
+    _sbHttpTaskState = [aDecoder decodeIntegerForKey:@"sbHttpTaskState"];
+
+    return self;
+}
+
+/** 序列化函数 */
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:_aURLString forKey:@"aURLString"];
+    [aCoder encodeObject:_aHTTPHeaderField forKey:@"aHTTPHeaderField"];
+    [aCoder encodeObject:_jsonDict forKey:@"jsonDict"];
+    [aCoder encodeObject:_aURLrequest forKey:@"aURLrequest"];
+    [aCoder encodeObject:_fileData forKey:@"fileData"];
+    [aCoder encodeInteger:_tag forKey:@"tag"];
+    [aCoder encodeObject:_userInfo forKey:@"userInfo"];
+    [aCoder encodeObject:_delegate forKey:@"delegate"];
+    [aCoder encodeBool:_gzip forKey:@"gzip"];
+    [aCoder encodeObject:_sessionDataTask forKey:@"sessionDataTask"];
+    [aCoder encodeObject:_recieveData forKey:@"recieveData"];
+    [aCoder encodeInteger:_statusCode forKey:@"statusCode"];
+    [aCoder encodeObject:_httpError forKey:@"httpError"];
+    [aCoder encodeObject:_postData forKey:@"postData"];
+    [aCoder encodeDouble:_timeout forKey:@"timeout"];
+    [aCoder encodeObject:_startDate forKey:@"startDate"];
+    [aCoder encodeObject:_endDate forKey:@"endDate"];
+    [aCoder encodeDouble:_durationTime forKey:@"durationTime"];
+    [aCoder encodeInteger:_sbHttpTaskState forKey:@"sbHttpTaskState"];
+}
+
 @end
