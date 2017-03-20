@@ -88,17 +88,26 @@
 
 //绘制带圆角的image
 - (UIImage *)sb_roundedImage:(CGFloat)radius size:(CGSize)size {
-    CGFloat scale = self.scale;
-    UIGraphicsBeginImageContextWithOptions(size, NO, scale);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGRect imageRect = (CGRect){0,0,size};
-    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:imageRect cornerRadius:radius];
-    CGContextAddPath(context, path.CGPath);
-    CGContextEOClip(context);
-    [self drawInRect:imageRect];
-    UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
+    CGFloat width =size.width;
+    CGFloat height =size.height;
+
+    UIBezierPath *maskShape = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0,0, width, height) cornerRadius:radius];
+
+    UIGraphicsBeginImageContextWithOptions(self.size,NO, [UIScreen mainScreen].scale);
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+
+    CGContextSaveGState(ctx);
+    CGContextAddPath(ctx, maskShape.CGPath);
+    CGContextClip(ctx);
+
+    CGContextTranslateCTM(ctx,0, height);
+    CGContextScaleCTM(ctx,1.0,-1.0);
+    CGContextDrawImage(ctx,CGRectMake(0,0, width, height),self.CGImage);
+    CGContextRestoreGState(ctx);
+
+    UIImage*resultingImage =UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    return result;
+    return resultingImage;
     
 }
 

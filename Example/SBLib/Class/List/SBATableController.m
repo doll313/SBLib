@@ -71,6 +71,13 @@
     }
 
     [self.iTable reloadData];
+
+
+    UIImage *nImage = [UIImage sb_imageWithColor:[UIColor redColor] withFrame:CGRectMake(0, 0, 56, 26)];
+    nImage = [nImage sb_roundCorner:5];
+    UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(0, 300, 56, 26)];
+    img.image = nImage;
+    [self.view addSubview:img];
 }
 
 - (NSArray *)editActions {
