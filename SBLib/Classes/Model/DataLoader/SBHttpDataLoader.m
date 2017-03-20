@@ -112,9 +112,24 @@
     [self onFinished];
 }
 
-- (void)task:(SBHttpTask *)task didSendData:(NSInteger)sendedBytes totalData:(NSInteger)totalBytes {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(dataLoader:didSendData:totalData:)]) {
-        [self.delegate dataLoader:self didSendData:sendedBytes totalData:totalBytes];
+/** 请求即将开始 第一次开始，不包括重试） */
+- (void)taskWillStart:(SBHttpTask *)task {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(dataLoaderWillStart:)]) {
+        [self.delegate dataLoaderWillStart:self];
+    }
+}
+
+/** 请求已经上传字节  */
+- (void)task:(SBHttpTask *)task uploadProgress:(NSProgress * _Nonnull)uploadProgress {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(dataLoader:uploadProgress:)]) {
+        [self.delegate dataLoader:self uploadProgress:uploadProgress];
+    }
+}
+
+/** 请求已经下载字节  */
+- (void)task:(SBHttpTask *)task downloadProgress:(NSProgress * _Nonnull)downloadProgress {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(dataLoader:downloadProgress:)]) {
+        [self.delegate dataLoader:self downloadProgress:downloadProgress];
     }
 }
 

@@ -114,6 +114,9 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
             [self.delegate taskWillStart:self];
         }
 
+        //记录地址
+        [SBExceptionLog record:self.aURLString key:SBKEY_RECORD_HTTP];
+
         self.startDate = [NSDate date];
 
         //超时 双保险
@@ -304,9 +307,18 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
                                                                       } error:&serializationError];
 
     //网络请求返回
-    self.sessionDataTask =[manager dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+    self.sessionDataTask = [manager dataTaskWithRequest:request uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
+        if (self.delegate != nil && [self.delegate respondsToSelector:@selector(task:uploadProgress:)]) {
+            [self.delegate task:self uploadProgress:uploadProgress];
+        }
+    } downloadProgress:^(NSProgress * _Nonnull downloadProgress) {
+        if (self.delegate != nil && [self.delegate respondsToSelector:@selector(task:downloadProgress:)]) {
+            [self.delegate task:self downloadProgress:downloadProgress];
+        }
+    } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
         [self doResponse:responseObject error:error];
     }];
+    [self.sessionDataTask resume];
 }
 
 /** 用request 请求 **/
@@ -315,9 +327,18 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     AFHTTPSessionManager *manager = [self sessionManager];
 
     //网络请求返回
-    self.sessionDataTask =[manager dataTaskWithRequest:self.aURLrequest completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+    self.sessionDataTask = [manager dataTaskWithRequest:self.aURLrequest uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
+        if (self.delegate != nil && [self.delegate respondsToSelector:@selector(task:uploadProgress:)]) {
+            [self.delegate task:self uploadProgress:uploadProgress];
+        }
+    } downloadProgress:^(NSProgress * _Nonnull downloadProgress) {
+        if (self.delegate != nil && [self.delegate respondsToSelector:@selector(task:downloadProgress:)]) {
+            [self.delegate task:self downloadProgress:downloadProgress];
+        }
+    } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
         [self doResponse:responseObject error:error];
     }];
+    [self.sessionDataTask resume];
 }
 
 //接收到数据

@@ -34,8 +34,14 @@
 
 @optional
 
-/** 请求已经发出字节 */
-- (void)dataLoader:(SBHttpDataLoader *)dataLoader didSendData:(NSInteger)sendedBytes totalData:(NSInteger)totalBytes;
+/** 刚刚开始 */
+- (void)dataLoaderWillStart:(SBHttpDataLoader *)dataLoader;
+
+/** 请求已经上传字节  */
+- (void)dataLoader:(SBHttpTask *)dataLoader uploadProgress:(NSProgress * _Nonnull)uploadProgress;
+
+/** 请求已经下载字节  */
+- (void)dataLoader:(SBHttpTask *)dataLoader downloadProgress:(NSProgress * _Nonnull)downloadProgress;
 
 @end
 

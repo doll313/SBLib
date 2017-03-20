@@ -144,7 +144,6 @@ SB_ARC_SINGLETON_IMPLEMENT(SBExceptionLog);
         ss = [ss stringByAppendingString:@"\r\n"];
         ss = [ss stringByAppendingString:stackInfo[@"log"]];
         ss = [ss stringByAppendingString:@"\n========================\n"];
-        
     }
     return ss;
 }

@@ -61,8 +61,11 @@ typedef enum {
 /** 请求即将开始 第一次开始，不包括重试） */
 - (void)taskWillStart:(SBHttpTask *)task;
 
-/** 请求已经发出字节 （没实现。。） */
-- (void)task:(SBHttpTask *)task didSendData:(NSInteger)sendedBytes totalData:(NSInteger)totalBytes;
+/** 请求已经上传字节  */
+- (void)task:(SBHttpTask *)task uploadProgress:(NSProgress * _Nonnull)uploadProgress;
+
+/** 请求已经下载字节  */
+- (void)task:(SBHttpTask *)task downloadProgress:(NSProgress * _Nonnull)downloadProgress;
 
 @end
 
