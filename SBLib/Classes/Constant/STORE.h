@@ -61,7 +61,7 @@
 #define STORE_KEY_APP_PRODUCT             @"STORE_KEY_APP_PRODUCT"        // 工程名
 #define STORE_KEY_IS_APP_UPDATED            @"STORE_KEY_IS_APP_UPDATED"       // 标识位：判断当前客户端是否由旧版升级而来
 #define STORE_KEY_IS_NEWER_SHOWED           @"STORE_KEY_IS_NEWER_SHOWED"      // 启动的时候，新手帮助是否显示过
-#define STORE_KEY_SB_ACCOUNT                @"STORE_KEY_SB_ACCOUNT"                // 股吧用户信息
+#define STORE_KEY_SB_ACCOUNT                @"STORE_KEY_SB_ACCOUNT"                // 用户信息
 #define STORE_KEY_TABLE_REFRESH_IMAGE       @"STORE_KEY_TABLE_REFRESH_IMAGE"                //下拉刷新的图片
 
 #endif

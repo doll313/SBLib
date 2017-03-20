@@ -20,7 +20,7 @@
 #import "NSDictionary+SBMODULE.h"
 #import "NSString+SBMODULE.h"
 
-@implementation NSDictionary (AppExt)
+@implementation NSDictionary (sbmodule)
 
 - (NSString *)sb_URLArgumentsString {
     __block NSMutableArray *arguments = [NSMutableArray arrayWithCapacity:self.count];
@@ -64,7 +64,7 @@
 @end
 
 
-@implementation NSMutableDictionary (AppExt)
+@implementation NSMutableDictionary (sbmodule)
 
 /** 重写 setObject 方法，确保 Object 和 Key 为空时不 Crash */
 - (void)sb_setObject:(id)anObject forKey:(id <NSCopying>)aKey {

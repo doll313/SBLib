@@ -1,7 +1,7 @@
 /*
  #####################################################################
  # File    : SBExceptionLog.m
- # Project : GubaModule
+ # Project : SBLib
  # Created : 14/12/29
  # DevTeam : eastmoney
  # Author  : Thomas

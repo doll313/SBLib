@@ -1,7 +1,7 @@
 /*
  #####################################################################
  # File    : SBPureColorImageGenerator.h
- # Project : StockBarIndependent
+ # Project : SBLib
  # Created : 14-5-26
  # DevTeam : eastmoney
  # Author  : 缪和光

@@ -22,7 +22,7 @@
 /**
  这个扩展参照了GTM中的GTMNSDictionary+URLArguments
  */
-@interface NSDictionary(AppExt)
+@interface NSDictionary(sbmodule)
 
 /**
  返回一个用于url参数的string
@@ -47,7 +47,7 @@
 @end
 
 
-@interface NSMutableDictionary (AppExt)
+@interface NSMutableDictionary (sbmodule)
 
 /** 重写 setObject 方法，确保 Object 和 Key 为空时不 Crash */
 - (void)sb_setObject:(id)anObject forKey:(id <NSCopying>)aKey;

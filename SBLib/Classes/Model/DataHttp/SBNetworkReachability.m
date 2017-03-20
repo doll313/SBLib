@@ -83,7 +83,7 @@ NSString* SBGetNetworkReachabilityDescribe() {
     } else if (reachability == SBNetworkReachabilityWifi) {
         return @"wifi";
     } else {
-        return @"无网络";
+        return @"disconnect";
     }
 }
 

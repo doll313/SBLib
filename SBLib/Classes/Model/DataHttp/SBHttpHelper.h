@@ -1,6 +1,6 @@
 //
 //  SBHttpHelper.h
-//  GubaModule
+//  SBLib
 //
 //  Created by Thomas on 15/1/8.
 //  Copyright (c) 2015年 eastmoney. All rights reserved.

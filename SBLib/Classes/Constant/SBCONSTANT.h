@@ -185,39 +185,27 @@
 #import "UIAlertView+SB.h"          //警告扩展
 
 //方法集合
-#import "SBPureColorImageGenerator.h"       //纯色图  ps 能不用就不要用了
 #import "SBURLAction.h"                 //界面跳转 （url形式）
-
-//界面
-#import "SBBasicController.h"
-
-//列表
-#import "SBTableView.h"
-#import "SBTableData.h"
 
 //CollectionView
 #import "SBCollectionView.h"            //Collcetion 控件
 #import "SBCollectionData.h"        //Collection数据
 #import "SBDataCollectionCell.h"        //Collocation 默认单元格
 
+//列表
+#import "SBTableView.h"
+#import "SBTableData.h"
+
 //单元格
 #import "SBDataTableCell.h"
 #import "SBErrorTableCell.h"
 #import "SBEmptyTableCell.h"
 #import "SBMoreTableCell.h"
-
 #import "SBLoadingTableCell.h"
 #import "SBFinishedTableCell.h"
 
 #import "SBTitleCell.h"
 #import "SBSwitchCell.h"
-
-//图文标签，点击使用
-#import "SBLinkLabel.h"
-#import "NSAttributedString+Attributes.h"
-
-//图片选择器
-#import "SBImagePickerController.h"
 
 /** 全局调试开关
  //#ifdef assert
