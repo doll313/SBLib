@@ -27,10 +27,4 @@
 /** 绑定数据到单元格上的UI，单元格显示时会被调用 */
 - (void)bindItemData;
 
-//创建单元格
-+ (id)createCell:(CGRect)rect;
-
-/** 获取单元格的ID */
-+ (NSString *)cellID:(SBTableView *)table;
-
 @end

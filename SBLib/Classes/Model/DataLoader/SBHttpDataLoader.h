@@ -21,6 +21,13 @@
 #import "SBHttpTask.h"
 #import "SBHttpDataParser.h"
 
+//表示列表数据的状态
+typedef enum {
+    SBTableDataStatusNotStart,
+    SBTableDataStatusLoading,
+    SBTableDataStatusFinished
+} SBTableDataStatus;
+
 @class SBHttpDataLoader;
 
 /**

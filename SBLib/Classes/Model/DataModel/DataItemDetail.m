@@ -319,6 +319,15 @@ static BOOL _data_item_detail_malloc = 0;
     return nil;
 }
 
+/** 删除一项 **/
+- (BOOL)removeObject:(NSString *)key {
+    if (SBStringIsEmpty(key)) {
+        return NO;
+    }
+    [self.dictData removeObjectForKey:key.lowercaseString];
+    return YES;
+}
+
 #pragma mark -
 #pragma mark 其他方法
 /** 键值对总数 */

@@ -18,6 +18,7 @@
  */
 
 #import "SBImagePickerController.h"
+#import "SBBasicController.h"
 
 //编辑照片
 @interface SBImageEditorController : SBBasicController <UIScrollViewDelegate> {

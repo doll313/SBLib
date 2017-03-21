@@ -117,6 +117,9 @@
 /** 数字值 */
 - (NSNumber *)getNumber:(NSString *)key;
 
+/** 删除一项 **/
+- (BOOL)removeObject:(NSString *)key;
+
 /** 键值对总数 */
 - (NSUInteger)count;
 

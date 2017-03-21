@@ -142,6 +142,8 @@ static BOOL _data_item_result_malloc = 0;
     else {
         [_dataList insertObject:item atIndex:index];
     }
+
+    self.maxCount += 1;
 }
 
 
@@ -365,6 +367,8 @@ static BOOL _data_item_result_malloc = 0;
 	}
     
     [_dataList removeAllObjects];
+
+    self.maxCount = 0;
 }
 
 
@@ -375,6 +379,8 @@ static BOOL _data_item_result_malloc = 0;
 	}
 
     [_dataList removeObject:item];
+
+    self.maxCount -= 1;
 }
 
 #pragma mark -

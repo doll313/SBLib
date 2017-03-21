@@ -24,14 +24,6 @@
 @class SBTableData;
 @protocol SBTableViewCellDelegate;
 
-//表示列表数据的状态
-typedef enum {
-    SBTableDataStatusNotStart,
-    SBTableDataStatusLoading,
-    SBTableDataStatusFinished
-} SBTableDataStatus;
-
-
 //列表数据封装
 @interface SBTableData : NSObject<SBHttpDataLoaderDelegate> {
 }
