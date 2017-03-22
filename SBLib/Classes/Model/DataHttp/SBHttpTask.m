@@ -120,9 +120,7 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
         self.startDate = [NSDate date];
 
         //超时 双保险
-        self.timer = [NSTimer timerWithTimeInterval:APPCONFIG_CONN_TIMEOUT + 1 repeats:NO block:^(NSTimer * _Nonnull timer) {
-            [self stopLoading];
-        }];
+        self.timer = [NSTimer timerWithTimeInterval:APPCONFIG_CONN_TIMEOUT + 1 target:self selector:@selector(stopLoading) userInfo:nil repeats:NO];
 
         //request
         if (self.aURLrequest) {
@@ -388,6 +386,9 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     }
 
     void (^finishBlock)() = ^void(){
+        //停止
+        [self.timer invalidate];
+
         self.endDate = [NSDate date];
         self.durationTime = [self.endDate timeIntervalSinceDate:self.startDate];
         
