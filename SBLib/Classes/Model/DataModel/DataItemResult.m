@@ -165,23 +165,20 @@ static BOOL _data_item_result_malloc = 0;
     if (nil == result || result.hasError) {
         return;
     }
-    //最大
-	self.maxCount = result.maxCount;
-	self.statusCode = result.statusCode;
-	self.message = result.message;
     self.itemUniqueKeyName = result.itemUniqueKeyName;
     
     //信息数据
-	NSDictionary *itemInfo = result.resultInfo.dictData;
-	for(NSString *key in [itemInfo allKeys]){
-		NSString *value = (NSString *)itemInfo[key];
-		[_resultInfo setString:value forKey:key];
-	}
-    
+    [_resultInfo appendItems:result.resultInfo];
+
     //列表数据
 	for(DataItemDetail *item in result.dataList) {
 		[self addItem:item];
-	}
+    }
+
+    //最大
+    self.maxCount = result.maxCount;
+    self.statusCode = result.statusCode;
+    self.message = result.message;
     
     //这是很意外的情况，网络出错了，为了保险，这里这么做了
     if (self.maxCount < [_dataList count]) {
