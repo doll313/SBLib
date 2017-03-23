@@ -37,6 +37,9 @@
 /** 变圆 */
 - (UIImage *)sb_roundCorner;
 
+/** 将image 画成圆形   但是性能消耗大 不要在单元格复用场景，或者大量图片场景使用 好处是圆角干净 不带毛刺 */
+- (UIImage *)sb_drawRound;
+
 /**猜测图像的格式*/
 + (NSString *)sb_typeForImageData:(NSData *)imageData;
 

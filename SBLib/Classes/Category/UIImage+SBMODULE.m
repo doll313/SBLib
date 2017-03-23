@@ -86,10 +86,15 @@
     return newImage;
 }
 
-//绘制带圆角的image
-- (UIImage *)sb_roundedImage:(CGFloat)radius size:(CGSize)size {
-    CGFloat width =size.width;
-    CGFloat height =size.height;
+//将image 画成圆形   但是性能消耗大 不要在单元格复用场景，或者大量图片场景使用 好处是圆角干净 不带毛刺
+- (UIImage *)sb_drawRound {
+    CGFloat width =self.size.width;
+    CGFloat height =self.size.height;
+
+    CGFloat radius = width / 2;
+    if (height < width) {
+        radius = height / 2;
+    }
 
     UIBezierPath *maskShape = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0,0, width, height) cornerRadius:radius];
 
@@ -108,7 +113,22 @@
     UIImage*resultingImage =UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return resultingImage;
-    
+}
+
+//绘制带圆角的image
+- (UIImage *)sb_roundedImage:(CGFloat)radius size:(CGSize)size {
+    CGFloat scale = self.scale;
+    UIGraphicsBeginImageContextWithOptions(size, NO, scale);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGRect imageRect = (CGRect){0,0,size};
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:imageRect cornerRadius:radius];
+    CGContextAddPath(context, path.CGPath);
+    CGContextEOClip(context);
+    [self drawInRect:imageRect];
+    UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return result;
+
 }
 
 - (UIImage *)sb_roundCorner:(CGFloat)radius {
