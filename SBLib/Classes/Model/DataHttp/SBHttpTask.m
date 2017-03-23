@@ -73,6 +73,8 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
              delegate:(id<SBHttpTaskDelegate>)delegate {
     self = [super init];
 
+    [self commonInit];
+
     self.aURLrequest = request;
     self.aURLString = request.URL.absoluteString;
     self.HTTPMethod = request.HTTPMethod;
