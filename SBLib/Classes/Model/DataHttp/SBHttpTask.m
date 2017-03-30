@@ -30,7 +30,6 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 
 @interface SBHttpTask ()
 
-@property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, copy) NSString *HTTPMethod;
 
 @end
@@ -53,17 +52,17 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     self = [super init];
 
     [self commonInit];
-    
+
     self.aURLString = aURLString;
     self.HTTPMethod = method;
     self.delegate = delegate;
 
     self.gzip = YES;
-    
+
     //进入queue
     NSOperationQueue *queue = [SBHttpTaskQueue sharedSBHttpTaskQueue];
     [queue addOperation:self];
-    
+
     return self;
 }
 
@@ -81,7 +80,7 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     self.delegate = delegate;
 
     //进入queue
-    NSOperationQueue *queue = [SBHttpTaskQueue sharedSBHttpTaskQueue];
+    SBHttpTaskQueue *queue = [SBHttpTaskQueue sharedSBHttpTaskQueue];
     [queue addOperation:self];
 
     return self;
@@ -89,9 +88,6 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 
 //释放资源
 - (void)dealloc {
-    [self.timer invalidate];
-    self.timer = nil;
-
     [self stopLoading];
 }
 
@@ -121,9 +117,6 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 
         self.startDate = [NSDate date];
 
-        //超时 双保险
-        self.timer = [NSTimer timerWithTimeInterval:APPCONFIG_CONN_TIMEOUT + 1 target:self selector:@selector(stopLoading) userInfo:nil repeats:NO];
-
         //request
         if (self.aURLrequest) {
             [self doRequest];
@@ -144,7 +137,7 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
             NSLog(@"URL: %@", self.aURLString);
         }
     };
-    
+
     //确保在主线程
     if ([NSThread currentThread] != [NSThread mainThread]) {
         dispatch_sync(dispatch_get_main_queue(), startBlock);
@@ -184,8 +177,8 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     NSString *domainURL = [self.aURLString sb_httpGetMethodDomain];
     NSURL *aURL = [NSURL URLWithString:domainURL];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:aURL
-                                              cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
-                                          timeoutInterval:self.timeout];
+                                                           cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                                                       timeoutInterval:self.timeout];
 
     /** 如果post数据为空，则用GET方式提交数据 */
     [request setHTTPMethod:@"POST"];
@@ -221,21 +214,20 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
         [request addValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
     }
 
-//    NSURLSession *session = [self session];
-//    self.sessionDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-//        [self doResponse:data error:error];
-//    }];
-//
-//    [self.sessionDataTask resume];
+    //    NSURLSession *session = [self session];
+    //    self.sessionDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    //        [self doResponse:data error:error];
+    //    }];
+    //
+    //    [self.sessionDataTask resume];
 
 
     // 请求的manager
     AFHTTPSessionManager *manager = [self sessionManager];
 
-    SBWS(__self)
     //网络请求返回
     self.sessionDataTask =[manager dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
-        [__self doResponse:responseObject error:error];
+        [self doResponse:responseObject error:error];
     }];
 
     [self.sessionDataTask resume];
@@ -251,8 +243,8 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     }
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:aURL
-                                              cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
-                                          timeoutInterval:self.timeout];
+                                                           cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                                                       timeoutInterval:self.timeout];
 
     /** 如果post数据为空，则用GET方式提交数据 */
     [request setHTTPMethod:@"GET"];
@@ -275,20 +267,19 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
         [request addValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
     }
 
-//    NSURLSession *session = [self session];
-//    self.sessionDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-//        [self doResponse:data error:error];
-//    }];
-//
-//    [self.sessionDataTask resume];
+    //    NSURLSession *session = [self session];
+    //    self.sessionDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    //        [self doResponse:data error:error];
+    //    }];
+    //
+    //    [self.sessionDataTask resume];
 
     // 请求的manager
     AFHTTPSessionManager *manager = [self sessionManager];
 
-    SBWS(__self)
     //网络请求返回
     self.sessionDataTask =[manager dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
-        [__self doResponse:responseObject error:error];
+        [self doResponse:responseObject error:error];
     }];
 
     [self.sessionDataTask resume];
@@ -296,53 +287,49 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 
 //上传
 - (void)doUpload {
-    SBWS(__self)
-
     // 请求的manager
     AFHTTPSessionManager *manager = [self sessionManager];
     NSError *serializationError = nil;
     NSMutableURLRequest *request = [manager.requestSerializer multipartFormRequestWithMethod:@"POST"
-                                                                                      URLString:self.aURLString parameters:self.jsonDict
-                                                                      constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-                                                                          [formData appendPartWithFileData:__self.fileData
-                                                                                                      name:@"uploadfile"
-                                                                                                  fileName:@"uploadfile"
-                                                                                                  mimeType:@"application/octet-stream"];
-                                                                      } error:&serializationError];
+                                                                                   URLString:self.aURLString parameters:self.jsonDict
+                                                                   constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+                                                                       [formData appendPartWithFileData:self.fileData
+                                                                                                   name:@"uploadfile"
+                                                                                               fileName:@"uploadfile"
+                                                                                               mimeType:@"application/octet-stream"];
+                                                                   } error:&serializationError];
 
     //网络请求返回
     self.sessionDataTask = [manager dataTaskWithRequest:request uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
-        if (__self.delegate != nil && [__self.delegate respondsToSelector:@selector(task:uploadProgress:)]) {
-            [__self.delegate task:self uploadProgress:uploadProgress];
+        if (self.delegate != nil && [self.delegate respondsToSelector:@selector(task:uploadProgress:)]) {
+            [self.delegate task:self uploadProgress:uploadProgress];
         }
     } downloadProgress:^(NSProgress * _Nonnull downloadProgress) {
-        if (__self.delegate != nil && [__self.delegate respondsToSelector:@selector(task:downloadProgress:)]) {
-            [__self.delegate task:__self downloadProgress:downloadProgress];
+        if (self.delegate != nil && [self.delegate respondsToSelector:@selector(task:downloadProgress:)]) {
+            [self.delegate task:self downloadProgress:downloadProgress];
         }
     } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
-        [__self doResponse:responseObject error:error];
+        [self doResponse:responseObject error:error];
     }];
     [self.sessionDataTask resume];
 }
 
 /** 用request 请求 **/
 - (void)doRequest {
-    SBWS(__self);
-
     // 请求的manager
     AFHTTPSessionManager *manager = [self sessionManager];
 
     //网络请求返回
     self.sessionDataTask = [manager dataTaskWithRequest:self.aURLrequest uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
-        if (__self.delegate != nil && [__self.delegate respondsToSelector:@selector(task:uploadProgress:)]) {
-            [__self.delegate task:__self uploadProgress:uploadProgress];
+        if (self.delegate != nil && [self.delegate respondsToSelector:@selector(task:uploadProgress:)]) {
+            [self.delegate task:self uploadProgress:uploadProgress];
         }
     } downloadProgress:^(NSProgress * _Nonnull downloadProgress) {
-        if (__self.delegate != nil && [__self.delegate respondsToSelector:@selector(task:downloadProgress:)]) {
-            [__self.delegate task:__self downloadProgress:downloadProgress];
+        if (self.delegate != nil && [self.delegate respondsToSelector:@selector(task:downloadProgress:)]) {
+            [self.delegate task:self downloadProgress:downloadProgress];
         }
     } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
-        [__self doResponse:responseObject error:error];
+        [self doResponse:responseObject error:error];
     }];
     [self.sessionDataTask resume];
 }
@@ -362,6 +349,7 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
         return;
     }
 
+    self.delegate = nil;
     [self.sessionDataTask cancel];
 
     self.endDate = [NSDate date];
@@ -382,8 +370,6 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
         self.sbHttpTaskState = SBHttpTaskStateFinished;
     }
 
-    self.delegate = nil;
-
     [self cancel];
 }
 
@@ -396,14 +382,12 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 
     void (^finishBlock)() = ^void(){
         //停止
-        [self.timer invalidate];
-
         self.endDate = [NSDate date];
         self.durationTime = [self.endDate timeIntervalSinceDate:self.startDate];
-        
+
         //错误
         self.httpError = error;
-        
+
         if(nil != self.delegate){
             if (nil != error) {
                 //出错的回调
@@ -413,7 +397,7 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
                 [self.delegate task:self onReceived:self.recieveData];
             }
         }
-        
+
         //打印接收字节
         _recieve_data_ram_debug = [[NSUserDefaults standardUserDefaults] boolForKey:DEBUG_HTTP_RECIEVE_RAM];
         if (_recieve_data_ram_debug) {
@@ -423,7 +407,7 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
         //
         [self stopLoading];
     };
-    
+
     if ([NSThread currentThread] != [NSThread mainThread]) {
         dispatch_sync(dispatch_get_main_queue(), finishBlock);
     }else{
