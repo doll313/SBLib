@@ -68,6 +68,7 @@
     if (self.httpTask) {
         [self.httpTask cancel];
     }
+    self.httpTask = nil;
 }
 
 //释放资源
