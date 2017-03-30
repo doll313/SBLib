@@ -22,8 +22,6 @@
 
     self.view.backgroundColor = [UIColor whiteColor];
 
-    SBWS(__self)
-
     //
     self.iTable = [[SBTableView alloc] initWithStyle:NO];
     self.iTable.ctrl = self;

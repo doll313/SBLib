@@ -407,7 +407,7 @@
 - (nullable NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
     //
     if (self.editActions) {
-        return self.editActions(tableView, indexPath);
+        return self.editActions(self, indexPath);
     }
 
     return nil;

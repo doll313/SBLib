@@ -23,7 +23,7 @@
 
 @interface DataItemDetail (DataTableCell)
 
-@property (getter = tableCellTag, setter = setTableCellTag:) int tag;
+@property (getter = tableCellTag, setter = setTableCellTag:) NSInteger tableCellTag;
 
 /** 设定单元格数据为空 */
 - (void)setEmptyTableCell;

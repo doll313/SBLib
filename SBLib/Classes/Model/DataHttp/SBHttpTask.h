@@ -30,6 +30,7 @@
 #import <Foundation/NSObject.h>
 #import "AFNetworking.h"
 
+NS_ASSUME_NONNULL_BEGIN
 
 typedef enum {
     SBHttpTaskStateReady = 1,               //开始
@@ -73,7 +74,7 @@ typedef enum {
  *   1.该类用于响应网络请求。
  *   2.该类会封装超时时间，用户代理和处理请求异常。
  */
-@interface SBHttpTask : NSOperation <NSCoding,NSCopying>
+@interface SBHttpTask : NSOperation <NSCoding>
 
 
 ////// 以下参数可以设置
@@ -148,5 +149,7 @@ typedef enum {
 
 /** 终止数据加载 */
 - (void)stopLoading;
+
+NS_ASSUME_NONNULL_END
 
 @end

@@ -377,7 +377,9 @@ static BOOL _data_item_result_malloc = 0;
 
     [_dataList removeObject:item];
 
-    self.maxCount -= 1;
+    if (self.maxCount > 0) {
+        self.maxCount -= 1;
+    }
 }
 
 #pragma mark -

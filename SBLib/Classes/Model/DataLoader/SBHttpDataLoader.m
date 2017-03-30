@@ -43,6 +43,20 @@
 	return self;
 }
 
+/** 初始化Request方式请求的网络数据 */
+- (id)initWithURLRequest:(NSMutableURLRequest *)request delegate:(id<SBHttpDataLoaderDelegate>)target {
+
+    self = [super init];
+
+    if(nil != self){
+        self.dataItemResult = [[DataItemResult alloc] init];
+        self.delegate = target;
+        self.httpTask = [[SBHttpTask alloc] initWithRequest:request delegate:self];
+    }
+
+    return self;
+}
+
 //停止加载和解析数据，停止事件响应
 - (void)stopLoading {
     if (hasFinishedLoad) {
@@ -51,11 +65,8 @@
 
     hasFinishedLoad = YES;
 
-    self.delegate = nil;
-    
     if (self.httpTask) {
         [self.httpTask cancel];
-        self.httpTask = nil;
     }
 }
 

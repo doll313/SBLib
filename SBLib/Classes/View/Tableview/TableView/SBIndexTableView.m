@@ -38,7 +38,7 @@
 
 //获取首字母
 - (NSString *)fetchFirstIndexTitle:(NSString *)title {
-    if (title.length >= 0) {
+    if (title.length > 0) {
         NSString *tempTitle = [title copy];
 
         //获取首字母
@@ -67,9 +67,9 @@
         CFStringTransform((__bridge CFMutableStringRef)source, NULL, kCFStringTransformMandarinLatin, NO);
         CFStringTransform((__bridge CFMutableStringRef)source, NULL, kCFStringTransformStripDiacritics, NO);//这一行是去声调的
 
-        source = [source substringToIndex:1];
-        if ([source isFirstLetter]) {
-            return source;
+        NSString *text = [source substringToIndex:1];
+        if ([text isFirstLetter]) {
+            return text;
         }
     }
 
@@ -220,14 +220,14 @@
 //  返回索引列表
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
     if (self.sectionIndexTitles) {
-        return self.sectionIndexTitles(tableView);
+        return self.sectionIndexTitles(self);
     }
     return self.compositorArray;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
     if (self.fetchIndexTitle) {
-        return self.fetchIndexTitle(tableView, title, index);
+        return self.fetchIndexTitle(self, title, index);
     }
     return index;
 }

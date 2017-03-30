@@ -21,6 +21,8 @@
 #import "SBHttpTask.h"
 #import "SBHttpDataParser.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 //表示列表数据的状态
 typedef enum {
     SBTableDataStatusNotStart,
@@ -37,7 +39,7 @@ typedef enum {
 @required
 
 /** onReceived方法：在数据装载器装载数据结束后调用的方法 */
-- (void)dataLoader:(SBHttpDataLoader *)dataLoader onReceived:(DataItemResult *)result;
+- (void)dataLoader:(SBHttpDataLoader * _Nonnull)dataLoader onReceived:(DataItemResult * _Nonnull)result;
 
 @optional
 
@@ -45,10 +47,10 @@ typedef enum {
 - (void)dataLoaderWillStart:(SBHttpDataLoader *)dataLoader;
 
 /** 请求已经上传字节  */
-- (void)dataLoader:(SBHttpTask *)dataLoader uploadProgress:(NSProgress * _Nonnull)uploadProgress;
+- (void)dataLoader:(SBHttpDataLoader * _Nonnull)dataLoader uploadProgress:(NSProgress * _Nonnull)uploadProgress;
 
 /** 请求已经下载字节  */
-- (void)dataLoader:(SBHttpTask *)dataLoader downloadProgress:(NSProgress * _Nonnull)downloadProgress;
+- (void)dataLoader:(SBHttpDataLoader * _Nonnull)dataLoader downloadProgress:(NSProgress * _Nonnull)downloadProgress;
 
 @end
 
@@ -64,7 +66,7 @@ typedef enum {
 }
 
 
-@property (nonatomic, strong) SBHttpTask *httpTask;         //网络加载
+@property (nonatomic, strong, nullable) SBHttpTask *httpTask;         //网络加载
 @property (nonatomic, strong) DataItemResult *dataItemResult; //解析的数据放入数据容器中
 @property (nonatomic, assign) id<SBHttpDataLoaderDelegate> delegate;   //解析回调
 
@@ -78,6 +80,9 @@ typedef enum {
 /** 初始化网络数据 GET POST UPLOAD*/
 - (id)initWithURL:(NSString *)URL httpMethod:(NSString *)httpMethod delegate:(id<SBHttpDataLoaderDelegate>)target;
 
+/** 初始化Request方式请求的网络数据 */
+- (id)initWithURLRequest:(NSMutableURLRequest *)request delegate:(id<SBHttpDataLoaderDelegate>)target;
+
 /** 获取本地解析好的数据 */
 - (DataItemResult *)getDataItemResult;
 
@@ -86,5 +91,7 @@ typedef enum {
 
 //数据装载事件完成后调用的函数，自动释放一次
 - (void)onFinished;
+
+NS_ASSUME_NONNULL_END
 
 @end

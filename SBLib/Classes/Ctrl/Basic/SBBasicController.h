@@ -29,15 +29,4 @@
 /** 返回上一级 (已经实现，有特殊要求可以重写)*/
 - (void)sbCtrlPopNav:(id)sender;
 
-//键盘弹出
-- (void)keyboardDidShow:(NSNotification *)notification;
-
-//键盘消失
-- (void)keyboardWillHide:(NSNotification *)notification;
-
-//键盘出现 子类一般不可重写
-- (void)observerKeyboardDidShow:(NSNotification *)notification ;
-
-//键盘消失 子类一般不可重写
-- (void)observerKeyboardWillHide:(NSNotification *)notification;
 @end

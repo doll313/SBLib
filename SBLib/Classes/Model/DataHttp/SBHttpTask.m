@@ -232,9 +232,10 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     // 请求的manager
     AFHTTPSessionManager *manager = [self sessionManager];
 
+    SBWS(__self)
     //网络请求返回
     self.sessionDataTask =[manager dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
-        [self doResponse:responseObject error:error];
+        [__self doResponse:responseObject error:error];
     }];
 
     [self.sessionDataTask resume];
@@ -284,9 +285,10 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     // 请求的manager
     AFHTTPSessionManager *manager = [self sessionManager];
 
+    SBWS(__self)
     //网络请求返回
     self.sessionDataTask =[manager dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
-        [self doResponse:responseObject error:error];
+        [__self doResponse:responseObject error:error];
     }];
 
     [self.sessionDataTask resume];
@@ -294,13 +296,15 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 
 //上传
 - (void)doUpload {
+    SBWS(__self)
+
     // 请求的manager
     AFHTTPSessionManager *manager = [self sessionManager];
     NSError *serializationError = nil;
     NSMutableURLRequest *request = [manager.requestSerializer multipartFormRequestWithMethod:@"POST"
                                                                                       URLString:self.aURLString parameters:self.jsonDict
                                                                       constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-                                                                          [formData appendPartWithFileData:self.fileData
+                                                                          [formData appendPartWithFileData:__self.fileData
                                                                                                       name:@"uploadfile"
                                                                                                   fileName:@"uploadfile"
                                                                                                   mimeType:@"application/octet-stream"];
@@ -308,35 +312,37 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 
     //网络请求返回
     self.sessionDataTask = [manager dataTaskWithRequest:request uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
-        if (self.delegate != nil && [self.delegate respondsToSelector:@selector(task:uploadProgress:)]) {
-            [self.delegate task:self uploadProgress:uploadProgress];
+        if (__self.delegate != nil && [__self.delegate respondsToSelector:@selector(task:uploadProgress:)]) {
+            [__self.delegate task:self uploadProgress:uploadProgress];
         }
     } downloadProgress:^(NSProgress * _Nonnull downloadProgress) {
-        if (self.delegate != nil && [self.delegate respondsToSelector:@selector(task:downloadProgress:)]) {
-            [self.delegate task:self downloadProgress:downloadProgress];
+        if (__self.delegate != nil && [__self.delegate respondsToSelector:@selector(task:downloadProgress:)]) {
+            [__self.delegate task:__self downloadProgress:downloadProgress];
         }
     } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
-        [self doResponse:responseObject error:error];
+        [__self doResponse:responseObject error:error];
     }];
     [self.sessionDataTask resume];
 }
 
 /** 用request 请求 **/
 - (void)doRequest {
+    SBWS(__self);
+
     // 请求的manager
     AFHTTPSessionManager *manager = [self sessionManager];
 
     //网络请求返回
     self.sessionDataTask = [manager dataTaskWithRequest:self.aURLrequest uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
-        if (self.delegate != nil && [self.delegate respondsToSelector:@selector(task:uploadProgress:)]) {
-            [self.delegate task:self uploadProgress:uploadProgress];
+        if (__self.delegate != nil && [__self.delegate respondsToSelector:@selector(task:uploadProgress:)]) {
+            [__self.delegate task:__self uploadProgress:uploadProgress];
         }
     } downloadProgress:^(NSProgress * _Nonnull downloadProgress) {
-        if (self.delegate != nil && [self.delegate respondsToSelector:@selector(task:downloadProgress:)]) {
-            [self.delegate task:self downloadProgress:downloadProgress];
+        if (__self.delegate != nil && [__self.delegate respondsToSelector:@selector(task:downloadProgress:)]) {
+            [__self.delegate task:__self downloadProgress:downloadProgress];
         }
     } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
-        [self doResponse:responseObject error:error];
+        [__self doResponse:responseObject error:error];
     }];
     [self.sessionDataTask resume];
 }
@@ -356,7 +362,6 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
         return;
     }
 
-    self.delegate = nil;
     [self.sessionDataTask cancel];
 
     self.endDate = [NSDate date];
@@ -376,6 +381,8 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     if(self.sbHttpTaskState == SBHttpTaskStateExecuting) {
         self.sbHttpTaskState = SBHttpTaskStateFinished;
     }
+
+    self.delegate = nil;
 
     [self cancel];
 }
