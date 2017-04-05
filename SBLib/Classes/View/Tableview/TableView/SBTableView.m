@@ -659,7 +659,6 @@
     if (cellDetail) {
         SBTableData *tableData = [self dataOfSection:indexPath.section];
         [tableData.tableDataResult removeItem:cellDetail];
-        tableData.tableDataResult.maxCount--;
         
         //TODO: 这问题我解决不了 当列表删除最后一个单元格的时候，动画会导致crash
         if (tableData.tableDataResult.count == 0) {

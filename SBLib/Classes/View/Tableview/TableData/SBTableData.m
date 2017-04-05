@@ -77,6 +77,11 @@
 #pragma mark 数据操作
 //刷新数据
 - (void)refreshData {
+    //
+    if (!self.tableView.requestData) {
+        return;
+    }
+
     //数据不在加载状态
     if (self.httpStatus == SBTableDataStatusLoading) {
         return;
@@ -108,6 +113,11 @@
 	if(!self.tableView) {
         return;
     }
+
+    //
+    if (!self.tableView.requestData) {
+        return;
+    }
     
     //将要发起请求
     if (self.tableView.willRequestData) {
@@ -131,12 +141,8 @@
         //显示刷新样式
         [self.tableView reloadData];
     }
-    
-    //获取网络接口
-	[self.dataLoader stopLoading];
-    
-    NSAssert(NULL != self.tableView.requestData, @"请求数据不允许不实现");
-    //发起请求
+
+    [self.dataLoader stopLoading];
     self.dataLoader = self.tableView.requestData(self);
 }
 

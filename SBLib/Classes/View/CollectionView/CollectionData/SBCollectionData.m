@@ -65,6 +65,11 @@
         return;
     }
 
+    //
+    if (!self.collectionView.requestData) {
+        return;
+    }
+
     void (^refreshBlock)() = ^void(){
         //从第一页开始
         self.pageAt = 1;
@@ -114,14 +119,12 @@
         //显示刷新样式
         [self.collectionView reloadData];
     }
-    
-    
-    //获取网络接口
-    [self.dataLoader stopLoading];
-    
-    NSAssert(NULL != self.collectionView.requestData, @"请求数据不允许不实现");
+
     //发起请求
-    self.dataLoader = self.collectionView.requestData(self);
+    if (!self.collectionView.requestData) {
+        [self.dataLoader stopLoading];
+        self.dataLoader = self.collectionView.requestData(self);
+    }
 }
 
 
