@@ -96,6 +96,10 @@
     if(!self.collectionView) {
         return;
     }
+
+    if (!self.collectionView.requestData) {
+        return;
+    }
     
     //将要发起请求
     if (self.collectionView.willRequestData) {
@@ -121,10 +125,8 @@
     }
 
     //发起请求
-    if (!self.collectionView.requestData) {
-        [self.dataLoader stopLoading];
-        self.dataLoader = self.collectionView.requestData(self);
-    }
+    [self.dataLoader stopLoading];
+    self.dataLoader = self.collectionView.requestData(self);
 }
 
 
