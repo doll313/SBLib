@@ -331,28 +331,14 @@
     if(!((cHeight - cOffset) < APPCONFIG_UNIT_LINE_WIDTH)){
         return;
     }
-    
+
+    [self loadDataforNextPage];
+}
+
+- (void)loadDataforNextPage {
     //最底部的表段数据
     SBCollectionData *lastSectionData = self.arrCollectionData[[self.arrCollectionData count] - 1];
-
-    //加载中或者无后续数据不用去处理
-    if ([lastSectionData isLoadDataComplete]) {
-        return;
-    }
-    else if (lastSectionData.httpStatus == SBTableDataStatusLoading) {
-        return;
-    }
-    else if(lastSectionData.httpStatus == SBTableDataStatusNotStart) {
-        
-    }
-    else {
-        //加载完毕后判断状态
-        if (![lastSectionData isLoadDataComplete]) {
-            [lastSectionData loadDataforNextPage];
-        } else {
-            [lastSectionData loadData];
-        }
-    }
+    [lastSectionData loadDataforNextPage];
 }
 
 /** view已经停止滚动 */
@@ -400,6 +386,13 @@
     
     //队列中添加数据
     [self.arrCollectionData addObject:sectionData];
+
+    MJRefreshFooter *footer = self.mj_footer;
+    if (!footer) {
+        footer = [sectionData.mFooterClass footerWithRefreshingTarget:self refreshingAction:@selector(loadDataforNextPage)];
+        self.mj_footer = footer;
+        self.mj_footer.hidden = YES;            //一开始隐藏
+    }
 }
 
 - (NSString *)cellWithIdentifier:(Class)cellClass {

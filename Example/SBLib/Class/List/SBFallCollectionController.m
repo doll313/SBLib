@@ -68,17 +68,17 @@
                 [collectionData.tableDataResult addItem:detail];
             }
         }
-        collectionData.tableDataResult.maxCount = collectionData.tableDataResult.count;
-//        if (collectionData.pageAt == 4) {
-//        }
-//        else {
-//            collectionData.tableDataResult.maxCount = collectionData.tableDataResult.count + 1;
-//        }
+        if (collectionData.pageAt == 4) {
+            collectionData.tableDataResult.maxCount = collectionData.tableDataResult.count;
+        }
+        else {
+            collectionData.tableDataResult.maxCount = collectionData.tableDataResult.count + 1;
+        }
     };
 
     //item size
     self.iCollectionView.sizeForItem = ^ (SBCollectionView *collectionView, UICollectionViewLayout *collectionViewLayout,  NSIndexPath *indexPath) {
-        CGFloat width = collectionView.width / 2;
+        CGFloat width = (collectionView.width - 15 ) / 2;
         if (indexPath.row == 1) {
             return CGSizeMake(width, width);
         }
@@ -86,6 +86,12 @@
             return CGSizeMake(width, width * 2);
         }
     };
+
+    //item size
+    self.iCollectionView.insetForSection = ^ (SBCollectionView *collectionView, UICollectionViewLayout *collectionViewLayout,  NSInteger section) {
+        return UIEdgeInsetsMake(5, 5, 5, 5);
+    };
+
 
     self.iCollectionView.willDisplayCell = ^(SBCollectionView *collectionView, UICollectionViewCell *cell, NSIndexPath *indexPath) {
         NSInteger t = indexPath.row % 4;

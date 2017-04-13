@@ -250,24 +250,20 @@
         }
     }
 
-    MJRefreshFooter *footer = self.collectionView.mj_footer;
-    if (!footer) {
-        footer = [self.mFooterClass footerWithRefreshingTarget:self refreshingAction:@selector(loadDataforNextPage)];
-        self.collectionView.mj_footer = footer;
-    }
-
     //是否有加载更多
     if (![self isLoadDataComplete]) {
-        [footer resetNoMoreData];
+        self.collectionView.mj_footer.hidden = NO;
+        [self.collectionView.mj_footer resetNoMoreData];
     }
     else {
         if (self.hasFinishCell) {
             //完成
+            self.collectionView.mj_footer.hidden = NO;
             [self.collectionView.mj_footer endRefreshingWithNoMoreData];
         }
         else {
             //不显示完成
-            [footer setHidden:YES];
+            self.collectionView.mj_footer.hidden = YES;            //一开始隐藏
         }
     }
     

@@ -30,6 +30,7 @@ static NSUInteger const kColCount = 2;
         return;
     }
 
+
     // 初始化
     self.attributes = [[NSMutableDictionary alloc] init];
     self.colArr = [NSMutableArray arrayWithCapacity:kColCount];
