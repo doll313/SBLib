@@ -27,10 +27,3 @@
 }
 @property (nonatomic, strong) SBLoadingTips *loadingView;           //加载提示
 @end
-
-//加载中的列表
-@interface SBLoadingCollectionCell : SBDataCollectionCell {
-    
-}
-@property (nonatomic, strong) SBLoadingTips *loadingView;           //加载提示
-@end

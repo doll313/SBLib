@@ -33,13 +33,12 @@
 	}
     
 	const char *src = [self UTF8String];
-	unsigned char result[CC_MD5_DIGEST_LENGTH];
+	unsigned char r[CC_MD5_DIGEST_LENGTH];
     
-    CC_MD5(src, (unsigned int)strlen(src), result);
+    CC_MD5(src, (unsigned int)strlen(src), r);
     
 	return [NSString stringWithFormat:@"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
-            result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7],
-            result[8], result[9], result[10], result[11], result[12], result[13], result[14], result[15]
+            r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7], r[8], r[9], r[10], r[11], r[12], r[13], r[14], r[15]
             ];
 }
 
@@ -49,13 +48,13 @@
  * @return NSString
  **/
 - (NSString *) trim {
-	if(nil == self){
-		return nil;
-	}
-    
-	NSMutableString *re = [NSMutableString stringWithString:self];
-	CFStringTrimWhitespace((CFMutableStringRef)re);
-	return (NSString *)re;
+    if(nil == self){
+        return nil;
+    }
+    NSString *s = [NSString stringWithString:self];
+    NSString *trimmedString = [s stringByTrimmingCharactersInSet:
+                               [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    return trimmedString;
 }
 
 /**

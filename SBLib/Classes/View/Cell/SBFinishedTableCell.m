@@ -39,14 +39,3 @@
 
 @end
 
-
-@implementation SBFinishedCollectionCell
-
-- (void)bindItemData {
-    [super bindItemData];
-    //没箭头，不能点击
-    self.userInteractionEnabled = NO;
-    self.displayLabel.text = @"数据已经加载完毕!";
-}
-
-@end

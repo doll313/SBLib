@@ -18,6 +18,7 @@
  */
 
 #import "SBCollectionData.h"        //Collection数据
+#import "SBCollectionFooter.h"          //底部
 
 @implementation SBCollectionData
 
@@ -38,9 +39,7 @@
         self.mDataCellClass  = nil;
         self.mErrorCellClass = [SBErrorCollectionCell class];
         self.mEmptyCellClass = [SBEmptyCollectionCell class];
-        self.mMoreCellClass  = [SBMoreCollectionCell class];
-        self.mLoadingCellClass = [SBLoadingCollectionCell class];
-        self.mFinishedCellClass = [SBFinishedCollectionCell class];
+        self.mFooterClass = [SBCollectionFooter class];
     }
     
     return self;
@@ -248,6 +247,20 @@
         if (self.pageAt == 1) {
             // 拿到当前的下拉刷新控件，结束刷新状态
             [self.collectionView.mj_header endRefreshing];
+        }
+    }
+
+    //是否有加载更多
+    if (![self isLoadDataComplete]) {
+        MJRefreshAutoFooter *footer = [self.mFooterClass footerWithRefreshingTarget:self refreshingAction:@selector(loadDataforNextPage)];
+        self.collectionView.mj_footer = footer;
+    }
+    else {
+        if (self.hasFinishCell) {
+            [self.collectionView.mj_footer endRefreshingWithNoMoreData];
+        }
+        else {
+            self.collectionView.mj_footer = nil;
         }
     }
     

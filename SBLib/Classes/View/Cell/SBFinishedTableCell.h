@@ -23,7 +23,3 @@
 
 @end
 
-@interface SBFinishedCollectionCell : SBDataCollectionCell
-
-@end
-

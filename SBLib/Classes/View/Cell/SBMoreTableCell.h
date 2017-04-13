@@ -23,8 +23,3 @@
 @interface SBMoreTableCell : SBDataTableCell
 
 @end
-
-
-@interface SBMoreCollectionCell : SBDataCollectionCell
-
-@end

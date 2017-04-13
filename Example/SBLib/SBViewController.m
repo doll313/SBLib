@@ -73,6 +73,9 @@
         else if ([titleStr isEqualToString:@"location"]) {
             [__self doLocation];
         }
+        else if ([titleStr isEqualToString:@"collection"]) {
+            [tableView.ctrl sb_quickOpenCtrl:@"SBFallCollectionController"];
+        }
     };
 
     // 帐户资料
@@ -86,6 +89,7 @@
                             @"table",
                             @"refresh",
                             @"location",
+                            @"collection",
                             ];
 
     //单元格

@@ -34,14 +34,8 @@
 /**  错误信息Cell的class */
 @property (nonatomic, assign) Class<SBCollectionCellDelegate>   mErrorCellClass;
 
-/**  重新加载加载中 Cell的class */
-@property (nonatomic, assign) Class<SBCollectionCellDelegate>   mLoadingCellClass;
-
-/** 更多Cell的class */
-@property (nonatomic, assign) Class<SBCollectionCellDelegate>   mMoreCellClass;
-
-/** 列表都结束后，最后多出的一个单元格Cell的class */
-@property (nonatomic, assign) Class<SBCollectionCellDelegate>   mFinishedCellClass;
+/**  底部样式 更多 加载 结束 */
+@property (nonatomic, assign) Class mFooterClass;
 
 
 @property (nonatomic, weak) SBCollectionView *collectionView;           //数据对应的

@@ -161,54 +161,31 @@
     
     DataItemDetail *itemDetail = [self dataOfIndexPath:indexPath];
     NSString *cellIdentifier = nil;
-    
-    //加载状态，显示加载样式
-    if (SBTableDataStatusLoading == sectionData.httpStatus && indexPath.row >= [sectionData.tableDataResult count]) {
-        cellIdentifier = [self cellWithIdentifier:sectionData.mLoadingCellClass];
-    }
-    //这里是最后一行，一般是出错了，加载中的单元格样式
-    else {
-        //无数据
-        if ([sectionData.tableDataResult count] == 0) {
-            //加载失败
-            if(!sectionData.isLoadDataOK) {
-                if (sectionData.pageAt == 1) {
-                    cellIdentifier = [self cellWithIdentifier:sectionData.mErrorCellClass];
-                } else {
-                    cellIdentifier = [self cellWithIdentifier:[SBErrorCollectionCell class]];
-                }
+
+    //无数据
+    if ([sectionData.tableDataResult count] == 0) {
+        //加载失败
+        if(!sectionData.isLoadDataOK) {
+            if (sectionData.pageAt == 1) {
+                cellIdentifier = [self cellWithIdentifier:sectionData.mErrorCellClass];
             } else {
-                cellIdentifier = [self cellWithIdentifier:sectionData.mEmptyCellClass];
-            }
-        }
-        //超出数据
-        else if (indexPath.row >= [sectionData.tableDataResult count]) {
-            //加载完单元格
-            if (sectionData.hasFinishCell && sectionData.isLoadDataComplete) {
-                cellIdentifier = [self cellWithIdentifier:sectionData.mFinishedCellClass];
-            }
-            //加载失败
-            else if(!sectionData.isLoadDataOK) {
                 cellIdentifier = [self cellWithIdentifier:[SBErrorCollectionCell class]];
             }
-            //更多
-            else {
-                cellIdentifier = [self cellWithIdentifier:sectionData.mMoreCellClass];
-            }
-        }
-        //正常数据
-        else {
-            //修改数据
-            if(NULL != self.modifiItemClass) {
-                Class modifiRowClass = self.modifiItemClass(self, sectionData.mDataCellClass, indexPath);
-                [self registerClass:modifiRowClass];
-                cellIdentifier = [self cellWithIdentifier:modifiRowClass];
-            } else {
-                cellIdentifier = [self cellWithIdentifier:sectionData.mDataCellClass];
-            }
+        } else {
+            cellIdentifier = [self cellWithIdentifier:sectionData.mEmptyCellClass];
         }
     }
-    
+    //正常数据
+    else {
+        //修改数据
+        if(NULL != self.modifiItemClass) {
+            Class modifiRowClass = self.modifiItemClass(self, sectionData.mDataCellClass, indexPath);
+            [self registerClass:modifiRowClass];
+            cellIdentifier = [self cellWithIdentifier:modifiRowClass];
+        } else {
+            cellIdentifier = [self cellWithIdentifier:sectionData.mDataCellClass];
+        }
+    }
     
     UICollectionViewCell<SBCollectionCellDelegate> *cell = [self dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     
@@ -248,47 +225,16 @@
         //无加载情况，显示数等于数据个数 （多半是无网络请求的）
         return rowCount;
     }
-    
-    //加载中
-    else if (tableDataStatus == SBTableDataStatusLoading) {
-        if (self.isRefreshType && sectonData.pageAt == 1) {
-            return rowCount;
-        }else {
-            return rowCount + 1;
-        }
+
+    //无数据，加载完毕
+    if (rowCount == 0) {
+        //空单元格
+        return 1;
     }
-    //加载完毕
+    //有数据，加载完毕
     else {
-        //如果不是最后一个section
-        if (sectonData != self.arrCollectionData.lastObject) {
-            return rowCount;
-        }
-        else {
-            //无数据，加载完毕
-            if (rowCount == 0) {
-                //空单元格
-                return 1;
-            }
-            //有数据，加载完毕
-            else {
-                if ([sectonData isLoadDataComplete]) {
-                    //最后一个已完成
-                    if (!sectonData.hasFinishCell) {
-                        return rowCount;
-                    }
-                    //加载更多 或 已完成
-                    else {
-                        return rowCount + 1;
-                    }
-                }
-                //有更多数据
-                else {
-                    return rowCount + 1;
-                }
-            }
-        }
+        return rowCount;
     }
-    
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
@@ -305,42 +251,27 @@
     //数据状态
     SBTableDataStatus httpStatus = sectionData.httpStatus;
     NSUInteger rowCount = [sectionData.tableDataResult count];
-    
-    //异常情况 点击让用户重试
-    if (indexPath.row >= rowCount) {
-        //以下是默认的错误处理
-        if (SBTableDataStatusFinished == httpStatus) {
-            //出错数据 数据为空
-            if (rowCount == 0) {
-                if (self.emptyItemClicked) {
-                    self.emptyItemClicked(sectionData);
-                }
-                else {
-                    //数据出错
-                    [sectionData refreshData];
-                }
+
+    //以下是默认的错误处理
+    if (SBTableDataStatusFinished == httpStatus) {
+        //出错数据 数据为空
+        if (rowCount == 0) {
+            if (self.emptyItemClicked) {
+                self.emptyItemClicked(sectionData);
             }
-            //更多
             else {
-                if (![sectionData isLoadDataComplete]) {
-                        //更多数据
-                    [sectionData loadDataforNextPage];
-                }
-                else {
-                    if (self.didSelectFinish) {
-                        self.didSelectFinish(self, indexPath);
-                    }
-                }
+                //数据出错
+                [sectionData refreshData];
+            }
+        }
+        else{
+            //点击回调
+            if (self.didSelectItem) {
+                self.didSelectItem(self, indexPath);
             }
         }
     }
-    
-    else{
-        //点击回调
-        if (self.didSelectItem) {
-            self.didSelectItem(self, indexPath);
-        }
-    }
+
 }
 
 // cell点击变色
@@ -395,14 +326,15 @@
     }
     
     //判断是否加载到底部
-    if(!(scrollView.contentSize.height - (scrollView.contentOffset.y + scrollView.bounds.size.height) < 0.5f)){
+    CGFloat cHeight = scrollView.contentSize.height + APPCONFIG_UI_TABLE_CELL_HEIGHT;
+    CGFloat cOffset = scrollView.contentOffset.y + scrollView.bounds.size.height;
+    if(!((cHeight - cOffset) < APPCONFIG_UNIT_LINE_WIDTH)){
         return;
     }
     
     //最底部的表段数据
     SBCollectionData *lastSectionData = self.arrCollectionData[[self.arrCollectionData count] - 1];
-    
-    
+
     //加载中或者无后续数据不用去处理
     if ([lastSectionData isLoadDataComplete]) {
         return;
@@ -465,9 +397,6 @@
     [self registerClass:sectionData.mDataCellClass];
     [self registerClass:sectionData.mEmptyCellClass];
     [self registerClass:sectionData.mErrorCellClass];
-    [self registerClass:sectionData.mMoreCellClass];
-    [self registerClass:sectionData.mLoadingCellClass];
-    [self registerClass:sectionData.mFinishedCellClass];
     
     //队列中添加数据
     [self.arrCollectionData addObject:sectionData];

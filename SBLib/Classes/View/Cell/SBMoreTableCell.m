@@ -36,12 +36,3 @@
 }
 
 @end
-
-@implementation SBMoreCollectionCell
-
-- (void)bindItemData{
-    [super bindItemData];
-    self.displayLabel.text = [NSString stringWithFormat:@"显示下 %ld 条", (long)self.collectionData.pageSize];
-}
-
-@end
