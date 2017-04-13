@@ -68,12 +68,12 @@
                 [collectionData.tableDataResult addItem:detail];
             }
         }
-        if (collectionData.pageAt == 4) {
-            collectionData.tableDataResult.maxCount = collectionData.tableDataResult.count;
-        }
-        else {
-            collectionData.tableDataResult.maxCount = collectionData.tableDataResult.count + 1;
-        }
+        collectionData.tableDataResult.maxCount = collectionData.tableDataResult.count;
+//        if (collectionData.pageAt == 4) {
+//        }
+//        else {
+//            collectionData.tableDataResult.maxCount = collectionData.tableDataResult.count + 1;
+//        }
     };
 
     //item size
@@ -110,7 +110,7 @@
     SBCollectionData *sectionData = [[SBCollectionData alloc] init];
     sectionData.mDataCellClass = [SBFallCollectionCell class];
     sectionData.mFooterClass = [SBFallFooter class];
-    sectionData.hasFinishCell = YES;
+//    sectionData.hasFinishCell = YES;
     [self.iCollectionView addSectionWithData:sectionData];
 
     [sectionData refreshData];
