@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5F9C7CEF1E9E1D1F0036A104 /* SBFallCollectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F9C7CEE1E9E1D1F0036A104 /* SBFallCollectionController.m */; };
 		5F9C7CF21E9E25EE0036A104 /* SBFallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F9C7CF11E9E25EE0036A104 /* SBFallLayout.m */; };
+		5F9C7CF91E9F1E880036A104 /* SBFallFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F9C7CF81E9F1E880036A104 /* SBFallFooter.m */; };
 		5FA19B911E513B88006F1F2F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FA19B901E513B88006F1F2F /* CoreLocation.framework */; };
 		5FB3D79B1E6954F8005B54DA /* SBAlertDemoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FB3D78F1E6954F8005B54DA /* SBAlertDemoController.m */; };
 		5FB3D79C1E6954F8005B54DA /* SBATableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FB3D7911E6954F8005B54DA /* SBATableController.m */; };
@@ -50,6 +51,8 @@
 		5F9C7CEE1E9E1D1F0036A104 /* SBFallCollectionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBFallCollectionController.m; sourceTree = "<group>"; };
 		5F9C7CF01E9E25EE0036A104 /* SBFallLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBFallLayout.h; sourceTree = "<group>"; };
 		5F9C7CF11E9E25EE0036A104 /* SBFallLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBFallLayout.m; sourceTree = "<group>"; };
+		5F9C7CF71E9F1E880036A104 /* SBFallFooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBFallFooter.h; sourceTree = "<group>"; };
+		5F9C7CF81E9F1E880036A104 /* SBFallFooter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBFallFooter.m; sourceTree = "<group>"; };
 		5FA19B901E513B88006F1F2F /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		5FB3D78E1E6954F8005B54DA /* SBAlertDemoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBAlertDemoController.h; sourceTree = "<group>"; };
 		5FB3D78F1E6954F8005B54DA /* SBAlertDemoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBAlertDemoController.m; sourceTree = "<group>"; };
@@ -141,6 +144,8 @@
 				5F9C7CEE1E9E1D1F0036A104 /* SBFallCollectionController.m */,
 				5F9C7CF01E9E25EE0036A104 /* SBFallLayout.h */,
 				5F9C7CF11E9E25EE0036A104 /* SBFallLayout.m */,
+				5F9C7CF71E9F1E880036A104 /* SBFallFooter.h */,
+				5F9C7CF81E9F1E880036A104 /* SBFallFooter.m */,
 			);
 			path = List;
 			sourceTree = "<group>";
@@ -413,6 +418,7 @@
 				5F9C7CF21E9E25EE0036A104 /* SBFallLayout.m in Sources */,
 				6003F5A7195388D20070C39A /* SBViewController.m in Sources */,
 				5FB3D79F1E6954F8005B54DA /* SBRefreshTableController.m in Sources */,
+				5F9C7CF91E9F1E880036A104 /* SBFallFooter.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				5FB3D79E1E6954F8005B54DA /* SBIndexTableController.m in Sources */,
 				5FB3D7A01E6954F8005B54DA /* SBURLProtocol.m in Sources */,
