@@ -254,35 +254,31 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-//    DataItemDetail *detail = [self dataOfIndexPath:indexPath];
     SBCollectionData *sectionData = [self dataOfSection:indexPath.section];
     
     assert(nil != sectionData);
     assert(indexPath.row >= 0);
     
     //数据状态
-    SBTableDataStatus httpStatus = sectionData.httpStatus;
     NSUInteger rowCount = [sectionData.tableDataResult count];
 
-    //以下是默认的错误处理
-    if (SBTableDataStatusFinished == httpStatus) {
-        //出错数据 数据为空
-        if (rowCount == 0) {
-            if (self.emptyItemClicked) {
-                self.emptyItemClicked(sectionData);
-            }
-            else {
-                //数据出错
-                [sectionData refreshData];
-            }
+    //出错数据 数据为空
+    if (rowCount == 0) {
+        if (self.emptyItemClicked) {
+            self.emptyItemClicked(sectionData);
         }
-        else{
-            //点击回调
-            if (self.didSelectItem) {
-                self.didSelectItem(self, indexPath);
-            }
+        else {
+            //数据出错
+            [sectionData refreshData];
         }
     }
+    else{
+        //点击回调
+        if (self.didSelectItem) {
+            self.didSelectItem(self, indexPath);
+        }
+    }
+
 
 }
 
