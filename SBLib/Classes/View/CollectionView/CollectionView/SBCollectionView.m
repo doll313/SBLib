@@ -101,10 +101,22 @@
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    if (self.insetForSection) {
-        return self.insetForSection(self, collectionViewLayout, section);
+    SBCollectionData *sectionData = [self dataOfSection:section];
+    NSUInteger rowCount = [sectionData.tableDataResult count];
+
+    //数据空 或 错误
+    if (rowCount == 0 && sectionData.pageAt == 1) {
+        return UIEdgeInsetsMake(0, 0, 0, 0);
     }
-    return UIEdgeInsetsMake(0, 0, 0, 0);
+    else {
+        if (self.insetForSection) {
+            return self.insetForSection(self, collectionViewLayout, section);
+        }
+        else {
+            return UIEdgeInsetsMake(0, 0, 0, 0);
+        }
+    }
+
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
