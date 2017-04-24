@@ -10,6 +10,7 @@
 #import "SBFallLayout.h"
 #import "SBFallFooter.h"
 #import "SBConstant.h"
+#import "UIScrollView+SBMODULE.h"
 
 @interface SBFallCollectionCell : SBDataCollectionCell
 
@@ -48,6 +49,14 @@
     self.iCollectionView.frame = self.view.bounds;
     [self.view addSubview:self.iCollectionView];
 
+    UIImageView *headerView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"abc.png"]];
+    headerView.contentMode = UIViewContentModeScaleAspectFill;
+    headerView.clipsToBounds = YES;
+    headerView.frame = CGRectMake(0, 0, self.view.width, 128);
+    [self.iCollectionView sb_addSpringHeadView:headerView];
+
+//    self.iCollectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+
     //请求数据
     self.iCollectionView.requestData = ^(SBCollectionData *collectionData) {
         return [[SBHttpDataLoader alloc] initWithURL:@"http://www.weather.com.cn/data/cityinfo/101010100.html" httpMethod:@"GET" delegate:collectionData];
@@ -74,6 +83,7 @@
         else {
             collectionData.tableDataResult.maxCount = collectionData.tableDataResult.count + 1;
         }
+
     };
 
     //item size

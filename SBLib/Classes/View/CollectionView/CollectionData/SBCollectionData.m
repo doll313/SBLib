@@ -256,14 +256,19 @@
         [self.collectionView.mj_footer resetNoMoreData];
     }
     else {
-        if (self.hasFinishCell) {
-            //完成
-            self.collectionView.mj_footer.hidden = NO;
-            [self.collectionView.mj_footer endRefreshingWithNoMoreData];
+        if (self.tableDataResult.count == 0) {
+            self.collectionView.mj_footer.hidden = YES;            //错误或空
         }
         else {
-            //不显示完成
-            self.collectionView.mj_footer.hidden = YES;            //一开始隐藏
+            if (self.hasFinishCell) {
+                //完成
+                self.collectionView.mj_footer.hidden = NO;
+                [self.collectionView.mj_footer endRefreshingWithNoMoreData];
+            }
+            else {
+                //不显示完成
+                self.collectionView.mj_footer.hidden = YES;            //
+            }
         }
     }
     
