@@ -681,32 +681,15 @@
     }
     
     //判断是否加载到底部
-    if(!(scrollView.contentSize.height - (scrollView.contentOffset.y + scrollView.bounds.size.height) < 0.5f)){
+    if(!(scrollView.contentSize.height - (scrollView.contentOffset.y + scrollView.bounds.size.height) < APPCONFIG_UNIT_LINE_WIDTH)){
         return;
     }
     
     //最底部的表段数据
     SBTableData *lastSectionData = self.arrTableData[[self.arrTableData count] - 1];
-    
-    
-    //加载中或者无后续数据不用去处理
-    if ([lastSectionData isLoadDataComplete]) {
-        return;
-    }
-    else if (lastSectionData.httpStatus == SBTableDataStatusLoading) {
-        return;
-    }
-    else if(lastSectionData.httpStatus == SBTableDataStatusNotStart) {
-        
-    }
-    else {
-        //加载完毕后判断状态
-        if (![lastSectionData isLoadDataComplete]) {
-            [lastSectionData loadDataforNextPage];
-        } else {
-            [lastSectionData loadData];
-        }
-    }
+
+    //加载完毕后判断状态
+    [lastSectionData loadDataforNextPage];
 }
 
 /** view已经停止滚动 */

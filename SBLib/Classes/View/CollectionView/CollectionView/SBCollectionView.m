@@ -340,23 +340,7 @@
         return;
     }
 
-
-    //最底部的表段数据
-    SBCollectionData *lastSectionData = self.arrCollectionData[[self.arrCollectionData count] - 1];
-
-    //加载中或者无后续数据不用去处理
-    if ([lastSectionData isLoadDataComplete]) {
-        return;
-    }
-    else if (lastSectionData.httpStatus == SBTableDataStatusLoading) {
-        return;
-    }
-    else if(lastSectionData.httpStatus == SBTableDataStatusNotStart) {
-        return;
-    }
-    else {
-        [self loadDataforNextPage];
-    }
+    [self loadDataforNextPage];
 }
 
 - (void)loadDataforNextPage {

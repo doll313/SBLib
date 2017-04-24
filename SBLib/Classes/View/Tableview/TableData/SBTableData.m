@@ -163,7 +163,8 @@
 
 //加载下一页
 - (void)loadDataforNextPage {
-    if ([self isLoadDataComplete]) {
+    //加载完毕或者正在加载
+    if (self.httpStatus == SBTableDataStatusLoading || [self isLoadDataComplete]) {
         return;
     }
 
