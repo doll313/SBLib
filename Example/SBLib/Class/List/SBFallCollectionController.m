@@ -10,7 +10,6 @@
 #import "SBFallLayout.h"
 #import "SBFallFooter.h"
 #import "SBConstant.h"
-#import "UIScrollView+SBMODULE.h"
 
 @interface SBFallCollectionCell : SBDataCollectionCell
 
@@ -53,7 +52,6 @@
     headerView.contentMode = UIViewContentModeScaleAspectFill;
     headerView.clipsToBounds = YES;
     headerView.frame = CGRectMake(0, 0, self.view.width, 128);
-    [self.iCollectionView sb_addSpringHeadView:headerView];
 
 //    self.iCollectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
 
