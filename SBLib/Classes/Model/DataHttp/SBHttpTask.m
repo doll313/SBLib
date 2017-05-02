@@ -347,7 +347,7 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
         return;
     }
 
-//    self.delegate = nil;
+    self.delegate = nil;
     [self.sessionDataTask cancel];
 
     self.endDate = [NSDate date];

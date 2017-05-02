@@ -24,11 +24,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 //表示列表数据的状态
-typedef enum {
+typedef NS_ENUM(NSInteger, SBTableDataStatus) {
     SBTableDataStatusNotStart,
     SBTableDataStatusLoading,
     SBTableDataStatusFinished
-} SBTableDataStatus;
+} ;
 
 @class SBHttpDataLoader;
 

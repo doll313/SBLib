@@ -32,11 +32,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef enum {
+typedef NS_ENUM(NSInteger, SBHttpTaskState) {
     SBHttpTaskStateReady = 1,               //开始
     SBHttpTaskStateExecuting = 2,           //执行中
     SBHttpTaskStateFinished = 3             //结束
-} SBHttpTaskState;
+};
 
 // 网络连接用到的常量
 #define APPCONFIG_CONN_ADD_PREFIX           @"/"                    // WAP 接口前缀 东方财富网没有专门为客户端的接口前缀
@@ -92,16 +92,16 @@ typedef enum {
 @property (nonatomic, strong) NSURLRequest *aURLrequest;
 
 /** 上传的文件数据 */
-@property (nonatomic, strong) NSData *fileData;
+@property (nonatomic, strong, nullable) NSData *fileData;
 
 /** 标签，用以区分同一个delegate的不同task */
 @property (nonatomic, assign) NSInteger tag;
 
 /** 附带的用户信息 */
-@property (nonatomic, strong) id userInfo;
+@property (nonatomic, strong, nullable) id userInfo;
 
 /** 代理 */
-@property (nonatomic, assign) id<SBHttpTaskDelegate> delegate;
+@property (nonatomic, assign, nullable) id<SBHttpTaskDelegate> delegate;
 
 /** 数据压缩  */
 @property (nonatomic, assign) BOOL gzip;
