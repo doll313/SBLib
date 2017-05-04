@@ -150,6 +150,9 @@ typedef NS_ENUM(NSInteger, SBHttpTaskState) {
 /** 终止数据加载 */
 - (void)stopLoading;
 
+/** 网络请求使用到的 session， 是个静态地址  **/
++ (AFHTTPSessionManager *)sessionManager;
+
 NS_ASSUME_NONNULL_END
 
 @end

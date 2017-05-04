@@ -31,7 +31,6 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 @interface SBHttpTask ()
 
 @property (nonatomic, copy) NSString *HTTPMethod;
-@property (nonatomic, copy) AFHTTPSessionManager *sessionManager;
 
 @end
 
@@ -165,15 +164,15 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 }
 
 /**  **/
-- (AFHTTPSessionManager *)sessionManager {
-    if (!_sessionManager) {
-        // 请求的manager
-        _sessionManager = [AFHTTPSessionManager manager];
-        _sessionManager.requestSerializer = [AFHTTPRequestSerializer serializer]; // 上传普通格式
-        _sessionManager.responseSerializer = [AFHTTPResponseSerializer serializer]; // AFN不会解析,数据是data，需要自己解析
-    }
-
-    return _sessionManager;
++ (AFHTTPSessionManager *)sessionManager {
+    static AFHTTPSessionManager *manager;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        manager = [[AFHTTPSessionManager alloc]init];
+        manager.requestSerializer = [AFHTTPRequestSerializer serializer]; // 上传普通格式
+        manager.responseSerializer = [AFHTTPResponseSerializer serializer]; // AFN不会解析,数据是data，需要自己解析
+    });
+    return manager;
 }
 
 - (void)doPost {
@@ -228,7 +227,7 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     self.aURLrequest = request;
 
     //网络请求返回
-    self.sessionDataTask =[self.sessionManager dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+    self.sessionDataTask =[[SBHttpTask sessionManager] dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
         [self doResponse:response responseObject:responseObject error:error];
     }];
 
@@ -279,7 +278,7 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     self.aURLrequest = request;
 
     //网络请求返回
-    self.sessionDataTask =[self.sessionManager dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+    self.sessionDataTask =[[SBHttpTask sessionManager] dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
         [self doResponse:response responseObject:responseObject error:error];
     }];
 
@@ -289,7 +288,7 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 //上传
 - (void)doUpload {
     NSError *serializationError = nil;
-    NSMutableURLRequest *request = [self.sessionManager.requestSerializer multipartFormRequestWithMethod:@"POST"
+    NSMutableURLRequest *request = [[SBHttpTask sessionManager].requestSerializer multipartFormRequestWithMethod:@"POST"
                                                                                    URLString:self.aURLString parameters:self.jsonDict
                                                                    constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
                                                                        [formData appendPartWithFileData:self.fileData
@@ -301,7 +300,7 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     self.aURLrequest = request;
 
     //网络请求返回
-    self.sessionDataTask = [self.sessionManager dataTaskWithRequest:request uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
+    self.sessionDataTask = [[SBHttpTask sessionManager] dataTaskWithRequest:request uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
         if (self.delegate != nil && [self.delegate respondsToSelector:@selector(task:uploadProgress:)]) {
             [self.delegate task:self uploadProgress:uploadProgress];
         }
@@ -318,7 +317,7 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 /** 用request 请求 **/
 - (void)doRequest {
     //网络请求返回
-    self.sessionDataTask = [self.sessionManager dataTaskWithRequest:self.aURLrequest uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
+    self.sessionDataTask = [[SBHttpTask sessionManager] dataTaskWithRequest:self.aURLrequest uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
         if (self.delegate != nil && [self.delegate respondsToSelector:@selector(task:uploadProgress:)]) {
             [self.delegate task:self uploadProgress:uploadProgress];
         }
