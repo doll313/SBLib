@@ -46,9 +46,9 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 }
 
 /** 初始化一个HTTP请求 */
-- (id)initWithURLString:(NSString *)aURLString
-             httpMethod:(NSString *)method
-               delegate:(id<SBHttpTaskDelegate>)delegate {
+- (id)initWithURLString:(nonnull NSString *)aURLString
+             httpMethod:(nonnull NSString *)method
+               delegate:(nullable id<SBHttpTaskDelegate>)delegate {
     self = [super init];
 
     [self commonInit];
@@ -68,8 +68,8 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 
 
 /** 初始化一个HTTP请求 直接用 request  */
-- (id)initWithRequest:(NSMutableURLRequest *)request
-             delegate:(id<SBHttpTaskDelegate>)delegate {
+- (id)initWithRequest:(nonnull NSMutableURLRequest *)request
+             delegate:(nullable id<SBHttpTaskDelegate>)delegate {
     self = [super init];
 
     [self commonInit];
@@ -108,8 +108,8 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 
     void (^startBlock)() = ^void(){
         //开始请求
-        if (self.delegate != nil && [self.delegate respondsToSelector:@selector(taskWillStart:)]) {
-            [self.delegate taskWillStart:self];
+        if (self.willStart) {
+            self.willStart(self);
         }
 
         //记录地址
@@ -123,6 +123,9 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
         }
         else if ([self.HTTPMethod isEqualToString:@"UPLOAD"]) {
             [self doUpload];
+        }
+        else if ([self.HTTPMethod isEqualToString:@"DOWNLOAD"]) {
+            [self doDownLoad];
         }
         else if ([self.HTTPMethod isEqualToString:@"POST"]) {
             [self doPost];
@@ -301,12 +304,12 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 
     //网络请求返回
     self.sessionDataTask = [[SBHttpTask sessionManager] dataTaskWithRequest:request uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
-        if (self.delegate != nil && [self.delegate respondsToSelector:@selector(task:uploadProgress:)]) {
-            [self.delegate task:self uploadProgress:uploadProgress];
+        if (self.onUpload) {
+            self.onUpload(self, uploadProgress);
         }
     } downloadProgress:^(NSProgress * _Nonnull downloadProgress) {
-        if (self.delegate != nil && [self.delegate respondsToSelector:@selector(task:downloadProgress:)]) {
-            [self.delegate task:self downloadProgress:downloadProgress];
+        if (self.onDownload) {
+            self.onDownload(self, downloadProgress);
         }
     } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
         [self doResponse:response responseObject:responseObject error:error];
@@ -314,16 +317,41 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     [self.sessionDataTask resume];
 }
 
+//下载
+- (void)doDownLoad {
+
+    NSURL *URL = [NSURL URLWithString:self.aURLString];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+
+    self.aURLrequest = request;
+
+    self.sessionDataTask = [[SBHttpTask sessionManager] downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
+        if (self.onDownload) {
+            self.onDownload(self, downloadProgress);
+        }
+    } destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+        //必须实现
+        return self.destination(targetPath, response);
+    } completionHandler:^(NSURLResponse * response, NSURL * filePath, NSError * error) {
+        //下载地址赋值
+        self.filePath = filePath;
+        [self doResponse:response responseObject:nil error:error];
+    }];
+
+    [self.sessionDataTask resume];
+}
+
+
 /** 用request 请求 **/
 - (void)doRequest {
     //网络请求返回
     self.sessionDataTask = [[SBHttpTask sessionManager] dataTaskWithRequest:self.aURLrequest uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
-        if (self.delegate != nil && [self.delegate respondsToSelector:@selector(task:uploadProgress:)]) {
-            [self.delegate task:self uploadProgress:uploadProgress];
+        if (self.onUpload) {
+            self.onUpload(self, uploadProgress);
         }
     } downloadProgress:^(NSProgress * _Nonnull downloadProgress) {
-        if (self.delegate != nil && [self.delegate respondsToSelector:@selector(task:downloadProgress:)]) {
-            [self.delegate task:self downloadProgress:downloadProgress];
+        if (self.onDownload) {
+            self.onDownload(self, downloadProgress);
         }
     } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
         [self doResponse:response responseObject:responseObject error:error];
@@ -388,6 +416,7 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
         //错误
         self.httpError = error;
 
+        //协议 或 block
         if(nil != self.delegate){
             if (nil != error) {
                 //出错的回调
@@ -395,6 +424,11 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
             } else {
                 //正确接收数据的回调
                 [self.delegate task:self onReceived:self.recieveData];
+            }
+        }
+        else {
+            if (self.onReceived) {
+                self.onReceived(self, self.recieveData, error);
             }
         }
 

@@ -57,17 +57,6 @@ typedef NS_ENUM(NSInteger, SBHttpTaskState) {
 /** onReceived 方法，在 SBHttpTask 数据加载完成后回调的方法 */
 - (void)task:(SBHttpTask *)task onReceived:(NSData *)data;
 
-@optional
-
-/** 请求即将开始 第一次开始，不包括重试） */
-- (void)taskWillStart:(SBHttpTask *)task;
-
-/** 请求已经上传字节  */
-- (void)task:(SBHttpTask *)task uploadProgress:(NSProgress * _Nonnull)uploadProgress;
-
-/** 请求已经下载字节  */
-- (void)task:(SBHttpTask *)task downloadProgress:(NSProgress * _Nonnull)downloadProgress;
-
 @end
 
 /**
@@ -94,6 +83,9 @@ typedef NS_ENUM(NSInteger, SBHttpTaskState) {
 /** 上传的文件数据 */
 @property (nonatomic, strong, nullable) NSData *fileData;
 
+/** 下载的文件地址 */
+@property (nonatomic, strong, nullable) NSURL *filePath;
+
 /** 标签，用以区分同一个delegate的不同task */
 @property (nonatomic, assign) NSInteger tag;
 
@@ -106,7 +98,7 @@ typedef NS_ENUM(NSInteger, SBHttpTaskState) {
 /** 数据压缩  */
 @property (nonatomic, assign) BOOL gzip;
 
-////// 以下参数读取 不要
+////// 以下参数读取 不要设置
 
 /** 网络*/
 @property (nonatomic, strong) NSURLSessionTask *sessionDataTask;
@@ -138,14 +130,34 @@ typedef NS_ENUM(NSInteger, SBHttpTaskState) {
 /** 网络操作状态 */
 @property (nonatomic, assign) SBHttpTaskState sbHttpTaskState;
 
+////// block 回调 /////
+
+/** 回调 结果 */
+@property (nonatomic, copy) void (^onReceived)(SBHttpTask *task, NSData *data, NSError *error);
+
+/** 回调 请求即将开始 */
+@property (nonatomic, copy) void (^willStart)(SBHttpTask *task);
+
+/** 回调 已经上传字节 */
+@property (nonatomic, copy) void (^onUpload)(SBHttpTask *task, NSProgress *uploadProgress);
+
+/** 回调 已经下载字节 */
+@property (nonatomic, copy) void (^onDownload)(SBHttpTask *task, NSProgress *downloadProgress);
+
+/** 下载的返回地址 如果是下载请求  必须实现该回调 */
+@property (nonatomic, copy) NSURL *(^destination)(NSURL *targetPath, NSURLResponse *response);
+
+
+////// 调用方法 /////
+
 /** 初始化一个HTTP请求 通过参数去拼 */
-- (id)initWithURLString:(NSString *)aURLString
-             httpMethod:(NSString *)method
-               delegate:(id<SBHttpTaskDelegate>)delegate;
+- (id)initWithURLString:(nonnull NSString *)aURLString
+             httpMethod:(nonnull NSString *)method
+               delegate:(nullable id<SBHttpTaskDelegate>)delegate;
 
 /** 初始化一个HTTP请求 直接用 request  */
-- (id)initWithRequest:(NSMutableURLRequest *)request
-               delegate:(id<SBHttpTaskDelegate>)delegate;
+- (id)initWithRequest:(nonnull NSMutableURLRequest *)request
+               delegate:(nullable id<SBHttpTaskDelegate>)delegate;
 
 /** 终止数据加载 */
 - (void)stopLoading;

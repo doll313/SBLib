@@ -41,17 +41,6 @@ typedef NS_ENUM(NSInteger, SBTableDataStatus) {
 /** onReceived方法：在数据装载器装载数据结束后调用的方法 */
 - (void)dataLoader:(SBHttpDataLoader * _Nonnull)dataLoader onReceived:(DataItemResult * _Nonnull)result;
 
-@optional
-
-/** 刚刚开始 */
-- (void)dataLoaderWillStart:(SBHttpDataLoader *)dataLoader;
-
-/** 请求已经上传字节  */
-- (void)dataLoader:(SBHttpDataLoader * _Nonnull)dataLoader uploadProgress:(NSProgress * _Nonnull)uploadProgress;
-
-/** 请求已经下载字节  */
-- (void)dataLoader:(SBHttpDataLoader * _Nonnull)dataLoader downloadProgress:(NSProgress * _Nonnull)downloadProgress;
-
 @end
 
 /**
@@ -73,15 +62,14 @@ typedef NS_ENUM(NSInteger, SBTableDataStatus) {
 /** 用来识别这个SBHttpDataLoader */
 @property (nonatomic, copy) NSString *identifier;
 
-
 /** 初始化GET方式请求的网络数据 */
-- (id)initWithURL:(NSString *)URL delegate:(id<SBHttpDataLoaderDelegate>)target;
+- (id)initWithURL:(NSString *)URL delegate:(nullable id<SBHttpDataLoaderDelegate>)target;
 
 /** 初始化网络数据 GET POST UPLOAD*/
-- (id)initWithURL:(NSString *)URL httpMethod:(NSString *)httpMethod delegate:(id<SBHttpDataLoaderDelegate>)target;
+- (id)initWithURL:(NSString *)URL httpMethod:(NSString *)httpMethod delegate:(nullable id<SBHttpDataLoaderDelegate>)target;
 
 /** 初始化Request方式请求的网络数据 */
-- (id)initWithURLRequest:(NSMutableURLRequest *)request delegate:(id<SBHttpDataLoaderDelegate>)target;
+- (id)initWithURLRequest:(NSMutableURLRequest *)request delegate:(nullable id<SBHttpDataLoaderDelegate>)target;
 
 /** 获取本地解析好的数据 */
 - (DataItemResult *)getDataItemResult;
@@ -91,6 +79,25 @@ typedef NS_ENUM(NSInteger, SBTableDataStatus) {
 
 //数据装载事件完成后调用的函数，自动释放一次
 - (void)onFinished;
+
+
+////// block 回调 /////
+
+/** 回调 结果 */
+@property (nonatomic, copy) void (^onReceived)(SBHttpDataLoader *loader, DataItemResult *result);
+
+/** 回调 请求即将开始 */
+@property (nonatomic, copy) void (^willStart)(SBHttpDataLoader *loader);
+
+/** 回调 已经上传字节 */
+@property (nonatomic, copy) void (^onUpload)(SBHttpDataLoader *loader, NSProgress *uploadProgress);
+
+/** 回调 已经下载字节 */
+@property (nonatomic, copy) void (^onDownload)(SBHttpDataLoader *loader, NSProgress *downloadProgress);
+
+/** 下载的返回地址 如果是下载请求  必须实现该回调 */
+@property (nonatomic, copy) NSURL *(^destination)(NSURL *targetPath, NSURLResponse *response);
+
 
 NS_ASSUME_NONNULL_END
 

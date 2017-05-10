@@ -9,7 +9,7 @@
 #import "SBHttpTaskController.h"
 #import "SBCONSTANT.h"
 
-@interface SBHttpTaskController ()<SBHttpDataLoaderDelegate>
+@interface SBHttpTaskController ()
 
 @property (nonatomic, strong) SBHttpDataLoader *httpLoader;
 
@@ -26,8 +26,11 @@
 
     self.view.backgroundColor = [UIColor whiteColor];
 
-
-    self.httpLoader = [[SBHttpDataLoader alloc] initWithURL:@"http://www.weather.com.cn/data/cityinfo/101010100.html" httpMethod:@"GET" delegate:self];
+    SBWS(__self)
+    self.httpLoader = [[SBHttpDataLoader alloc] initWithURL:@"http://www.weather.com.cn/data/cityinfo/101010100.html" httpMethod:@"GET" delegate:nil];
+    self.httpLoader.onReceived = ^(SBHttpDataLoader * _Nonnull loader, DataItemResult * _Nonnull result) {
+        [__self dataLoader:loader onReceived:result];
+    };
 
 }
 
