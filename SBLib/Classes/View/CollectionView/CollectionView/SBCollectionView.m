@@ -22,6 +22,7 @@
 
 
 @interface SBCollectionView()
+@property (nonatomic, strong) NSString *visibleRect;
 @end
 
 @implementation SBCollectionView
@@ -211,10 +212,15 @@
     cell.collectionData = sectionData;
     cell.indexPath = indexPath;
     cell.itemDetail = itemDetail;
-    
+
+    //预加载
+    [self preLoadCell:cell atIndexPath:indexPath];
+
     //绑定数据
     [cell bindItemData];
-    
+
+
+
     return cell;
 }
 
@@ -350,23 +356,33 @@
 - (void)preItemForVisibleCells {
     NSArray *visibleCells = [self visibleCells];
     for (UICollectionViewCell<SBCollectionCellDelegate> *cell in visibleCells) {
+        NSIndexPath *indexPath = [self indexPathForCell:cell];
+        [self preLoadCell:cell atIndexPath:indexPath];
+    }
+}
+
+//预加载
+- (void)preLoadCell:(UICollectionViewCell<SBCollectionCellDelegate> *)cell atIndexPath:(NSIndexPath *)indexPath {
+    if (![cell respondsToSelector:@selector(preItemData)]) {
+        return;
+    }
+
+    //获取cell 的可视位置
+    UICollectionViewLayoutAttributes *attr = [self layoutAttributesForItemAtIndexPath:indexPath];
+    CGRect cellFrame = attr.frame;
+
+    if (self.visibleRect && !CGRectIntersectsRect(CGRectFromString(self.visibleRect), cellFrame)) {
         if ([cell respondsToSelector:@selector(preItemData)]) {
             [cell preItemData];
         }
     }
+
 }
 
 - (void)loadDataforNextPage {
     //最底部的表段数据
     SBCollectionData *lastSectionData = self.arrCollectionData[[self.arrCollectionData count] - 1];
     [lastSectionData loadDataforNextPage];
-}
-
--(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    if (!decelerate) {
-        //预加载可视的cell
-        [self preItemForVisibleCells];
-    }
 }
 
 /** view已经停止滚动 */
@@ -376,7 +392,8 @@
         return;
     }
 
-    //预加载可视的cell
+    //加载可视cell
+    self.visibleRect = nil;
     [self preItemForVisibleCells];
 
     if (self.endDecelerating) {
@@ -386,12 +403,18 @@
     }
 }
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    self.visibleRect = nil;
+    [self preItemForVisibleCells];
+
     if (self.willBeginDragging) {
         self.willBeginDragging(self);
     }
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+    CGRect rect = CGRectMake(targetContentOffset->x, targetContentOffset->y, scrollView.frame.size.width, scrollView.frame.size.height);
+    self.visibleRect = NSStringFromCGRect(rect);
+
     if (self.willEndDragging) {
         self.willEndDragging(self);
     }

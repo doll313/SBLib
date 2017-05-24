@@ -30,6 +30,10 @@
 #import "SBLoadingTableCell.h"
 #import "MJRefresh.h"       //下拉表头
 
+@interface SBTableView()
+@property (nonatomic, strong) NSString *visibleRect;
+@end
+
 @implementation SBTableView
 
 #pragma mark -
@@ -522,6 +526,9 @@
     cell.indexPath = indexPath;
     cell.cellDetail = [sectionData.tableDataResult getItem:indexPath.row];
 
+    //预加载
+    [self preLoadCell:cell atIndexPath:indexPath];
+
     //绑定数据
 	[cell bindCellData];
         
@@ -693,19 +700,29 @@
 }
 
 
+//预加载
+- (void)preLoadCell:(UITableViewCell<SBTableViewCellDelegate> *)cell atIndexPath:(NSIndexPath *)indexPath {
+    if (![cell respondsToSelector:@selector(preItemData)]) {
+        return;
+    }
+
+    //获取cell 的可视位置
+    CGRect cellFrame = [self rectForRowAtIndexPath:indexPath];
+
+    if (self.visibleRect && !CGRectIntersectsRect(CGRectFromString(self.visibleRect), cellFrame)) {
+        if ([cell respondsToSelector:@selector(preItemData)]) {
+            [cell preItemData];
+        }
+    }
+    
+}
+
 - (void)preItemForVisibleCells {
     NSArray *visibleCells = [self visibleCells];
     for (UICollectionViewCell<SBTableViewCellDelegate> *cell in visibleCells) {
         if ([cell respondsToSelector:@selector(preItemData)]) {
             [cell preItemData];
         }
-    }
-}
-
--(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    if (!decelerate) {
-        //预加载可视的cell
-        [self preItemForVisibleCells];
     }
 }
 
@@ -716,7 +733,8 @@
         return;
     }
 
-    //预加载可视的cell
+    //加载可视cell
+    self.visibleRect = nil;
     [self preItemForVisibleCells];
     
     if (self.endDecelerating) {
@@ -727,12 +745,18 @@
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    self.visibleRect = nil;
+    [self preItemForVisibleCells];
+    
     if (self.willBeginDragging) {
         self.willBeginDragging(self);
     }
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+    CGRect rect = CGRectMake(targetContentOffset->x, targetContentOffset->y, scrollView.frame.size.width, scrollView.frame.size.height);
+    self.visibleRect = NSStringFromCGRect(rect);
+
     if (self.willEndDragging) {
         self.willEndDragging(self);
     }

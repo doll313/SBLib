@@ -104,6 +104,11 @@ static BOOL _cell_alloc_debug;
 - (void)bindCellData {
 }
 
+/** 绑定数据到单元格上的UI，单元格停止滑动时被调用 */
+- (void)preItemData {
+
+}
+
 + (id)createCell:(NSString *)reuseIdentifier {
     return [[self alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
 }
