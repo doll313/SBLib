@@ -30,10 +30,6 @@
 #import "SBLoadingTableCell.h"
 #import "MJRefresh.h"       //下拉表头
 
-@interface SBTableView()
-@property (nonatomic, strong) NSString *visibleRect;
-@end
-
 @implementation SBTableView
 
 #pragma mark -
@@ -702,14 +698,7 @@
 
 //预加载
 - (void)preLoadCell:(UITableViewCell<SBTableViewCellDelegate> *)cell atIndexPath:(NSIndexPath *)indexPath {
-    if (![cell respondsToSelector:@selector(preItemData)]) {
-        return;
-    }
-
-    //获取cell 的可视位置
-    CGRect cellFrame = [self rectForRowAtIndexPath:indexPath];
-
-    if (self.visibleRect && !CGRectIntersectsRect(CGRectFromString(self.visibleRect), cellFrame)) {
+    if (!self.decelerating) {
         if ([cell respondsToSelector:@selector(preItemData)]) {
             [cell preItemData];
         }
@@ -726,15 +715,17 @@
     }
 }
 
+// called on finger up if the user dragged. decelerate is true if it will continue moving afterwards
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if (!decelerate) {
+        //
+        [self preItemForVisibleCells];
+    }
+}
+
 /** view已经停止滚动 */
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    //加载下一页
-    if (![scrollView isKindOfClass:[SBTableView class]]) {
-        return;
-    }
-
     //加载可视cell
-    self.visibleRect = nil;
     [self preItemForVisibleCells];
     
     if (self.endDecelerating) {
@@ -745,18 +736,12 @@
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    self.visibleRect = nil;
-    [self preItemForVisibleCells];
-    
     if (self.willBeginDragging) {
         self.willBeginDragging(self);
     }
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
-    CGRect rect = CGRectMake(targetContentOffset->x, targetContentOffset->y, scrollView.frame.size.width, scrollView.frame.size.height);
-    self.visibleRect = NSStringFromCGRect(rect);
-
     if (self.willEndDragging) {
         self.willEndDragging(self);
     }

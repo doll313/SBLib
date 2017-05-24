@@ -16,6 +16,12 @@
 @end
 @implementation SBFallCollectionCell
 
+- (void)preItemData {
+    [super preItemData];
+
+    NSLog(@"%zd", self.indexPath.row);
+}
+
 - (void)bindItemData {
     [super bindItemData];
 
@@ -69,6 +75,21 @@
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:result.rawData options:NSJSONReadingMutableContainers error:nil];
         dict = dict[@"weatherinfo"];
         if (dict) {
+            for (NSString *key in dict.allKeys) {
+                DataItemDetail *detail = [DataItemDetail detail];
+                [detail setString:dict[key] forKey:__KEY_CELL_TITLE];
+                [collectionData.tableDataResult addItem:detail];
+            }
+            for (NSString *key in dict.allKeys) {
+                DataItemDetail *detail = [DataItemDetail detail];
+                [detail setString:dict[key] forKey:__KEY_CELL_TITLE];
+                [collectionData.tableDataResult addItem:detail];
+            }
+            for (NSString *key in dict.allKeys) {
+                DataItemDetail *detail = [DataItemDetail detail];
+                [detail setString:dict[key] forKey:__KEY_CELL_TITLE];
+                [collectionData.tableDataResult addItem:detail];
+            }
             for (NSString *key in dict.allKeys) {
                 DataItemDetail *detail = [DataItemDetail detail];
                 [detail setString:dict[key] forKey:__KEY_CELL_TITLE];

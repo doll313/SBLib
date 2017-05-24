@@ -20,11 +20,6 @@
 #import "SBCollectionView.h"            //Collcetion 控件
 #import "SBCollectionFlowLayout.h"
 
-
-@interface SBCollectionView()
-@property (nonatomic, strong) NSString *visibleRect;
-@end
-
 @implementation SBCollectionView
 
 
@@ -363,20 +358,11 @@
 
 //预加载
 - (void)preLoadCell:(UICollectionViewCell<SBCollectionCellDelegate> *)cell atIndexPath:(NSIndexPath *)indexPath {
-    if (![cell respondsToSelector:@selector(preItemData)]) {
-        return;
-    }
-
-    //获取cell 的可视位置
-    UICollectionViewLayoutAttributes *attr = [self layoutAttributesForItemAtIndexPath:indexPath];
-    CGRect cellFrame = attr.frame;
-
-    if (self.visibleRect && !CGRectIntersectsRect(CGRectFromString(self.visibleRect), cellFrame)) {
+    if (!self.decelerating) {
         if ([cell respondsToSelector:@selector(preItemData)]) {
             [cell preItemData];
         }
     }
-
 }
 
 - (void)loadDataforNextPage {
@@ -385,15 +371,17 @@
     [lastSectionData loadDataforNextPage];
 }
 
+// called on finger up if the user dragged. decelerate is true if it will continue moving afterwards
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if (!decelerate) {
+        //
+        [self preItemForVisibleCells];
+    }
+}
+
 /** view已经停止滚动 */
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    //加载下一页
-    if (![scrollView isKindOfClass:[SBCollectionView class]]) {
-        return;
-    }
-
-    //加载可视cell
-    self.visibleRect = nil;
+    //
     [self preItemForVisibleCells];
 
     if (self.endDecelerating) {
@@ -403,17 +391,12 @@
     }
 }
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    self.visibleRect = nil;
-    [self preItemForVisibleCells];
-
     if (self.willBeginDragging) {
         self.willBeginDragging(self);
     }
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
-    CGRect rect = CGRectMake(targetContentOffset->x, targetContentOffset->y, scrollView.frame.size.width, scrollView.frame.size.height);
-    self.visibleRect = NSStringFromCGRect(rect);
 
     if (self.willEndDragging) {
         self.willEndDragging(self);
