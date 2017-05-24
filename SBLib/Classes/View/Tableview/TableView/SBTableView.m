@@ -523,7 +523,7 @@
     cell.cellDetail = [sectionData.tableDataResult getItem:indexPath.row];
 
     //预加载
-    [self preLoadCell:cell atIndexPath:indexPath];
+    [self bindCellWhileEnd:cell atIndexPath:indexPath];
 
     //绑定数据
 	[cell bindCellData];
@@ -697,21 +697,20 @@
 
 
 //预加载
-- (void)preLoadCell:(UITableViewCell<SBTableViewCellDelegate> *)cell atIndexPath:(NSIndexPath *)indexPath {
+- (void)bindCellWhileEnd:(UITableViewCell<SBTableViewCellDelegate> *)cell atIndexPath:(NSIndexPath *)indexPath {
     if (!self.decelerating) {
-        if ([cell respondsToSelector:@selector(preItemData)]) {
-            [cell preItemData];
+        if ([cell respondsToSelector:@selector(cellEndDecelerating)]) {
+            [cell cellEndDecelerating];
         }
     }
     
 }
 
-- (void)preItemForVisibleCells {
+- (void)bindForVisibleCells {
     NSArray *visibleCells = [self visibleCells];
-    for (UICollectionViewCell<SBTableViewCellDelegate> *cell in visibleCells) {
-        if ([cell respondsToSelector:@selector(preItemData)]) {
-            [cell preItemData];
-        }
+    for (UITableViewCell<SBTableViewCellDelegate> *cell in visibleCells) {
+        NSIndexPath *indexPath = [self indexPathForCell:cell];
+        [self bindCellWhileEnd:cell atIndexPath:indexPath];
     }
 }
 
@@ -719,14 +718,14 @@
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     if (!decelerate) {
         //
-        [self preItemForVisibleCells];
+        [self bindForVisibleCells];
     }
 }
 
 /** view已经停止滚动 */
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     //加载可视cell
-    [self preItemForVisibleCells];
+    [self bindForVisibleCells];
     
     if (self.endDecelerating) {
         self.endDecelerating(self);

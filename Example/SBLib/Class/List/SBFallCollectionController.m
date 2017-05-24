@@ -16,8 +16,8 @@
 @end
 @implementation SBFallCollectionCell
 
-- (void)preItemData {
-    [super preItemData];
+- (void)cellEndDecelerating {
+    [super cellEndDecelerating];
 
     NSLog(@"%zd", self.indexPath.row);
 }

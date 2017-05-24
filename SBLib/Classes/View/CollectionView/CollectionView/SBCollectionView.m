@@ -209,12 +209,10 @@
     cell.itemDetail = itemDetail;
 
     //预加载
-    [self preLoadCell:cell atIndexPath:indexPath];
+    [self bindCellWhileEnd:cell atIndexPath:indexPath];
 
     //绑定数据
     [cell bindItemData];
-
-
 
     return cell;
 }
@@ -348,19 +346,19 @@
     [self loadDataforNextPage];
 }
 
-- (void)preItemForVisibleCells {
+- (void)bindForVisibleCells {
     NSArray *visibleCells = [self visibleCells];
     for (UICollectionViewCell<SBCollectionCellDelegate> *cell in visibleCells) {
         NSIndexPath *indexPath = [self indexPathForCell:cell];
-        [self preLoadCell:cell atIndexPath:indexPath];
+        [self bindCellWhileEnd:cell atIndexPath:indexPath];
     }
 }
 
 //预加载
-- (void)preLoadCell:(UICollectionViewCell<SBCollectionCellDelegate> *)cell atIndexPath:(NSIndexPath *)indexPath {
+- (void)bindCellWhileEnd:(UICollectionViewCell<SBCollectionCellDelegate> *)cell atIndexPath:(NSIndexPath *)indexPath {
     if (!self.decelerating) {
-        if ([cell respondsToSelector:@selector(preItemData)]) {
-            [cell preItemData];
+        if ([cell respondsToSelector:@selector(cellEndDecelerating)]) {
+            [cell cellEndDecelerating];
         }
     }
 }
@@ -375,14 +373,14 @@
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     if (!decelerate) {
         //
-        [self preItemForVisibleCells];
+        [self bindForVisibleCells];
     }
 }
 
 /** view已经停止滚动 */
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     //
-    [self preItemForVisibleCells];
+    [self bindForVisibleCells];
 
     if (self.endDecelerating) {
         self.endDecelerating(self);

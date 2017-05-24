@@ -48,6 +48,6 @@
 - (void)bindItemData;
 
 /** 绑定数据到单元格上的UI，单元格停止滑动时被调用 */
-- (void)preItemData;
+- (void)cellEndDecelerating;
 
 @end
