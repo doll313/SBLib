@@ -692,12 +692,32 @@
     [lastSectionData loadDataforNextPage];
 }
 
+
+- (void)preItemForVisibleCells {
+    NSArray *visibleCells = [self visibleCells];
+    for (UICollectionViewCell<SBTableViewCellDelegate> *cell in visibleCells) {
+        if ([cell respondsToSelector:@selector(preItemData)]) {
+            [cell preItemData];
+        }
+    }
+}
+
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if (!decelerate) {
+        //预加载可视的cell
+        [self preItemForVisibleCells];
+    }
+}
+
 /** view已经停止滚动 */
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     //加载下一页
     if (![scrollView isKindOfClass:[SBTableView class]]) {
         return;
     }
+
+    //预加载可视的cell
+    [self preItemForVisibleCells];
     
     if (self.endDecelerating) {
         self.endDecelerating(self);

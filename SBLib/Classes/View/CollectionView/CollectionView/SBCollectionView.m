@@ -20,6 +20,10 @@
 #import "SBCollectionView.h"            //Collcetion 控件
 #import "SBCollectionFlowLayout.h"
 
+
+@interface SBCollectionView()
+@end
+
 @implementation SBCollectionView
 
 
@@ -343,10 +347,26 @@
     [self loadDataforNextPage];
 }
 
+- (void)preItemForVisibleCells {
+    NSArray *visibleCells = [self visibleCells];
+    for (UICollectionViewCell<SBCollectionCellDelegate> *cell in visibleCells) {
+        if ([cell respondsToSelector:@selector(preItemData)]) {
+            [cell preItemData];
+        }
+    }
+}
+
 - (void)loadDataforNextPage {
     //最底部的表段数据
     SBCollectionData *lastSectionData = self.arrCollectionData[[self.arrCollectionData count] - 1];
     [lastSectionData loadDataforNextPage];
+}
+
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if (!decelerate) {
+        //预加载可视的cell
+        [self preItemForVisibleCells];
+    }
 }
 
 /** view已经停止滚动 */
@@ -355,7 +375,10 @@
     if (![scrollView isKindOfClass:[SBCollectionView class]]) {
         return;
     }
-    
+
+    //预加载可视的cell
+    [self preItemForVisibleCells];
+
     if (self.endDecelerating) {
         self.endDecelerating(self);
     } else {
