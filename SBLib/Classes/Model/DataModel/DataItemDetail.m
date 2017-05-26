@@ -33,6 +33,7 @@ static BOOL _data_item_detail_malloc = 0;
     
     if (nil != self) {
         self.dictData = [[NSMutableDictionary alloc] init];
+        self.attributeData = [[NSMutableDictionary alloc] init];
     }
     
     //调试数据内存
@@ -47,6 +48,7 @@ static BOOL _data_item_detail_malloc = 0;
 - (id)copyWithZone:(NSZone *)zone {
     DataItemDetail *itemCopy = [[DataItemDetail allocWithZone:zone]init];
     itemCopy.dictData = [self.dictData mutableCopy];
+    itemCopy.attributeData = [self.attributeData mutableCopy];
     return itemCopy;
 }
 
@@ -76,6 +78,7 @@ static BOOL _data_item_detail_malloc = 0;
     }
     
 #if !__has_feature(objc_arc)
+    [self.attributeData release];
     [self.dictData release];
     [super dealloc];
 #endif
@@ -97,6 +100,11 @@ static BOOL _data_item_detail_malloc = 0;
         NSObject *object = [detail getObject:key];
         [self setObject:object forKey:key];
     }
+
+    for (NSString *key in detail.attributeData.allKeys) {
+        NSObject *object = [detail getObject:key];
+        [self setObject:object forKey:key];
+    }
 }
 
 #pragma mark -
@@ -104,11 +112,6 @@ static BOOL _data_item_detail_malloc = 0;
 //设置数组
 - (BOOL)setArray:(NSArray *)array forKey:(NSString *)key {
     return [self setObject:array forKey:key];
-}
-
-/** 设定属性字符串值 */
-- (BOOL)setATTString:(NSAttributedString *)value forKey:(NSString *)key {
-    return [self setObject:value forKey:key];
 }
 
 /** 设定字符串值 */
@@ -178,16 +181,6 @@ static BOOL _data_item_detail_malloc = 0;
     }
     
     return [NSArray array];
-}
-
-/** 获取属性字符串值 */
-- (NSAttributedString *)getATTString:(NSString *)key {
-    NSAttributedString *value = (NSAttributedString *)[self getObject:key];
-    if (value && [value isKindOfClass:[NSAttributedString class]]) {
-        return value;
-    }
-    
-    return [[NSAttributedString alloc] initWithString:@""];
 }
 
 //获取字符串
@@ -319,6 +312,25 @@ static BOOL _data_item_detail_malloc = 0;
     return nil;
 }
 
+/** 设定属性字符串值 */
+- (BOOL)setATTString:(NSAttributedString *)value forKey:(NSString *)key {
+    if (value) {
+        [self.attributeData setObject:value forKey:key.lowercaseString];
+        return YES;
+    }
+    return NO;
+}
+
+/** 获取属性字符串值 */
+- (NSAttributedString *)getATTString:(NSString *)key {
+    NSObject *value = [self.attributeData objectForKey:key.lowercaseString];
+    if (value && [value isKindOfClass:[NSAttributedString class]]) {
+        return (NSAttributedString *)value;
+    }
+
+    return [[NSAttributedString alloc] initWithString:@""];
+}
+
 /** 删除一项 **/
 - (BOOL)removeObject:(NSString *)key {
     if (SBStringIsEmpty(key)) {
@@ -336,7 +348,7 @@ static BOOL _data_item_detail_malloc = 0;
         return 0;
     }
     
-    return [self.dictData count];
+    return [self.dictData count] + [self.attributeData count];
 }
 
 /** 是否存在键值对 */
@@ -346,6 +358,10 @@ static BOOL _data_item_detail_malloc = 0;
     }
     
     if (self.dictData[key.lowercaseString]) {
+        return YES;
+    }
+
+    if (self.attributeData[key.lowercaseString]) {
         return YES;
     }
     
@@ -374,6 +390,7 @@ static BOOL _data_item_detail_malloc = 0;
 /** 清除所有元素 */
 - (void)clear {
     [self.dictData removeAllObjects];
+    [self.attributeData removeAllObjects];
 }
 
 /** 调试接口，在console中打印出当前对象包含的元素 */
@@ -387,11 +404,17 @@ static BOOL _data_item_detail_malloc = 0;
     for (NSString *key in keys) {
         NSLog(@"Dump:  [%@] => %@", key, self.dictData[key.lowercaseString]);
     }
+
+    NSArray *keys2 = [self.attributeData allKeys];
+    for (NSString *key in keys2) {
+        NSLog(@"Dump:  [%@] => %@", key, self.attributeData[key.lowercaseString]);
+    }
 }
 
 /** 调试接口 */
 - (NSString *)whatInThis {
     NSArray *keys = [self.dictData allKeys];
+    NSArray *keys2 = [self.attributeData allKeys];
     
     NSString *what = @"====begin====\r\n";
     
@@ -404,6 +427,12 @@ static BOOL _data_item_detail_malloc = 0;
         } else {
             line = [NSString stringWithFormat:@"[%@] => %@\r\n", key, ob];
         }
+        what = [what stringByAppendingString:line];
+    }
+
+    for (NSString *key in keys2) {
+        id ob = self.dictData[key.lowercaseString];
+        NSString *line = [NSString stringWithFormat:@"[%@] => %@\r\n", key, ob];
         what = [what stringByAppendingString:line];
     }
     

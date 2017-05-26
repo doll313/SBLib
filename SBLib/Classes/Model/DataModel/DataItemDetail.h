@@ -30,6 +30,7 @@
 }
 
 @property (nonatomic, strong) NSMutableDictionary *dictData;     //数据
+@property (nonatomic, strong) NSMutableDictionary *attributeData;     //富文本数据 （不能反序列化）
 
 /**
  快速创建一个数据容器，推荐使用这个来初始化 

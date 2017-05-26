@@ -330,8 +330,16 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
             self.onDownload(self, downloadProgress);
         }
     } destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
-        //必须实现
-        return self.destination(targetPath, response);
+        //下载到目录
+        if (self.destination) {
+            return self.destination(targetPath, response);
+        }
+        else {
+            NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+            NSURL *destinationUrl = [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
+            return destinationUrl;
+        }
+
     } completionHandler:^(NSURLResponse * response, NSURL * filePath, NSError * error) {
         //下载地址赋值
         self.filePath = filePath;

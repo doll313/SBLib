@@ -69,12 +69,15 @@
         else if ([titleStr isEqualToString:@"refresh"]) {
             [tableView.ctrl sb_quickOpenCtrl:@"SBRefreshTableController"];
         }
+        else if ([titleStr isEqualToString:@"collection"]) {
+            [tableView.ctrl sb_quickOpenCtrl:@"SBFallCollectionController"];
+        }
+        else if ([titleStr isEqualToString:@"database"]) {
+            [tableView.ctrl sb_quickOpenCtrl:@"SBDbController"];
+        }
 
         else if ([titleStr isEqualToString:@"location"]) {
             [__self doLocation];
-        }
-        else if ([titleStr isEqualToString:@"collection"]) {
-            [tableView.ctrl sb_quickOpenCtrl:@"SBFallCollectionController"];
         }
     };
 
@@ -90,6 +93,7 @@
                             @"refresh",
                             @"location",
                             @"collection",
+                            @"database",
                             ];
 
     //单元格
