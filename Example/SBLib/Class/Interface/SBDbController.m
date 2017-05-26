@@ -61,7 +61,16 @@
     NSLog(@"设置\r\n");
     [detail dump];
 
+
     [[SBAppCoreInfo getCacheDB] setDetailValue:STORE_CACHE_USERINFO dataKey:@"detail" data:detail];
+
+
+    NSAttributedString *attr3 = [detail getATTString:@"a2"];
+    NSAttributedString *attr4 = [detail getATTString:@"a3"];
+
+
+    NSLog(@"%@", attr3);
+    NSLog(@"%@", attr4);
 }
 
 - (void)readInfo:(id)sender {
