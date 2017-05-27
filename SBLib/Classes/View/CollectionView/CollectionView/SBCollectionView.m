@@ -208,11 +208,11 @@
     cell.indexPath = indexPath;
     cell.itemDetail = itemDetail;
 
-    //预加载
-    [self bindCellWhileEnd:cell atIndexPath:indexPath];
-
     //绑定数据
     [cell bindItemData];
+
+    //滑动完毕
+    [self bindCellWhileEnd:cell atIndexPath:indexPath];
 
     return cell;
 }

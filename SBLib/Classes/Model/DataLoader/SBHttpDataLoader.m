@@ -97,7 +97,12 @@
 
     //下载到 地址
     self.httpTask.destination = ^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
-        return __self.destination(targetPath, response);
+        if (__self.destination) {
+            return __self.destination(targetPath, response);
+        }
+        NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+        NSURL *destinationUrl = [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
+        return destinationUrl;
     };
 }
 

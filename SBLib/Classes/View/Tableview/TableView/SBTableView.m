@@ -522,11 +522,11 @@
     cell.indexPath = indexPath;
     cell.cellDetail = [sectionData.tableDataResult getItem:indexPath.row];
 
-    //预加载
-    [self bindCellWhileEnd:cell atIndexPath:indexPath];
-
     //绑定数据
-	[cell bindCellData];
+    [cell bindCellData];
+
+    //滑动完毕
+    [self bindCellWhileEnd:cell atIndexPath:indexPath];
         
 	return cell;
 }
