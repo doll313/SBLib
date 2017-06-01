@@ -118,10 +118,6 @@
             [self.collectionView reloadData];
         }
     }
-    else {
-        //显示刷新样式
-        [self.collectionView reloadData];
-    }
 
     //发起请求
     [self.dataLoader stopLoading];
@@ -251,6 +247,9 @@
         }
     }
 
+    // 刷新表格
+    [self.collectionView reloadData];
+
     //是否有加载更多
     if (![self isLoadDataComplete]) {
         self.collectionView.mj_footer.hidden = NO;
@@ -272,9 +271,6 @@
             }
         }
     }
-    
-    // 刷新表格
-    [self.collectionView reloadData];
 }
 
 //加载完毕，并且这里的意思是没有后续数据

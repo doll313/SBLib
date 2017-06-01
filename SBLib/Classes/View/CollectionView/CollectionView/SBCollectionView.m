@@ -29,6 +29,8 @@
 - (id)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout {
     self = [super initWithFrame:frame collectionViewLayout:layout];
     self.backgroundColor = [UIColor clearColor];
+
+    self.preLoadCount = 5;
     
     self.flowLayout = layout;
     
@@ -228,13 +230,13 @@
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    SBCollectionData *sectonData = [self dataOfSection:section];
+    SBCollectionData *sectionData = [self dataOfSection:section];
     
-    assert(nil != sectonData);
+    assert(nil != sectionData);
     
-    NSUInteger rowCount = [sectonData.tableDataResult count];
+    NSUInteger rowCount = [sectionData.tableDataResult count];
     
-    SBTableDataStatus tableDataStatus = sectonData.httpStatus;
+    SBTableDataStatus tableDataStatus = sectionData.httpStatus;
     
     if (tableDataStatus == SBTableDataStatusNotStart) {
         //无加载情况，显示数等于数据个数 （多半是无网络请求的）
@@ -305,6 +307,15 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    //提前加载下一页
+    SBCollectionData *sectionData = [self dataOfSection:indexPath.section];
+    if ([self.arrCollectionData lastObject] == sectionData && SBTableDataStatusFinished == sectionData.httpStatus) {
+        NSInteger count = sectionData.tableDataResult.count;
+        if (count - indexPath.row < self.preLoadCount) {
+            [sectionData loadDataforNextPage];
+        }
+    }
+
     if (self.willDisplayCell) {
         self.willDisplayCell(self, cell, indexPath);
     }

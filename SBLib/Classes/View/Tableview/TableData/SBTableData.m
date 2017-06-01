@@ -271,6 +271,9 @@
             self.tableDataResult.maxCount = preListCount;
         }
     }
+
+    // 刷新表格
+    [self.tableView reloadData];
     
     //如果是下拉列表
     if (self.tableView.isRefreshType) {
@@ -279,9 +282,6 @@
             [self.tableView.mj_header endRefreshing];
         }
     }
-    
-    // 刷新表格
-    [self.tableView reloadData];
 }
 
 //加载完毕，并且这里的意思是没有后续数据

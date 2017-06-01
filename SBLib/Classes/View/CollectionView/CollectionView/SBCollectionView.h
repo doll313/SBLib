@@ -39,6 +39,9 @@
 //布局
 @property (nonatomic, strong) UICollectionViewLayout *flowLayout;
 
+//提前加载(滑动至底部x加载下一页) 默认5
+@property (nonatomic, assign) NSInteger preLoadCount;
+
 
 // 将要发起网络请求
 @property (nonatomic, copy) void(^willRequestData)(SBCollectionData *collectionData);

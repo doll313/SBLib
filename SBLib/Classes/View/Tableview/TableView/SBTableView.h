@@ -40,6 +40,9 @@
 // 将要发起网络请求
 @property (nonatomic, strong) NSMutableArray *arrTableData;                     //列表数据
 
+//提前加载(滑动至底部x加载下一页) 默认5
+@property (nonatomic, assign) NSInteger preLoadCount;
+
 // 将要发起网络请求
 @property (nonatomic, copy) void (^willRequestData)(SBTableData *tableViewData);
 // 发起网络请求
