@@ -29,8 +29,6 @@
 - (id)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout {
     self = [super initWithFrame:frame collectionViewLayout:layout];
     self.backgroundColor = [UIColor clearColor];
-
-    self.preLoadCount = 5;
     
     self.flowLayout = layout;
     
@@ -307,14 +305,6 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
-    //提前加载下一页
-    SBCollectionData *sectionData = [self dataOfSection:indexPath.section];
-    if ([self.arrCollectionData lastObject] == sectionData && SBTableDataStatusFinished == sectionData.httpStatus) {
-        NSInteger count = sectionData.tableDataResult.count;
-        if (count - indexPath.row < self.preLoadCount) {
-            [sectionData loadDataforNextPage];
-        }
-    }
 
     if (self.willDisplayCell) {
         self.willDisplayCell(self, cell, indexPath);

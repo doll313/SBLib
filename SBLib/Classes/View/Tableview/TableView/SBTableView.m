@@ -43,9 +43,6 @@
 - (id)initWithStyle:(BOOL)isGrouped {
 	self = [super initWithFrame:CGRectZero style:isGrouped ? UITableViewStyleGrouped : UITableViewStylePlain];
 
-    //默认提前加载
-    self.preLoadCount = 5;
-
     //列表数据
     self.arrTableData = [[NSMutableArray alloc] init];
     
@@ -492,15 +489,6 @@
 
 //绘制列表的背景色
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    //提前加载下一页
-    SBTableData *sectionData = [self dataOfSection:indexPath.section];
-    if ([self.arrTableData lastObject] == sectionData && SBTableDataStatusFinished == sectionData.httpStatus) {
-        NSInteger count = sectionData.tableDataResult.count;
-        if (count - indexPath.row < self.preLoadCount) {
-            [sectionData loadDataforNextPage];
-        }
-    }
-
     //判断是否有临时修改样式的需求，有的话使用返回的Class
     if(NULL != self.willDisplayRow){
         self.willDisplayRow(self, cell, indexPath);

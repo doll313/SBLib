@@ -52,7 +52,6 @@
     self.iCollectionView.ctrl = self;
     self.iCollectionView.isRefreshType = YES;
     self.iCollectionView.frame = self.view.bounds;
-    self.iCollectionView.preLoadCount = 0;
     [self.view addSubview:self.iCollectionView];
 
     UIImageView *headerView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"abc.png"]];
