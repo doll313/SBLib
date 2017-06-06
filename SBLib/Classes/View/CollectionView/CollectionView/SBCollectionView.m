@@ -331,22 +331,6 @@
 
 #pragma mark -
 #pragma mark 数据方法
-// 自动检测和加载最后一个表格数据段的下一页数据
-- (void)autoCheckAndLoadNextPage:(UIScrollView *)scrollView {
-    if (nil == self.arrCollectionData || [self.arrCollectionData count] < 1) {
-        return;
-    }
-    
-    //判断是否加载到底部
-    CGFloat cHeight = scrollView.contentSize.height + APPCONFIG_UI_TABLE_CELL_HEIGHT;
-    CGFloat cOffset = scrollView.contentOffset.y + scrollView.bounds.size.height;
-    if(!((cHeight - cOffset) < APPCONFIG_UNIT_LINE_WIDTH)){
-        return;
-    }
-
-    [self loadDataforNextPage];
-}
-
 - (void)bindForVisibleCells {
     NSArray *visibleCells = [self visibleCells];
     for (UICollectionViewCell<SBCollectionCellDelegate> *cell in visibleCells) {
@@ -385,9 +369,7 @@
 
     if (self.endDecelerating) {
         self.endDecelerating(self);
-    } else {
-        [self autoCheckAndLoadNextPage:scrollView];
-    }
+    } 
 }
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     if (self.willBeginDragging) {

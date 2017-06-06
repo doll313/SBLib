@@ -252,24 +252,9 @@
         }
     }
     
-    //1、又不能直接用result的count，资讯和组合的接口有可能是在receiveData之后才解析的数据
-    NSInteger preListCount = self.tableDataResult.count;
-    
-    //加载完毕
-    self.httpStatus = SBTableDataStatusFinished;
-    
     //接受数据，理论上是必实现的
 	if (self.tableView.receiveData) {
         self.tableView.receiveData(self.tableView, self, result);
-    }
-    
-    //判断返回是否有数据要放在receiveData之后
-    if (!result.hasError) {
-        //没有增加数据 说明加载完毕
-        BOOL noMoreData = (preListCount >= self.tableDataResult.count);
-        if (noMoreData) {
-            self.tableDataResult.maxCount = preListCount;
-        }
     }
 
     // 刷新表格
@@ -282,6 +267,9 @@
             [self.tableView.mj_header endRefreshing];
         }
     }
+
+    //加载完毕
+    self.httpStatus = SBTableDataStatusFinished;
 }
 
 //加载完毕，并且这里的意思是没有后续数据

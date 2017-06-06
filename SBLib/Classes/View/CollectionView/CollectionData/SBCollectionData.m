@@ -92,6 +92,7 @@
 
 //加载数据
 - (void)loadData {
+
     if(!self.collectionView) {
         return;
     }
@@ -208,68 +209,97 @@
 
 //网络请求回调
 - (void)dataLoader:(SBHttpDataLoader *)dataLoader onReceived:(DataItemResult *)result {
+
     //列表数据的状态
     self.isLoadDataOK = !result.hasError;
     self.tableDataResult.message = result.message;
-    
+
+    //整理数据
+    [self prepareData];
+
+    //更新数据
+    [self updateData:result];
+
+    //头部
+    [self updateHeader];
+
+    //尾部
+    [self updateFooter];
+
+    //
+    self.httpStatus = SBTableDataStatusFinished;
+}
+
+//整理数据
+- (void)prepareData {
     //如果是下拉列表
     if (self.collectionView.isRefreshType) {
         //下拉列表下拉请求，加载成功
         if (self.pageAt == 1) {
             //数据如果有问题，则还是上一次的数据
             if (self.isLoadDataOK) {
-                
+
                 self.lastUpdateTime = [NSDate new];
-                
+
                 //只留下section 0 号
                 for (NSInteger i = self.collectionView.arrCollectionData.count; i > 0; i--) {
                     [self.collectionView removeSection:i];
                 }
-                
+
                 [self.tableDataResult clear];
             }
         }
     }
-    
-    //加载完毕
-    self.httpStatus = SBTableDataStatusFinished;
-    
+}
+
+//更新数据
+- (void)updateData:(DataItemResult *)result {
     //接受数据，理论上是必实现的
     if (self.collectionView.receiveData) {
         self.collectionView.receiveData(self.collectionView, self, result);
     }
-    
+
+    if (self.pageAt > 1) {
+        [self.collectionView reloadData];
+    }
+}
+
+//更新footer
+- (void)updateHeader {
     //如果是下拉列表
     if (self.collectionView.isRefreshType) {
         if (self.pageAt == 1) {
+            [self.collectionView reloadData];
+
             // 拿到当前的下拉刷新控件，结束刷新状态
             [self.collectionView.mj_header endRefreshing];
         }
     }
+}
 
-    // 刷新表格
-    [self.collectionView reloadData];
-
-    //是否有加载更多
-    if (![self isLoadDataComplete]) {
-        self.collectionView.mj_footer.hidden = NO;
-        [self.collectionView.mj_footer resetNoMoreData];
-    }
-    else {
-        if (self.tableDataResult.count == 0) {
-            self.collectionView.mj_footer.hidden = YES;            //错误或空
-        }
-        else {
+//更新footer
+- (void)updateFooter {
+    if (self.tableDataResult.count > 0) {
+        //是否有加载更多
+        if ([self isLoadDataComplete]) {
             if (self.hasFinishCell) {
                 //完成
                 self.collectionView.mj_footer.hidden = NO;
                 [self.collectionView.mj_footer endRefreshingWithNoMoreData];
             }
             else {
-                //不显示完成
                 self.collectionView.mj_footer.hidden = YES;            //
+                [self.collectionView.mj_footer endRefreshing];
             }
         }
+        else {
+            self.collectionView.mj_footer.hidden = NO;
+            [self.collectionView.mj_footer resetNoMoreData];
+        }
+    }
+    else {
+        self.collectionView.mj_footer.hidden = YES;            //
+        [self.collectionView.mj_footer endRefreshing];
     }
 }
 
