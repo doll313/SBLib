@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'SBLib'
-  s.version          = '0.6.9'
+  s.version          = '0.7.0'
   s.summary          = 'A short description of SBLib.'
 
   s.description      = <<-DESC
@@ -28,7 +28,6 @@ Pod::Spec.new do |s|
   s.dependency 'FMDB'
   s.dependency 'MBProgressHUD'
   s.dependency 'MJRefresh'
-  s.dependency 'SDWebImage'
 
 
 non_arc_files = 'SBLib/Classes/STKeyChain/STKeychain.*','SBLib/Classes/Util/SBDownloadFilter.*'

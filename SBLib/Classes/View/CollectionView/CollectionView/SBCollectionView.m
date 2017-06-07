@@ -211,9 +211,6 @@
     //绑定数据
     [cell bindItemData];
 
-    //滑动完毕
-    [self bindCellWhileEnd:cell atIndexPath:indexPath];
-
     return cell;
 }
 
@@ -331,22 +328,6 @@
 
 #pragma mark -
 #pragma mark 数据方法
-- (void)bindForVisibleCells {
-    NSArray *visibleCells = [self visibleCells];
-    for (UICollectionViewCell<SBCollectionCellDelegate> *cell in visibleCells) {
-        NSIndexPath *indexPath = [self indexPathForCell:cell];
-        [self bindCellWhileEnd:cell atIndexPath:indexPath];
-    }
-}
-
-//预加载
-- (void)bindCellWhileEnd:(UICollectionViewCell<SBCollectionCellDelegate> *)cell atIndexPath:(NSIndexPath *)indexPath {
-    if (!self.decelerating) {
-        if ([cell respondsToSelector:@selector(cellEndDecelerating)]) {
-            [cell cellEndDecelerating];
-        }
-    }
-}
 
 - (void)loadDataforNextPage {
     //最底部的表段数据
@@ -356,17 +337,11 @@
 
 // called on finger up if the user dragged. decelerate is true if it will continue moving afterwards
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    if (!decelerate) {
-        //
-        [self bindForVisibleCells];
-    }
+
 }
 
 /** view已经停止滚动 */
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    //
-    [self bindForVisibleCells];
-
     if (self.endDecelerating) {
         self.endDecelerating(self);
     } 

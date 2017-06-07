@@ -257,9 +257,6 @@
         self.tableView.receiveData(self.tableView, self, result);
     }
 
-    // 刷新表格
-    [self.tableView reloadData];
-    
     //如果是下拉列表
     if (self.tableView.isRefreshType) {
         if (self.pageAt == 1) {
@@ -270,6 +267,9 @@
 
     //加载完毕
     self.httpStatus = SBTableDataStatusFinished;
+
+    // 刷新表格
+    [self.tableView reloadData];
 }
 
 //加载完毕，并且这里的意思是没有后续数据

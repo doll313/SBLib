@@ -524,9 +524,6 @@
 
     //绑定数据
     [cell bindCellData];
-
-    //滑动完毕
-    [self bindCellWhileEnd:cell atIndexPath:indexPath];
         
 	return cell;
 }
@@ -689,44 +686,20 @@
     }
     
     //最底部的表段数据
-    SBTableData *lastSectionData = self.arrTableData[[self.arrTableData count] - 1];
+    SBTableData *lastSectionData = [self.arrTableData lastObject];
 
     //加载完毕后判断状态
     [lastSectionData loadDataforNextPage];
 }
 
 
-//预加载
-- (void)bindCellWhileEnd:(UITableViewCell<SBTableViewCellDelegate> *)cell atIndexPath:(NSIndexPath *)indexPath {
-    if (!self.decelerating && !self.dragging) {
-        if ([cell respondsToSelector:@selector(cellEndDecelerating)]) {
-            [cell cellEndDecelerating];
-        }
-    }
-    
-}
-
-- (void)bindForVisibleCells {
-    NSArray *visibleCells = [self visibleCells];
-    for (UITableViewCell<SBTableViewCellDelegate> *cell in visibleCells) {
-        NSIndexPath *indexPath = [self indexPathForCell:cell];
-        [self bindCellWhileEnd:cell atIndexPath:indexPath];
-    }
-}
-
 // called on finger up if the user dragged. decelerate is true if it will continue moving afterwards
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    if (!decelerate) {
-        //
-        [self bindForVisibleCells];
-    }
+
 }
 
 /** view已经停止滚动 */
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    //加载可视cell
-    [self bindForVisibleCells];
-    
     if (self.endDecelerating) {
         self.endDecelerating(self);
     } else {

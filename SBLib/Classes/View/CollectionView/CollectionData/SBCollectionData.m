@@ -225,9 +225,6 @@
 
     //尾部
     [self updateFooter];
-
-    //
-    self.httpStatus = SBTableDataStatusFinished;
 }
 
 //整理数据
@@ -258,6 +255,9 @@
     if (self.collectionView.receiveData) {
         self.collectionView.receiveData(self.collectionView, self, result);
     }
+
+    //
+    self.httpStatus = SBTableDataStatusFinished;
 
     if (self.pageAt > 1) {
         [self.collectionView reloadData];
