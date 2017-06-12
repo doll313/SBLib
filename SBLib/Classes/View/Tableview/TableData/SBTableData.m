@@ -130,8 +130,8 @@
     if (self.pageAt == 1) {
         //如果是下拉列表
         if (!self.tableView.isRefreshType) {
-            //删除老数据
-            [self.tableDataResult clear];
+
+            [self resetTable];
             
             //显示刷新样式
             [self.tableView reloadData];
@@ -146,6 +146,16 @@
     self.dataLoader = self.tableView.requestData(self);
 }
 
+//清除数据
+- (void)resetTable {
+    //只留下section 0 号
+    for (NSInteger i = self.tableView.arrTableData.count; i > 0; i--) {
+        [self.tableView removeSection:i];
+    }
+
+    //删除老数据
+    [self.tableDataResult clear];
+}
 
 //停止加载数据
 - (void)stopLoadData {
@@ -241,13 +251,8 @@
             if (self.isLoadDataOK) {
                 
                 self.lastUpdateTime = [NSDate new];
-                
-                //只留下section 0 号
-                for (NSInteger i = self.tableView.arrTableData.count; i > 0; i--) {
-                    [self.tableView removeSection:i];
-                }
-                
-                [self.tableDataResult clear];
+
+                [self resetTable];
             }
         }
     }

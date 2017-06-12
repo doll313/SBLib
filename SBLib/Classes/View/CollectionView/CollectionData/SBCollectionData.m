@@ -112,10 +112,9 @@
     if (self.pageAt == 1) {
         //如果是下拉列表
         if (!self.collectionView.isRefreshType) {
-            //删除老数据
-            [self.tableDataResult clear];
-            
             //显示刷新样式
+            [self resetCollectionView];
+
             [self.collectionView reloadData];
         }
     }
@@ -125,6 +124,16 @@
     self.dataLoader = self.collectionView.requestData(self);
 }
 
+
+//重置列表
+- (void)resetCollectionView {
+    //只留下section 0 号
+    for (NSInteger i = self.collectionView.arrCollectionData.count; i > 0; i--) {
+        [self.collectionView removeSection:i];
+    }
+
+    [self.tableDataResult clear];
+}
 
 //停止加载数据
 - (void)stopLoadData {
@@ -237,13 +246,6 @@
             if (self.isLoadDataOK) {
 
                 self.lastUpdateTime = [NSDate new];
-
-                //只留下section 0 号
-                for (NSInteger i = self.collectionView.arrCollectionData.count; i > 0; i--) {
-                    [self.collectionView removeSection:i];
-                }
-
-                [self.tableDataResult clear];
             }
         }
     }
@@ -259,8 +261,14 @@
     //
     self.httpStatus = SBTableDataStatusFinished;
 
-    if (self.pageAt > 1) {
+    //这里如果是下拉  第一页的时候  之前已经reloaddata了
+    if (!self.collectionView.isRefreshType) {
         [self.collectionView reloadData];
+    }
+    else {
+        if (self.pageAt > 1) {
+            [self.collectionView reloadData];
+        }
     }
 }
 

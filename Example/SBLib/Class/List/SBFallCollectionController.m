@@ -16,12 +16,6 @@
 @end
 @implementation SBFallCollectionCell
 
-- (void)cellEndDecelerating {
-    [super cellEndDecelerating];
-
-   // NSLog(@"%zd", self.indexPath.row);
-}
-
 - (void)bindItemData {
     [super bindItemData];
 
@@ -50,7 +44,6 @@
     //
     self.iCollectionView = [[SBCollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:f];
     self.iCollectionView.ctrl = self;
-    self.iCollectionView.isRefreshType = YES;
     self.iCollectionView.frame = self.view.bounds;
     [self.view addSubview:self.iCollectionView];
 

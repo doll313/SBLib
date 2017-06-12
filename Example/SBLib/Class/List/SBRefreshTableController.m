@@ -25,7 +25,7 @@
     //
     self.iTable = [[SBTableView alloc] initWithStyle:NO];
     self.iTable.ctrl = self;
-    self.iTable.isRefreshType = YES;
+//    self.iTable.isRefreshType = YES;
     self.iTable.frame = self.view.bounds;
     [self.view addSubview:self.iTable];
 

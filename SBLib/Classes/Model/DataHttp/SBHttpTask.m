@@ -79,7 +79,7 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     self.HTTPMethod = request.HTTPMethod;
     self.delegate = delegate;
 
-    //进入queue
+    //进入queue       
     SBHttpTaskQueue *queue = [SBHttpTaskQueue sharedSBHttpTaskQueue];
     [queue addOperation:self];
 
