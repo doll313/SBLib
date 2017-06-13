@@ -246,6 +246,8 @@
             if (self.isLoadDataOK) {
 
                 self.lastUpdateTime = [NSDate new];
+
+                [self resetCollectionView];
             }
         }
     }
