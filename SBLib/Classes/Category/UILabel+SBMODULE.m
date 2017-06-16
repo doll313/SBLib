@@ -12,12 +12,11 @@
 
 /** 常用单元格上的标签样式 */
 - (void)sb_cellLabel {
-    self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.font = [UIFont systemFontOfSize:__SB_FONT_TABLE_DEFAULT_TIPS];
     self.textAlignment = NSTextAlignmentCenter;
-    self.backgroundColor = [UIColor clearColor];
+//    self.backgroundColor = [UIColor clearColor];
     self.textColor = __SB_COLOR_TABLE_DEFAULT_TIPS;
-    self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+//    self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 }
 
 @end

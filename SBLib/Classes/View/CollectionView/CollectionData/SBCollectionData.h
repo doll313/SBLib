@@ -58,6 +58,9 @@
 //刷新数据
 - (void)refreshData;
 
+//替换数据
+- (void)replaceData;
+
 //加载数据
 - (void)loadData;
 

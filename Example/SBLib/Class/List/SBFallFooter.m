@@ -41,13 +41,13 @@
 
     switch (state) {
         case MJRefreshStateIdle:
-            self.label.text = @"abc…";
+            self.label.text = @"普通闲置状态…";
             break;
         case MJRefreshStateRefreshing:
-            self.label.text = @"123…";
+            self.label.text = @"正在刷新中的状态…";
             break;
         case MJRefreshStateNoMoreData:
-            self.label.text = @"9999999!";
+            self.label.text = @"所有数据加载完毕，没有更多的数据了!!";
             break;
         default:
             break;

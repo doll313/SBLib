@@ -22,6 +22,11 @@
 
     self.view.backgroundColor = [UIColor whiteColor];
 
+
+    UIBarButtonItem *i1 =[[UIBarButtonItem alloc] initWithTitle:@"刷新" style:UIBarButtonItemStylePlain target:self action:@selector(refresh:)];
+    UIBarButtonItem *i2 =[[UIBarButtonItem alloc] initWithTitle:@"替换" style:UIBarButtonItemStylePlain target:self action:@selector(replace:)];
+    self.navigationItem.rightBarButtonItems = @[i1, i2];
+
     //
     self.iTable = [[SBTableView alloc] initWithStyle:NO];
     self.iTable.ctrl = self;
@@ -30,7 +35,15 @@
     [self.view addSubview:self.iTable];
 
     self.iTable.requestData = ^SBHttpDataLoader*(SBTableData *tableViewData) {
-        return [[SBHttpDataLoader alloc] initWithURL:@"http://www.weather.com.cn/data/cityinfo/101010100.html" httpMethod:@"GET" delegate:tableViewData];
+        if (tableViewData.tag == 0) {
+            return [[SBHttpDataLoader alloc] initWithURL:@"http://www.weather.com.cn/data/cityinfo/101010100.html" httpMethod:@"GET" delegate:tableViewData];
+        }
+        else if (tableViewData.tag == 1) {
+            return [[SBHttpDataLoader alloc] initWithURL:@"http://www.weather.com.cn/data/cityinfo/101010200.html" httpMethod:@"GET" delegate:tableViewData];
+        }
+        else {
+            return [[SBHttpDataLoader alloc] initWithURL:@"http://www.weather.com.cn/data/cityinfo/101010300.html" httpMethod:@"GET" delegate:tableViewData];
+        }
     };
 
     self.iTable.receiveData = ^(SBTableView *tableView, SBTableData *tableViewData, DataItemResult *result) {
@@ -73,4 +86,15 @@
     [sectionData refreshData];
 }
 
+- (void)refresh:(id)sender {
+    SBTableData *cData = [self.iTable dataOfSection:0];
+    cData.tag = 1;
+    [cData refreshData];
+}
+
+- (void)replace:(id)sender {
+    SBTableData *cData = [self.iTable dataOfSection:0];
+    cData.tag = 2;
+    [cData replaceData];
+}
 @end

@@ -108,6 +108,38 @@
     }
 }
 
+//替换数据
+- (void)replaceData {
+    //
+    if (!self.tableView.requestData) {
+        return;
+    }
+
+    //数据不在加载状态
+    if (self.httpStatus == SBTableDataStatusLoading) {
+        return;
+    }
+
+    void (^replaceBlock)() = ^void(){
+        //从第一页开始
+        self.pageAt = 1;
+
+        //将要发起请求
+        if (self.tableView.willRequestData) {
+            self.tableView.willRequestData(self);
+        }
+
+        [self.dataLoader stopLoading];
+        self.dataLoader = self.tableView.requestData(self);
+    };
+
+    if ([NSThread currentThread] != [NSThread mainThread]) {
+        dispatch_sync(dispatch_get_main_queue(), replaceBlock);
+    }else{
+        replaceBlock();
+    }
+}
+
 //加载数据
 - (void)loadData {
 	if(!self.tableView) {
@@ -242,18 +274,14 @@
     //列表数据的状态
     self.isLoadDataOK = !result.hasError;
     self.tableDataResult.message = result.message;
-    
-    //如果是下拉列表
-    if (self.tableView.isRefreshType) {
-        //下拉列表下拉请求，加载成功
-        if (self.pageAt == 1 && self == self.tableView.arrTableData.firstObject) {
-            //数据如果有问题，则还是上一次的数据
-            if (self.isLoadDataOK) {
-                
-                self.lastUpdateTime = [NSDate new];
 
-                [self resetTable];
-            }
+    if (self.pageAt == 1 && self == self.tableView.arrTableData.firstObject) {
+        //数据如果有问题，则还是上一次的数据
+        if (self.isLoadDataOK) {
+            
+            self.lastUpdateTime = [NSDate new];
+
+            [self resetTable];
         }
     }
     

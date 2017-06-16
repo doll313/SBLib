@@ -130,7 +130,7 @@
         
     //加载状态，显示加载样式
     if (SBTableDataStatusLoading == sectionData.httpStatus && indexPath.row >= [sectionData.tableDataResult count]) {
-        return CGSizeMake(width, APPCONFIG_UI_TABLE_CELL_HEIGHT);
+        return CGSizeMake(width, 1);
     }
     //数据空 或 错误
     else if (rowCount == 0 && sectionData.pageAt == 1) {

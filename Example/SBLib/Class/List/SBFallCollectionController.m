@@ -38,6 +38,10 @@
 
     self.view.backgroundColor = [UIColor whiteColor];
 
+    UIBarButtonItem *i1 =[[UIBarButtonItem alloc] initWithTitle:@"刷新" style:UIBarButtonItemStylePlain target:self action:@selector(refresh:)];
+    UIBarButtonItem *i2 =[[UIBarButtonItem alloc] initWithTitle:@"替换" style:UIBarButtonItemStylePlain target:self action:@selector(replace:)];
+
+    self.navigationItem.rightBarButtonItems = @[i1, i2];
     SBWS(__self)
 
     SBFallLayout *f = [[SBFallLayout alloc] init];
@@ -56,7 +60,16 @@
 
     //请求数据
     self.iCollectionView.requestData = ^(SBCollectionData *collectionData) {
-        return [[SBHttpDataLoader alloc] initWithURL:@"http://www.weather.com.cn/data/cityinfo/101010100.html" httpMethod:@"GET" delegate:collectionData];
+        if (collectionData.tag == 0) {
+            return [[SBHttpDataLoader alloc] initWithURL:@"http://www.weather.com.cn/data/cityinfo/101010100.html" httpMethod:@"GET" delegate:collectionData];
+        }
+        else if (collectionData.tag == 1) {
+            return [[SBHttpDataLoader alloc] initWithURL:@"http://www.weather.com.cn/data/cityinfo/101010200.html" httpMethod:@"GET" delegate:collectionData];
+        }
+        else {
+            return [[SBHttpDataLoader alloc] initWithURL:@"http://www.weather.com.cn/data/cityinfo/101010300.html" httpMethod:@"GET" delegate:collectionData];
+        }
+
     };
 
     //接受数据
@@ -129,5 +142,18 @@
     [self.iCollectionView addSectionWithData:sectionData];
 
     [sectionData refreshData];
+}
+
+
+- (void)refresh:(id)sender {
+    SBCollectionData *cData = [self.iCollectionView dataOfSection:0];
+    cData.tag = 1;
+    [cData refreshData];
+}
+
+- (void)replace:(id)sender {
+    SBCollectionData *cData = [self.iCollectionView dataOfSection:0];
+    cData.tag = 2;
+    [cData replaceData];
 }
 @end
