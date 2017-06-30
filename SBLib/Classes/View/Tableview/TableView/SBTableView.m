@@ -106,12 +106,13 @@
 /** 撑满列表的单元格高度 */
 - (CGFloat)fullCellHeight {
     CGFloat tableHeight = CGRectGetHeight(self.bounds);
+    tableHeight = tableHeight - self.contentInset.top - self.contentInset.bottom;
     CGFloat tableHeaderHeight = CGRectGetHeight(self.tableHeaderView.bounds);
     if (tableHeight - tableHeaderHeight >= APPCONFIG_UI_TABLE_CELL_HEIGHT) {
         //撑满屏幕
-        return tableHeight - tableHeaderHeight + APPCONFIG_UNIT_LINE_WIDTH;
+        return tableHeight - tableHeaderHeight;
     } else {
-        return tableHeight + APPCONFIG_UNIT_LINE_WIDTH;
+        return tableHeight;
     }
 }
 //单元格高

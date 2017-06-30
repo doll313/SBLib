@@ -46,9 +46,6 @@
 //UIView---->UIImage
 + (UIImage *)sb_creatImageByView:(UIView *)view;
 
-//根据code绘制图片
-+ (UIImage *)sb_imageFromBar:(NSString *)barcode;
-
 //压缩内存
 - (UIImage *)sb_zipImage:(CGFloat)maxRam;
 

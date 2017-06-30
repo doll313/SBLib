@@ -70,6 +70,12 @@
 /** 获取int值 */
 - (NSInteger)getInt:(NSString *)key;
 
+/** 设定long值 */
+- (BOOL)setLong:(long)value forKey:(NSString *)key;
+
+/** 获取long值 */
+- (long)getLong:(NSString *)key;
+
 /** 设定float值 */
 - (BOOL)setFloat:(float)value forKey:(NSString *)key;
 

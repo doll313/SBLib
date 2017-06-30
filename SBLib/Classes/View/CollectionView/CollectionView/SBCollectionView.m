@@ -126,7 +126,7 @@
     NSUInteger rowCount = [sectionData.tableDataResult count];
     
     CGFloat width = CGRectGetWidth(collectionView.bounds);
-    CGFloat height = CGRectGetHeight(collectionView.bounds);
+    CGFloat height = CGRectGetHeight(collectionView.bounds) - self.contentInset.top - self.contentInset.bottom;
         
     //加载状态，显示加载样式
     if (SBTableDataStatusLoading == sectionData.httpStatus && indexPath.row >= [sectionData.tableDataResult count]) {
@@ -328,7 +328,6 @@
 
 #pragma mark -
 #pragma mark 数据方法
-
 - (void)loadDataforNextPage {
     //最底部的表段数据
     SBCollectionData *lastSectionData = self.arrCollectionData[[self.arrCollectionData count] - 1];

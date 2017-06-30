@@ -169,31 +169,6 @@
     
     return img;
 }
-/**绘制吧的头像*/
-+ (UIImage *)sb_imageFromBar:(NSString *)barcode
-{
-    CGFloat board = __SB_BOARD_BARPROTRAIT;
-    CGFloat factor = [UIScreen mainScreen].scale;
-    CGRect rect = CGRectMake( 0, 0, board, board);
-    UIGraphicsBeginImageContextWithOptions(rect.size, NO, factor);
-    CGContextRef contextRef = UIGraphicsGetCurrentContext();
-    
-    UIColor *color = __SB_COLOR_BARPROTRAIT_BG;
-    CGContextSetFillColorWithColor(contextRef, color.CGColor);
-    CGContextFillRect(contextRef, rect);
-    
-    CGContextSetFillColorWithColor(contextRef, [UIColor whiteColor].CGColor);
-    UIFont *font = [UIFont boldSystemFontOfSize:__SB_FONT_BARPROTRAIT];
-    CGSize stringSize = [barcode sb_sizeWithFont:font constrainedToSize:rect.size lineBreakMode:NSLineBreakByClipping];
-    stringSize.height = ceilf(stringSize.height);
-    stringSize.width = ceilf(stringSize.width);
-    CGFloat y = (rect.size.height - stringSize.height)/2.0;
-    CGRect stringRect = CGRectMake(0, y, rect.size.width, stringSize.height);
-    [barcode drawInRect:stringRect withFont:font lineBreakMode:NSLineBreakByClipping alignment:NSTextAlignmentCenter];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return  image;
-}
 
 //压缩内存
 - (UIImage *)sb_zipImage:(CGFloat)maxRam {
