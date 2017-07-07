@@ -18,6 +18,8 @@
  */
 
 #import "SBTitleCell.h"
+#import "SBCellLabel.h"
+#import "UIView+SBMODULE.h"
 
 CGFloat const SBTitleCellHeight = 50.0f;
 CGFloat const SBTitleSubtitleFont = 13.0f;      //副标题字体

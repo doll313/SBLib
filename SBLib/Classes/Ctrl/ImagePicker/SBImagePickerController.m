@@ -19,6 +19,8 @@
 
 #import "SBImagePickerController.h"
 #import "SBImageEditorController.h"
+#import "UIAlertView+SB.h"
+#import "UIImage+SBMODULE.h"
 
 @interface SBImagePickerController()
 

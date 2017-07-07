@@ -9,6 +9,7 @@
 #import "SBURLAction.h"
 #import <objc/runtime.h>
 #import "SBExceptionLog.h"
+#import "NSString+SBMODULE.h"
 
 //是否正在有界面开启的动画
 static BOOL sbIsCtrlAnimating = NO;

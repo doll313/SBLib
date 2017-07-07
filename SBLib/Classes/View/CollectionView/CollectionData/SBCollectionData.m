@@ -18,7 +18,14 @@
  */
 
 #import "SBCollectionData.h"        //Collection数据
+#import "SBCollectionView.h"
 #import "SBCollectionFooter.h"          //底部
+#import "SBErrorTableCell.h"
+#import "SBEmptyTableCell.h"
+
+#import "SBAppCoreInfo.h"             //应用信息
+#import "DataAppCacheDB.h"          //缓存数据库
+#import "STORE.h"
 
 @implementation SBCollectionData
 

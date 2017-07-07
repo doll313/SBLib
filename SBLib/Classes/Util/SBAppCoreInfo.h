@@ -19,17 +19,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SBObjectSingleton.h"
-
-/** 有关内存泄漏的调试信息 */
-#define DEBUG_MALLOC_FOR_CTRL             @"DEBUG_MALLOC_FOR_CTRL" // 打印 界面 资源释放和分配的情况
-#define DEBUG_MALLOC_FOR_TABLE_CELL             @"DEBUG_MALLOC_FOR_TABLE_CELL" // 打印 单元格 资源释放和分配的情况
-#define DEBUG_MALLOC_FOR_COLLECTION_CELL             @"DEBUG_MALLOC_FOR_COLLECTION_CELL" // 打印 单元格 资源释放和分配的情况
-#define DEBUG_MALLOC_FOR_DATA_ITEM              @"DEBUG_MALLOC_FOR_DATA_ITEM"  // 打印 DataItemDetail DataItemResult 资源释放和分配的情况
-
-/** 其他自定义调试信息 */
-#define DEBUG_HTTP_REQUEST_URL_PRINT            @"DEBUG_HTTP_REQUEST_URL_PRINT"  // 打印 HTTP 请求的网址
-#define DEBUG_HTTP_RECIEVE_RAM                  @"DEBUG_HTTP_RECIEVE_RAM"  // 打印 HTTP 请求的包的大小
-#define DEBUG_LOG_CLICK_EVENT                   @"DEBUG_LOG_CLICK_EVENT"  //统计点打印
+#import "DataItemDetail.h"
 
 @class DataAppCacheDB;
 @class DataAppCoreDB;

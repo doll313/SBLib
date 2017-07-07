@@ -7,6 +7,7 @@
 //
 
 #import "SBDataCollectionCell.h"        //Collocation 默认单元格
+#import "UILabel+SBMODULE.h"
 
 
 static int _item_alloc_count = 0;

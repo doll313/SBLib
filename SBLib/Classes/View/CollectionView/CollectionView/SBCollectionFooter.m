@@ -7,6 +7,7 @@
 //
 
 #import "SBCollectionFooter.h"          //底部
+#import "UILabel+SBMODULE.h"
 
 @interface SBCollectionFooter()
 @property (weak, nonatomic) UILabel *label;

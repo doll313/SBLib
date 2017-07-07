@@ -19,8 +19,8 @@
 
 #import "SBAppCoreInfo.h"
 
-#include <sys/utsname.h>
-
+#import "STORE.h"
+#import "SBExceptionLog.h"
 #import "SBFileManager.h"
 #import "DataAppCacheDB.h"
 #import "DataAppCoreDB.h"
@@ -30,7 +30,8 @@
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import <CoreTelephony/CTCarrier.h>
 
-//for mac
+//
+#include <sys/utsname.h>
 #include <sys/socket.h>
 #include <sys/sysctl.h>
 #include <net/if.h>

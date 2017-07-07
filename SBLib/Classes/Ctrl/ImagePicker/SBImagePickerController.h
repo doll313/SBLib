@@ -20,6 +20,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "SBURLAction.h"
 
 
 /** 进入相册或者拍照的 url */

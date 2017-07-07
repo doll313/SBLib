@@ -24,11 +24,9 @@
 #endif
 
 #import "SBTableView.h"
-#import "SBDataTableCell.h"
-#import "SBAppCoreInfo.h"         //应用
-#import "DataAppCacheDB.h"      //缓存数据库
-#import "SBLoadingTableCell.h"
 #import "MJRefresh.h"       //下拉表头
+#import "SBDataTableCell.h"
+#import "SBLoadingTableCell.h"
 
 @implementation SBTableView
 

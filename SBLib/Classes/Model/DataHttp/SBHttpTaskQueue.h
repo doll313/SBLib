@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SBObjectSingleton.h"
 
 /** 网络请求队列 **/
 @interface SBHttpTaskQueue : NSOperationQueue

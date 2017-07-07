@@ -23,7 +23,7 @@
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F598195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F596195388D20070C39A /* InfoPlist.strings */; };
 		6003F59A195388D20070C39A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F599195388D20070C39A /* main.m */; };
-		6003F59E195388D20070C39A /* SBAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F59D195388D20070C39A /* SBAppDelegate.m */; };
+		6003F59E195388D20070C39A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F59D195388D20070C39A /* AppDelegate.m */; };
 		6003F5A7195388D20070C39A /* SBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5A6195388D20070C39A /* SBViewController.m */; };
 		6003F5A9195388D20070C39A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5A8195388D20070C39A /* Images.xcassets */; };
 		6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F5AF195388D20070C39A /* XCTest.framework */; };
@@ -48,6 +48,7 @@
 /* Begin PBXFileReference section */
 		091F89E0DF6F891916169780 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		44789C421EE21AF36A9959FB /* Pods-SBLib_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SBLib_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SBLib_Example/Pods-SBLib_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		5F12EF511F0F750F0072883A /* SBExample-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SBExample-Prefix.pch"; sourceTree = "<group>"; };
 		5F91A5701ED7F1D600A391D1 /* SBDbController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBDbController.h; sourceTree = "<group>"; };
 		5F91A5711ED7F1D600A391D1 /* SBDbController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBDbController.m; sourceTree = "<group>"; };
 		5F9C7CED1E9E1D1F0036A104 /* SBFallCollectionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBFallCollectionController.h; sourceTree = "<group>"; };
@@ -76,9 +77,8 @@
 		6003F595195388D20070C39A /* SBLib-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SBLib-Info.plist"; sourceTree = "<group>"; };
 		6003F597195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6003F599195388D20070C39A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		6003F59B195388D20070C39A /* SBLib-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SBLib-Prefix.pch"; sourceTree = "<group>"; };
-		6003F59C195388D20070C39A /* SBAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBAppDelegate.h; sourceTree = "<group>"; };
-		6003F59D195388D20070C39A /* SBAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SBAppDelegate.m; sourceTree = "<group>"; };
+		6003F59C195388D20070C39A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		6003F59D195388D20070C39A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		6003F5A5195388D20070C39A /* SBViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBViewController.h; sourceTree = "<group>"; };
 		6003F5A6195388D20070C39A /* SBViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SBViewController.m; sourceTree = "<group>"; };
 		6003F5A8195388D20070C39A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -209,9 +209,10 @@
 		6003F593195388D20070C39A /* Example for SBLib */ = {
 			isa = PBXGroup;
 			children = (
+				5F12EF511F0F750F0072883A /* SBExample-Prefix.pch */,
 				5FB3D78C1E6954F8005B54DA /* Class */,
-				6003F59C195388D20070C39A /* SBAppDelegate.h */,
-				6003F59D195388D20070C39A /* SBAppDelegate.m */,
+				6003F59C195388D20070C39A /* AppDelegate.h */,
+				6003F59D195388D20070C39A /* AppDelegate.m */,
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				6003F5A5195388D20070C39A /* SBViewController.h */,
 				6003F5A6195388D20070C39A /* SBViewController.m */,
@@ -228,7 +229,6 @@
 				6003F595195388D20070C39A /* SBLib-Info.plist */,
 				6003F596195388D20070C39A /* InfoPlist.strings */,
 				6003F599195388D20070C39A /* main.m */,
-				6003F59B195388D20070C39A /* SBLib-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -425,7 +425,7 @@
 			files = (
 				5FB3D79B1E6954F8005B54DA /* SBAlertDemoController.m in Sources */,
 				5FB3D79C1E6954F8005B54DA /* SBATableController.m in Sources */,
-				6003F59E195388D20070C39A /* SBAppDelegate.m in Sources */,
+				6003F59E195388D20070C39A /* AppDelegate.m in Sources */,
 				5F9C7CEF1E9E1D1F0036A104 /* SBFallCollectionController.m in Sources */,
 				5FB3D79D1E6954F8005B54DA /* SBHttpTaskController.m in Sources */,
 				5F9C7CF21E9E25EE0036A104 /* SBFallLayout.m in Sources */,
@@ -558,7 +558,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				DEVELOPMENT_TEAM = D975HMHLA6;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "SBLib/SBLib-Prefix.pch";
+				GCC_PREFIX_HEADER = "SBLib/SBExample-Prefix.pch";
 				INFOPLIST_FILE = "SBLib/SBLib-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MODULE_NAME = ExampleApp;
@@ -576,7 +576,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				DEVELOPMENT_TEAM = D975HMHLA6;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "SBLib/SBLib-Prefix.pch";
+				GCC_PREFIX_HEADER = "SBLib/SBExample-Prefix.pch";
 				INFOPLIST_FILE = "SBLib/SBLib-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MODULE_NAME = ExampleApp;

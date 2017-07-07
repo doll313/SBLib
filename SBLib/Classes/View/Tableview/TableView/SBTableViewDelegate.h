@@ -7,6 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+@class SBTableView;
+@class DataItemDetail;
+@class SBTableData;
 
 //TableView 中用到的 UITableViewCell 协议
 @protocol SBTableViewCellDelegate <NSObject>

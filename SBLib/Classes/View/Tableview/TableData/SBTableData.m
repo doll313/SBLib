@@ -26,10 +26,11 @@
 #import "SBTableData.h"
 #import "SBTableView.h"
 #import "MJRefresh.h"       //下拉表头
-
 #import "SBLoadingTableCell.h"            //加载中
 #import "SBEmptyTableCell.h"          //空
 #import "SBFinishedTableCell.h"          //完成
+#import "SBMoreTableCell.h"         //更多
+
 #import "SBAppCoreInfo.h"             //应用信息
 #import "DataAppCacheDB.h"          //缓存数据库
 

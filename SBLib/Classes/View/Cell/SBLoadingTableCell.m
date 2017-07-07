@@ -29,7 +29,7 @@
     self.userInteractionEnabled = NO;
 
     self.loadingView = [[SBLoadingTips alloc] initWithFrame:CGRectZero];
-    self.loadingView.textColor = __SB_COLOR_TABLE_DEFAULT_TIPS;
+    self.loadingView.textColor = RGB(0x88, 0x88, 0x88);
 	[self addSubview:self.loadingView];
 
     return self;

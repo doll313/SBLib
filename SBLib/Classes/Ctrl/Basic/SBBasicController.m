@@ -18,6 +18,8 @@
 */
 
 #import "SBBasicController.h"
+#import "SBURLAction.h"
+
 
 static BOOL _ctrl_alloc_debug;
 

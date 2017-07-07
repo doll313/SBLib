@@ -18,6 +18,7 @@
 */
 
 #import "DataSQLiteDB.h"
+#import "STORE.h"
 
 // 数据库用到的常量
 #define APPCONFIG_DB_CACHE_NAME             @"CacheData.db"       // 缓存数据库名

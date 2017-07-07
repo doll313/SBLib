@@ -7,6 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+@class SBCollectionView;
+@class DataItemDetail;
+@class SBCollectionData;
 
 // 中用到的  协议
 @protocol SBCollectionCellDelegate <NSObject>

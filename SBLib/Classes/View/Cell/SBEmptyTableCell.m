@@ -18,6 +18,9 @@
  */
 
 #import "SBEmptyTableCell.h"
+#import "UIView+SBMODULE.h"
+#import "SBTableData.h"
+#import "SBCollectionData.h"
 
 @implementation SBEmptyTableCell
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{

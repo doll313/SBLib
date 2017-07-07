@@ -6,11 +6,11 @@
 //  Copyright (c) 2016 yuki.wang. All rights reserved.
 //
 
-#import "SBAppDelegate.h"
+#import "AppDelegate.h"
 #import "SBHttpTask.h"
 #import "SBURLProtocol.h"/** 响应URL 协议 **/
 
-@implementation SBAppDelegate
+@implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {

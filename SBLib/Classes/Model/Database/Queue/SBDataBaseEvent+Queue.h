@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "FMDB.h"
 #import "SBDataBaseEvent.h"
 
 @interface SBDataBaseEvent (sb_queue)

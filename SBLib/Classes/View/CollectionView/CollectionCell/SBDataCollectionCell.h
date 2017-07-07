@@ -18,7 +18,9 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "SBCONSTANT.h"
+@class SBCollectionView;
+@class DataItemDetail;
+@class SBCollectionData;
 
 //Collocation 默认单元格
 @interface SBDataCollectionCell : UICollectionViewCell

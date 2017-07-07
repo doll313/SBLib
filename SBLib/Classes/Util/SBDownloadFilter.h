@@ -18,6 +18,7 @@
  */
 
 #import "SBHttpTask.h"
+#import "SBObjectSingleton.h"
 
 @interface SBDownloadFilter : NSObject
 

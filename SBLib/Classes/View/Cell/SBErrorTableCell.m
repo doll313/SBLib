@@ -18,6 +18,9 @@
 */
 
 #import "SBErrorTableCell.h"
+#import "UIView+SBMODULE.h"
+#import "SBTableData.h"
+#import "SBCollectionData.h"
 
 @interface SBErrorTableCell ()
 @property (nonatomic, strong) UIButton *customButton;

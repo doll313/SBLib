@@ -7,6 +7,7 @@
 //
 
 #import "SBAlertDemoController.h"
+#import "SBTableView.h"
 #import "SBConstant.h"
 
 @interface SBAlertDemoController ()

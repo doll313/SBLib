@@ -18,7 +18,9 @@
  */
 
 #import "SBCollectionView.h"            //Collcetion 控件
+#import "MJRefresh.h"
 #import "SBCollectionFlowLayout.h"
+#import "SBErrorTableCell.h"
 
 @implementation SBCollectionView
 

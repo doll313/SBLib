@@ -19,6 +19,7 @@
 
 #import "SBLoadingTips.h"
 #import "SBDataTableCell.h"
+#import "UIView+SBMODULE.h"
 
 @implementation SBLoadingTips
 @synthesize activityView = _activityView;
@@ -37,7 +38,7 @@
 		_loadingLabel = [[UILabel alloc] initWithFrame:CGRectZero];
 		_loadingLabel.backgroundColor = [UIColor clearColor];
 		_loadingLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-        _loadingLabel.font = [UIFont systemFontOfSize:__SB_FONT_TABLE_DEFAULT_TIPS];
+        _loadingLabel.font = [UIFont systemFontOfSize:14.0f];
 		_loadingLabel.numberOfLines = 0;
         _loadingLabel.textAlignment = NSTextAlignmentCenter;
 		[self addSubview:_loadingLabel];

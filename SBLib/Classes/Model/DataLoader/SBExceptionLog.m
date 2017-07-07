@@ -18,10 +18,12 @@
  */
 
 #import "SBExceptionLog.h"          //日志系统
+#import "STORE.h"
 #import "SBHttpTask.h"
 #import "SBHttpDataLoader.h"
 #import "SBNetworkReachability.h"
-#import "SBAppCoreInfo.h"
+#import "SBAppCoreInfo.h"             //应用信息
+#import "DataAppCoreDB.h"          //核心数据库
 #import "NSDictionary+SBMODULE.h"
 
 NSString * const SBHttpRequestExceptionCacheKey = @"SBHttpRequestExceptionCacheKey";    // 存放http请求异常记录

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "DataAppDB.h"
 
 @interface DataAppDB (sb_queue)
 
