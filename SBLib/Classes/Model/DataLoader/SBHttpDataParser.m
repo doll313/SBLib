@@ -24,12 +24,12 @@
 #endif
 
 #import "SBHttpDataParser.h"
-#import "DataItemResult.h"
+#import "DataItemResult.h"      //
 
 @implementation SBHttpDataParser
 
 //解析网络数据
-+ (DataItemResult *)parseData:(NSData *)data withURLString:(NSString *)urlStr {
++ (DataItemResult *)parseData:(NSData *)data task:(SBHttpTask *)task {
     DataItemResult *result = [[DataItemResult alloc]init];
     
     //原始数据无论都带着

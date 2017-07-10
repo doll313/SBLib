@@ -20,7 +20,7 @@
 #import "SBDataTableCell.h"
 #import "SBAppCoreInfo.h"
 
-@implementation DataItemDetail (DataTableCell)
+@implementation DataItemDetail (SBDataTableCell)
 
 /** 设定单元格数据为空 */
 - (void)setEmptyTableCell {

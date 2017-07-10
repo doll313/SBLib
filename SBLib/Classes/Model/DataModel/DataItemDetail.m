@@ -18,7 +18,6 @@
  */
 
 #import "DataItemDetail.h"
-#import "SBAppCoreInfo.h"
 
 static int _data_item_detail_count = 0;
 static BOOL _data_item_detail_malloc = 0;

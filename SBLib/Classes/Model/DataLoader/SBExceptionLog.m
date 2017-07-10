@@ -18,10 +18,10 @@
  */
 
 #import "SBExceptionLog.h"          //日志系统
-#import "STORE.h"
-#import "SBHttpTask.h"
-#import "SBHttpDataLoader.h"
-#import "SBNetworkReachability.h"
+#import "STORE.h"                   //存储 KEY
+#import "SBHttpTask.h"              //请求任务
+#import "SBHttpDataLoader.h"            //网络加载
+#import "SBNetworkReachability.h"             //网络状态
 #import "SBAppCoreInfo.h"             //应用信息
 #import "DataAppCoreDB.h"          //核心数据库
 #import "NSDictionary+SBMODULE.h"

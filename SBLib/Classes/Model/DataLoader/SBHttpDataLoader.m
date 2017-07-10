@@ -18,7 +18,6 @@
 */
 
 #import "SBHttpDataLoader.h"
-#import "SBAppCoreInfo.h"
 
 @implementation SBHttpDataLoader
 
@@ -69,7 +68,7 @@
             __self.dataItemResult.message = @"网络貌似不给力，请重新加载";
         }
         else {
-            __self.dataItemResult = [SBHttpDataParser parseData:data withURLString:task.aURLString];
+            __self.dataItemResult = [SBHttpDataParser parseData:data task:task];
         }
         [__self onFinished];
     };
@@ -164,7 +163,7 @@
 - (void)task:(SBHttpTask *)task onReceived:(NSData *)data {
     
     //解析正确的网络数据
-    self.dataItemResult = [SBHttpDataParser parseData:data withURLString:task.aURLString];
+    self.dataItemResult = [SBHttpDataParser parseData:data task:task];
     
     //结束一次请求
     [self onFinished];

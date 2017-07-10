@@ -20,8 +20,7 @@
 
 #import "SBHttpTask.h"
 #import "SBHttpHelper.h"
-#import "SBNetworkReachability.h"
-#import "SBAppCoreInfo.h"
+#import "SBAppCoreInfo.h"               //
 #import "SBHttpTaskQueue.h"         //网络请求队列
 #import "SBExceptionLog.h"      //异常记录
 

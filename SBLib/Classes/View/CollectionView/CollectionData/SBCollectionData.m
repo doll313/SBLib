@@ -18,10 +18,8 @@
  */
 
 #import "SBCollectionData.h"        //Collection数据
+#import <MJRefresh/MJRefresh.h>
 #import "SBCollectionView.h"
-#import "SBCollectionFooter.h"          //底部
-#import "SBErrorTableCell.h"
-#import "SBEmptyTableCell.h"
 
 #import "SBAppCoreInfo.h"             //应用信息
 #import "DataAppCacheDB.h"          //缓存数据库
@@ -44,9 +42,9 @@
         self.tag = 0;
         
         self.mDataCellClass  = nil;
-        self.mErrorCellClass = [SBErrorCollectionCell class];
-        self.mEmptyCellClass = [SBEmptyCollectionCell class];
-        self.mFooterClass = [SBCollectionFooter class];
+        self.mErrorCellClass = NSClassFromString(@"SBErrorCollectionCell");
+        self.mEmptyCellClass = NSClassFromString(@"SBEmptyCollectionCell");
+        self.mFooterClass = NSClassFromString(@"SBCollectionFooter");
     }
     
     return self;

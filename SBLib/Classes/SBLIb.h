@@ -21,6 +21,7 @@
 
 //数据库键值对宏
 #import "STORE.h"
+#import "SBCONSTANT.h"
 //单例
 #import "SBObjectSingleton.h"
 

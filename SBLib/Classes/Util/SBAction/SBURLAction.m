@@ -8,7 +8,7 @@
 
 #import "SBURLAction.h"
 #import <objc/runtime.h>
-#import "SBExceptionLog.h"
+#import "SBExceptionLog.h"          //日志记录
 #import "NSString+SBMODULE.h"
 
 //是否正在有界面开启的动画

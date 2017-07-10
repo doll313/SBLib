@@ -17,7 +17,7 @@
  #####################################################################
  */
 
-#import "SBErrorTableCell.h"
+#import "SBDataTableCell.h"
 //完成样式单元格
 @interface SBFinishedTableCell : SBDataTableCell
 

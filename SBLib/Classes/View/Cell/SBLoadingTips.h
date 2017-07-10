@@ -17,7 +17,7 @@
 #####################################################################
 */
 
-#import "SBCONSTANT.h"
+#import <UIKit/UIKit.h>
 
 //加载圈 + 文字提示
 @interface SBLoadingTips : UIView {

@@ -18,7 +18,6 @@
 */
 
 #import "SBDataTableCell.h"
-#import "SBErrorTableCell.h"
 #import "SBLoadingTips.h"
 
 //加载中的列表

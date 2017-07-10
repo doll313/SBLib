@@ -25,8 +25,7 @@
 
 #import "SBTableView.h"
 #import "MJRefresh.h"       //下拉表头
-#import "SBDataTableCell.h"
-#import "SBLoadingTableCell.h"
+#import "SBDataTableCell.h"         //单元格
 
 @implementation SBTableView
 
@@ -551,7 +550,7 @@
                 if (sectionData.pageAt == 1) {
                     return [self cellWithClass:sectionData.mErrorCellClass indexPath:indexPath];
                 } else {
-                    return [self cellWithClass:[SBErrorTableCell class] indexPath:indexPath];
+                    return [self cellWithClass:NSClassFromString(@"SBErrorTableCell") indexPath:indexPath];
                 }
             } else {
                 cell = [self cellWithClass:sectionData.mEmptyCellClass indexPath:indexPath];
@@ -565,7 +564,7 @@
             }
             //加载失败
             else if(!sectionData.isLoadDataOK) {
-                return [self cellWithClass:[SBErrorTableCell class] indexPath:indexPath];
+                return [self cellWithClass:NSClassFromString(@"SBErrorTableCell") indexPath:indexPath];
             }
             //更多
             else {

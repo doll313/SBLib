@@ -20,10 +20,12 @@
 #import <Foundation/Foundation.h>
 
 @class DataItemResult;
+@class SBHttpTask;
+
 @interface SBHttpDataParser : NSObject
 
 //解析数据
-+ (DataItemResult *)parseData:(NSData *)data withURLString:(NSString *)urlStr;
++ (DataItemResult *)parseData:(NSData *)data task:(SBHttpTask *)task;
 
 
 @end

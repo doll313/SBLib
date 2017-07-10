@@ -21,7 +21,7 @@
 #import "SBTableView.h"
 #import "UILabel+SBMODULE.h"            //标签扩展
 
-@interface DataItemDetail (DataTableCell)
+@interface DataItemDetail (SBDataTableCell)
 
 @property (getter = tableCellTag, setter = setTableCellTag:) NSInteger tableCellTag;
 

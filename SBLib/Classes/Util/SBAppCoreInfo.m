@@ -20,6 +20,7 @@
 #import "SBAppCoreInfo.h"
 
 #import "STORE.h"
+#import "DataItemDetail.h"
 #import "SBExceptionLog.h"
 #import "SBFileManager.h"
 #import "DataAppCacheDB.h"
@@ -41,7 +42,6 @@
 
 //for idfa
 #import <AdSupport/AdSupport.h>
-
 #import <mach/mach.h>
 
 

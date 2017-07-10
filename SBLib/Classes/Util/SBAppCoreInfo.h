@@ -19,10 +19,10 @@
 
 #import <UIKit/UIKit.h>
 #import "SBObjectSingleton.h"
-#import "DataItemDetail.h"
 
 @class DataAppCacheDB;
 @class DataAppCoreDB;
+@class DataItemDetail;
 
 /**
  *   1.应用级别的方法
