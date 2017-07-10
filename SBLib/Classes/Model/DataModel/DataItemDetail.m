@@ -125,8 +125,8 @@ static BOOL _data_item_detail_malloc = 0;
 }
 
 /** 设定long值 */
-- (BOOL)setLong:(long)value forKey:(NSString *)key {
-    NSNumber *number = [NSNumber numberWithLong:value];
+- (BOOL)setLongLong:(long long)value forKey:(NSString *)key {
+    NSNumber *number = [NSNumber numberWithLongLong:value];
     return [self setObject:number forKey:key];
 }
 
@@ -219,10 +219,10 @@ static BOOL _data_item_detail_malloc = 0;
 }
 
 /** 获取long值 */
-- (long)getLong:(NSString *)key {
+- (long long)getLongLong:(NSString *)key {
     NSNumber *value = (NSNumber *)[self getObject:key];
     if (value && ([value isKindOfClass:[NSNumber class]] || [value isKindOfClass:[NSString class]])) {
-        return [value longValue];
+        return [value longLongValue];
     }
 
     return 0;
