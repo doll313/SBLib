@@ -27,6 +27,13 @@
 #import "MJRefresh.h"       //下拉表头
 #import "SBDataTableCell.h"         //单元格
 
+@interface SBTableView ()
+
+// 将要发起网络请求
+@property (nonatomic, strong) NSMutableArray *arrTableData;                     //列表数据
+
+@end
+
 @implementation SBTableView
 
 #pragma mark -
@@ -722,6 +729,13 @@
     if (self.scrollViewDidScroll != NULL) {
         self.scrollViewDidScroll(scrollView);
     }
+}
+
+#pragma mark -
+#pragma mark 私有方法
+/** section 数量 */
+- (NSUInteger)numberOfTableData {
+    return self.arrTableData.count;
 }
 
 - (void)clearTableData {

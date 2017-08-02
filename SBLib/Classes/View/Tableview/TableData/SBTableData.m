@@ -46,6 +46,7 @@
 		self.httpStatus = SBTableDataStatusNotStart;         //默认没开始加载
 		self.pageAt = 1;                //默认第一页
 		self.pageSize = 20;             //默认一页xx条
+        self.totalItems = 0;            //
 		self.isLoadDataOK = YES;             //默认加载完毕
         self.isEmptyCellEnableClick = YES;      //默认允许点击
         self.emptyCellHeight = -1;          //给一个负数
@@ -66,12 +67,6 @@
 
 - (void)dealloc {
 	[self.dataLoader stopLoading];
-}
-
-//总页数
-- (NSUInteger)totalPage {
-    NSUInteger totalPage = (NSUInteger)ceilf((float)self.tableDataResult.maxCount / self.pageSize);
-    return totalPage;
 }
 
 #pragma mark -
@@ -182,7 +177,7 @@
 //清除数据
 - (void)resetTable {
     //只留下section 0 号
-    for (NSInteger i = self.tableView.arrTableData.count; i > 0; i--) {
+    for (NSInteger i = [self.tableView numberOfTableData]; i > 0; i--) {
         [self.tableView removeSection:i];
     }
 
@@ -276,27 +271,42 @@
     self.isLoadDataOK = !result.hasError;
     self.tableDataResult.message = result.message;
 
-    if (self.pageAt == 1 && self == self.tableView.arrTableData.firstObject) {
+    //整理数据
+    [self prepareData];
+
+    //更新数据
+    [self updateData:result];
+
+    //头部
+    [self updateHeader];
+}
+
+//整理数据
+- (void)prepareData {
+    if (self.pageAt == 1) {
         //数据如果有问题，则还是上一次的数据
         if (self.isLoadDataOK) {
-            
+
             self.lastUpdateTime = [NSDate new];
 
             [self resetTable];
         }
     }
-    
+}
+
+//更新数据
+- (void)updateData:(DataItemResult *)result {
+    //之前的数据
+    NSUInteger preCount = self.totalItems;
+
     //接受数据，理论上是必实现的
-	if (self.tableView.receiveData) {
+    if (self.tableView.receiveData) {
         self.tableView.receiveData(self.tableView, self, result);
     }
 
-    //如果是下拉列表
-    if (self.tableView.isRefreshType) {
-        if (self.pageAt == 1) {
-            // 拿到当前的下拉刷新控件，结束刷新状态
-            [self.tableView.mj_header endRefreshing];
-        }
+    //是否增加了数据 简单说就是一条都没加上
+    if (preCount >= self.totalItems) {
+        self.tableDataResult.maxCount = self.totalItems;
     }
 
     //加载完毕
@@ -306,26 +316,42 @@
     [self.tableView reloadData];
 }
 
+//更新header
+- (void)updateHeader {
+    //如果是下拉列表
+    if (self.tableView.isRefreshType) {
+        if (self.pageAt == 1) {
+            // 拿到当前的下拉刷新控件，结束刷新状态
+            [self.tableView.mj_header endRefreshing];
+        }
+    }
+}
+
+//当前单元格的数量
+- (NSUInteger)totalItems {
+    //section 数量
+    NSInteger sectionCount = [self.tableView numberOfTableData];
+
+    //目前单元格数
+    NSUInteger totalItems = 0;
+    for (int i=0; i<sectionCount; i++) {
+        SBTableData *tableData = [self.tableView dataOfSection:i];
+        totalItems += tableData.tableDataResult.count;
+    }
+
+    return totalItems;
+}
+
 //加载完毕，并且这里的意思是没有后续数据
 - (BOOL)isLoadDataComplete {
 	if (self.httpStatus == SBTableDataStatusFinished) {
-        //section 数量
-        NSInteger sectionCount = self.tableView.arrTableData.count;
         
         //总数
         NSUInteger maxCount = self.tableDataResult.maxCount;
         
-        //目前单元格数
-        NSUInteger currentCount = 0;
-        for (int i=0; i<sectionCount; i++) {
-            SBTableData *tableData = [self.tableView dataOfSection:i];
-            currentCount += tableData.tableDataResult.count;
-        }
-        
-        if (maxCount <= currentCount) {
+        if (maxCount <= self.totalItems) {
             return YES;
         }
-        
 	}
 
 	return NO;

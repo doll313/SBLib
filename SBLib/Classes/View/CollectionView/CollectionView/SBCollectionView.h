@@ -33,9 +33,6 @@
 /** 扩展一个列表的节点，做应急用，请不要随意使用这个节点 **/
 @property (nonatomic, assign) int emunTag;
 
-//列表数据
-@property (nonatomic, strong) NSMutableArray *arrCollectionData;
-
 //布局
 @property (nonatomic, strong) UICollectionViewLayout *flowLayout;
 
@@ -105,6 +102,9 @@
 
 /** 获取指定单元格的数据 */
 - (DataItemDetail *)dataOfCellTag:(NSInteger)cellTag;
+
+/** section 数量 */
+- (NSUInteger)numberOfCollectionData;
 
 /** 清除所有表内容 */
 - (void)clearCollectionData;

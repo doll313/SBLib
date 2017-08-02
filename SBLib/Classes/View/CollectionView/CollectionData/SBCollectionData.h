@@ -47,8 +47,8 @@
 
 @property (nonatomic, assign) SBTableDataStatus httpStatus;      //状态
 @property (nonatomic, assign) NSUInteger pageAt;            //pageAt即是tailPage
-@property (nonatomic, readonly) NSUInteger totalPage;               //数据总大小
 @property (nonatomic, assign) NSUInteger pageSize;              //每页的数据大小
+@property (nonatomic, assign) NSUInteger totalItems;               //当前多少个数据
 @property (nonatomic, assign) BOOL isLoadDataOK;                //是否加载完毕
 @property (nonatomic, assign) BOOL hasFinishCell;                //是否有显示完毕的单元格
 @property (nonatomic, strong) NSDate *lastUpdateTime;               //最后刷新时间

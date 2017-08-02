@@ -22,6 +22,13 @@
 #import "SBCollectionFlowLayout.h"
 #import "SBErrorTableCell.h"
 
+@interface SBCollectionView ()
+
+//列表数据
+@property (nonatomic, strong) NSMutableArray *arrCollectionData;
+
+@end
+
 @implementation SBCollectionView
 
 
@@ -444,6 +451,12 @@
     }
     
     return nil;
+}
+
+
+/** section 数量 */
+- (NSUInteger)numberOfCollectionData {
+    return self.arrCollectionData.count;
 }
 
 /** 清除所有表内容 */

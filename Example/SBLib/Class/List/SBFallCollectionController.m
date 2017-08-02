@@ -42,7 +42,7 @@
     UIBarButtonItem *i2 =[[UIBarButtonItem alloc] initWithTitle:@"替换" style:UIBarButtonItemStylePlain target:self action:@selector(replace:)];
 
     self.navigationItem.rightBarButtonItems = @[i1, i2];
-    SBWS(__self)
+//    SBWS(__self)
 
     SBFallLayout *f = [[SBFallLayout alloc] init];
     //

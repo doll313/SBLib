@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'SBLib'
-  s.version          = '0.7.5'
+  s.version          = '0.7.6'
   s.summary          = 'A short description of SBLib.'
 
   s.description      = <<-DESC

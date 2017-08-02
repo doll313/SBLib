@@ -20,6 +20,8 @@
 #ifndef SBOBJECTSINGLETON_H
 #define SBOBJECTSINGLETON_H
 
+NS_ASSUME_NONNULL_BEGIN
+
 //是arc
 /** 单例模式：声明 */
 #define SB_ARC_SINGLETON_DEFINE(_class_name_)  \
@@ -94,5 +96,6 @@ return nil;                                      \
 }                                                  \
 
 
+NS_ASSUME_NONNULL_END
 
 #endif

@@ -15,7 +15,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    [NSURLProtocol registerClass:[SBURLProtocol class]];
+//    [NSURLProtocol registerClass:[SBURLProtocol class]];
 //    [SBHttpTask protocolName:@"SBURLProtocol"];
 
     return YES;

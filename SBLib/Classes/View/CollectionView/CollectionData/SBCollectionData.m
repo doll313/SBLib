@@ -54,12 +54,6 @@
     [self.dataLoader stopLoading];
 }
 
-//总页数
-- (NSUInteger)totalPage {
-    NSUInteger totalPage = (NSUInteger)ceilf((float)self.tableDataResult.maxCount / self.pageSize);
-    return totalPage;
-}
-
 #pragma mark -
 #pragma mark 数据操作
 //刷新数据
@@ -165,7 +159,7 @@
 //重置列表
 - (void)resetCollectionView {
     //只留下section 0 号
-    for (NSInteger i = self.collectionView.arrCollectionData.count; i > 0; i--) {
+    for (NSInteger i = [self.collectionView numberOfCollectionData]; i > 0; i--) {
         [self.collectionView removeSection:i];
     }
 
@@ -287,9 +281,17 @@
 
 //更新数据
 - (void)updateData:(DataItemResult *)result {
+    //之前的数据
+    NSUInteger preCount = self.totalItems;
+
     //接受数据，理论上是必实现的
     if (self.collectionView.receiveData) {
         self.collectionView.receiveData(self.collectionView, self, result);
+    }
+
+    //是否增加了数据 简单说就是一条都没加上
+    if (preCount >= self.totalItems) {
+        self.tableDataResult.maxCount = self.totalItems;
     }
 
     //
@@ -306,7 +308,7 @@
     }
 }
 
-//更新footer
+//更新header
 - (void)updateHeader {
     //如果是下拉列表
     if (self.collectionView.isRefreshType) {
@@ -345,23 +347,27 @@
     }
 }
 
+//当前单元格的数量
+- (NSUInteger)totalItems {
+    //section 数量
+    NSInteger sectionCount = [self.collectionView numberOfCollectionData];
+
+    //目前单元格数
+    NSUInteger totalItems = 0;
+    for (int i=0; i<sectionCount; i++) {
+        SBCollectionData *tableData = [self.collectionView dataOfSection:i];
+        totalItems += tableData.tableDataResult.count;
+    }
+
+    return totalItems;
+}
+
 //加载完毕，并且这里的意思是没有后续数据
 - (BOOL)isLoadDataComplete {
     if (self.httpStatus == SBTableDataStatusFinished) {
-        //section 数量
-        NSInteger sectionCount = self.collectionView.arrCollectionData.count;
-        
         //总数
         NSUInteger maxCount = self.tableDataResult.maxCount;
-        
-        //目前单元格数
-        NSUInteger currentCount = 0;
-        for (int i=0; i<sectionCount; i++) {
-            SBCollectionData *tableData = [self.collectionView dataOfSection:i];
-            currentCount += tableData.tableDataResult.count;
-        }
-        
-        if (maxCount <= currentCount) {
+        if (maxCount <= self.totalItems) {
             return YES;
         }
         

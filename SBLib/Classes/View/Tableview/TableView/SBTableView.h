@@ -38,9 +38,6 @@
 @property (nonatomic, assign) int emunTag;
 
 // 将要发起网络请求
-@property (nonatomic, strong) NSMutableArray *arrTableData;                     //列表数据
-
-// 将要发起网络请求
 @property (nonatomic, copy) void (^willRequestData)(SBTableData *tableViewData);
 // 发起网络请求
 @property (nonatomic, copy) SBHttpDataLoader* (^requestData)(SBTableData *tableViewData);
@@ -120,6 +117,9 @@
 
 /** 获取指定单元格的数据 */
 - (DataItemDetail *)dataOfCellTag:(NSInteger)cellTag;
+
+/** section 数量 */
+- (NSUInteger)numberOfTableData;
 
 /** 清除所有表内容 */
 - (void)clearTableData;
