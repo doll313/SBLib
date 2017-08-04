@@ -56,6 +56,9 @@
 +(UIImage *)sb_imageWithColor:(UIColor *)aColor;
 +(UIImage *)sb_imageWithColor:(UIColor *)aColor withFrame:(CGRect)aFrame;
 
+/**根据颜色生成带圆角和边框的图片*/
++ (UIImage *)sb_imageWithColor:(UIColor *)color size:(CGSize)size corners:(UIRectCorner)corners cornerRadii:(CGSize)cornerRadii borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor;
+
 /** 文字转图片 */
 +(UIImage *)sb_imageFromText:(NSString *)string size:(CGSize)size font:(NSInteger)fontsize textColor:(UIColor *)textColor backColor:(UIColor *)backColor;
 

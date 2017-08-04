@@ -240,6 +240,34 @@
     return img;
 }
 
++ (UIImage *)sb_imageWithColor:(UIColor *)color
+                          size:(CGSize)size
+                       corners:(UIRectCorner)corners
+                   cornerRadii:(CGSize)cornerRadii
+                   borderWidth:(CGFloat)borderWidth
+                   borderColor:(UIColor *)borderColor {//根据颜色生成带圆角和边框的图片
+    UIGraphicsBeginImageContextWithOptions(size, NO, 0);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGRect rect = CGRectMake(0, 0, size.width, size.height);
+    CGContextScaleCTM(context, 1, -1);
+    CGContextTranslateCTM(context, 0, -rect.size.height);
+
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:rect byRoundingCorners:corners cornerRadii:cornerRadii];
+    [path closePath];
+    [path addClip];
+
+    [color setFill];
+    [path fill];
+
+    path.lineWidth = borderWidth;
+    [borderColor setStroke];
+    [path stroke];
+
+    UIImage *currentImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return currentImage;
+}
+
 /** 文字转图片 */
 +(UIImage *)sb_imageFromText:(NSString *)string size:(CGSize)size font:(NSInteger)fontsize textColor:(UIColor *)textColor backColor:(UIColor *)backColor{
     

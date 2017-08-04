@@ -305,7 +305,7 @@
     }
 
     //是否增加了数据 简单说就是一条都没加上
-    if (preCount >= self.totalItems) {
+    if (preCount >= self.totalItems && !result.hasError) {
         self.tableDataResult.maxCount = self.totalItems;
     }
 

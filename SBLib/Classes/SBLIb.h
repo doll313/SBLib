@@ -60,8 +60,9 @@
 #import "UIImage+SBMODULE.h"            //图片扩展
 #import "NSData+SBMODULE.h"         //数据扩展
 #import "NSDate+SBMODULE.h"     //日期扩展
-#import "NSObject+SBMODULE.h"
+#import "NSObject+SBMODULE.h"           //
 #import "NSDictionary+SBMODULE.h"       //字典扩展
+#import "NSArray+SBLib.h"           //数组扩展
 #import "UIAlertView+SB.h"          //警告扩展
 
 //方法集合
