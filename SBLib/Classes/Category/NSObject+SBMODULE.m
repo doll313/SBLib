@@ -22,7 +22,7 @@
 
 @implementation NSObject (sbmodule)
 
-+ (void)el_swizzleClassMethod:(Class)className originSelector:(SEL)originSelector otherSelector:(SEL)otherSelector
++ (void)sb_swizzleClassMethod:(Class)className originSelector:(SEL)originSelector otherSelector:(SEL)otherSelector
 {
     Method otherMehtod = class_getClassMethod(className, otherSelector);
     Method originMehtod = class_getClassMethod(className, originSelector);
@@ -43,7 +43,7 @@
     }
 }
 
-+ (void)el_swizzleInstanceMethod:(Class)className originSelector:(SEL)originSelector otherSelector:(SEL)otherSelector
++ (void)sb_swizzleInstanceMethod:(Class)className originSelector:(SEL)originSelector otherSelector:(SEL)otherSelector
 {
     Method otherMehtod = class_getInstanceMethod(className, otherSelector);
     Method originMehtod = class_getInstanceMethod(className, originSelector);
