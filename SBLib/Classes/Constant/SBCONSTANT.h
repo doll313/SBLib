@@ -84,6 +84,7 @@
 #define SBApplication        [UIApplication sharedApplication]
 #define SBKeyWindow          [UIApplication sharedApplication].keyWindow
 #define SBAppDelegate        [UIApplication sharedApplication].delegate
+#define SBRootCtrl          SBKeyWindow.rootViewController
 #define SBUserDefaults      [NSUserDefaults standardUserDefaults]
 #define SBNotificationCenter [NSNotificationCenter defaultCenter]
 #define SBViewWithTag(_OBJECT, _TAG)    [_OBJECT viewWithTag : _TAG]

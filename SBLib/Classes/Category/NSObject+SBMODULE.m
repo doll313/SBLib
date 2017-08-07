@@ -72,13 +72,14 @@
     return [NSValue valueWithNonretainedObject:self];
 }
 
-- (NSString *)el_jsonString {
+- (NSString *)sb_jsonString {
     NSError *error;
     NSData *data = [NSJSONSerialization dataWithJSONObject:self options:NSJSONWritingPrettyPrinted error:&error];
-    NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    jsonString = [jsonString stringByReplacingOccurrencesOfString:@"\n" withString:@""];//去掉字典转字符串时出现的换行
-    jsonString = [jsonString stringByReplacingOccurrencesOfString:@" " withString:@""];//去掉字典转字符串时出现的空格
-    return jsonString;
+    if (!error) {
+        NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        return jsonString;
+    }
+    return @"";
 }
 
 @end

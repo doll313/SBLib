@@ -36,6 +36,6 @@
 
 /**转换成json字符串
  *适用于字典、数组 */
-- (NSString *)el_jsonString;
+- (NSString *)sb_jsonString;
 
 @end
