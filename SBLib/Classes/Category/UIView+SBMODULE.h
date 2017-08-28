@@ -77,13 +77,7 @@
 /**移动到兄弟view的左方，指定间距*/
 - (void)sb_leftOfView:(UIView *)view withMargin:(CGFloat)margin;
 
-/**
-移动到兄弟view的左方，指定间距，并且指定是否垂直居中
-
-@param view   兄弟view
-@param margin 间距
-@param same   是否垂直居中
-*/
+/** 移动到兄弟view的左方，指定间距，并且指定是否垂直居中 */
 - (void)sb_leftOfView:(UIView *)view withMargin:(CGFloat)margin sameVertical:(BOOL)same;
 
 /**在视图右方*/
@@ -92,13 +86,7 @@
 /**移动到兄弟view的右方*/
 - (void)sb_rightOfView:(UIView *)view withMargin:(CGFloat)margin;
 
-/**
-移动到兄弟view的右方，指定间距，并且指定是否垂直居中
-
-@param view   兄弟view
-@param margin 间距
-@param same   是否垂直居中
-*/
+/** 移动到兄弟view的右方，指定间距，并且指定是否垂直居中 */
 - (void)sb_rightOfView:(UIView *)view withMargin:(CGFloat)margin sameVertical:(BOOL)same;
 
 /**设置视图宽*/

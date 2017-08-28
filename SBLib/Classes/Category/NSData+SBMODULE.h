@@ -48,43 +48,20 @@
 
 @interface NSData (AES)
 
-/**
-AES256加密
-
-@param key 密钥
-
-@return 加密结果
-*/
-
+/**  AES256加密 */
 - (NSData*)sb_encryptAES:(NSString *) key;
 
-/**
-AES256解密
-
-@param key 密钥
-
-@return 解密结果
- */
+/** AES256解密 */
 - (NSData *)sb_decryptAES:(NSString *) key;
 
 @end
 
 @interface NSData (EMSB_JSON)
-/**
- 从一个json的nsdata转换成dict或array，
- **使用UTF8编码**
- 
- @return dict or array
- */
+
+/**  从一个json的nsdata转换成dict或array  */
 - (id)sb_objectFromJSONData;
 
-/**
- 从一个json的nsdata转换成dict或array, 指定编码
- 
- @param encoding 编码
- 
- @return dict or array
- */
+/** 从一个json的nsdata转换成dict或array, 指定编码  */
 - (id)sb_objectFromJSONDataUsingEncoding:(NSStringEncoding)encoding;
 
 @end

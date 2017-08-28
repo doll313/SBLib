@@ -95,12 +95,7 @@
 //截取到第几位的长度
 - (NSString *)sbSubStringToIndex:(NSInteger)index;
 
-/**
- *  @brief 根据字数的不同,返回UILabel中的text文字需要占用多少Size
- *  @param size 约束的尺寸
- *  @param font 文本字体
- *  @return 文本的实际尺寸
- */
+/** 文本的实际尺寸 */
 - (CGSize)sb_sizeWithFont:(UIFont *)font;
 - (CGSize)sb_sizeWithFont:(UIFont *)font constrainedToSize:(CGSize)size;
 - (CGSize)sb_sizeWithFont:(UIFont *)font constrainedToSize:(CGSize)size lineBreakMode:(NSLineBreakMode)lineBreakMode;

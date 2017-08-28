@@ -170,7 +170,12 @@
 
     MBProgressHUDMode mode = showIndicator ? MBProgressHUDModeIndeterminate : MBProgressHUDModeText;
     MBProgressHUD *hud = [self sb_createHud:mode];
-    hud.label.text = tips;
+    if ([tips isKindOfClass:[NSAttributedString class]]) {
+        hud.label.attributedText = (NSAttributedString *)tips;
+    }
+    else {
+        hud.label.text = tips;
+    }
 
     //隐藏
     if (hiddenAfterSeconds > 0) {

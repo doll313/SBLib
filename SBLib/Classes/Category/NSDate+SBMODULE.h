@@ -29,36 +29,16 @@
 
 /** 以下都是从网上copy来的 */
 #pragma mark - Relative dates from the current date
-/**
-明天的日期
-
-@return 明天的日期
-*/
+/** 明天的日期 */
 + (NSDate *)dateTomorrow;
 
-/**
-昨天的日期
-
-@return 昨天的日期
-*/
+/** 昨天的日期 */
 + (NSDate *)dateYesterday;
 
-/**
-现在以后N天的日期
-
-@param dDays N天
-
-@return 现在以后N天的日期
-*/
+/** 现在以后N天的日期 */
 + (NSDate *)dateWithDaysFromNow:(NSInteger) dDays;
 
-/**
-现在以前N天的日期
-
-@param dDays N天
-
-@return 现在以前的N天日期
-*/
+/** 现在以前N天的日期 */
 + (NSDate *)dateWithDaysBeforeNow:(NSInteger) dDays;
 
 + (NSDate *)dateWithHoursFromNow:(NSInteger) dHours;
@@ -113,18 +93,10 @@
 
 #pragma mark - Date roles
 
-/**
-是否工作日
-
-@return 是否工作日
-*/
+/** 是否工作日 */
 - (BOOL)isTypicallyWorkday;
 
-/**
-是否周末
-
-@return 是否周末
-*/
+/**  是否周末 */
 - (BOOL)isTypicallyWeekend;
 
 #pragma mark - Adjusting dates
