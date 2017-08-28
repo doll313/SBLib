@@ -154,7 +154,7 @@
 }
 
 // 显示提示信息（可设定自动隐藏时间、是否显示转子、结束）
-- (MBProgressHUD *)sb_showTips:(NSString *)tips showIndicator:(BOOL)showIndicator hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds completion:(void (^)())completion {
+- (MBProgressHUD *)sb_showTips:(NSString *)tips showIndicator:(BOOL)showIndicator hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds completion:(void (^__nullable)())completion {
     if (!tips) {
         tips = @"";
     }

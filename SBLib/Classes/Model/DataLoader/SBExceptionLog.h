@@ -34,18 +34,18 @@
 SB_ARC_SINGLETON_DEFINE(SBExceptionLog);
 
 /** * 获取接口错误日志 */
-+ (NSString *)getSBHttpException;
++ (NSString *_Nullable)getSBHttpException;
 
 /** * 获取崩溃日志 */
-+ (NSString *)getSBCrashException;
++ (NSString *_Nullable)getSBCrashException;
 
 /** 记录 */
-+ (void)record:(NSString *)log key:(NSString *)key;
++ (void)record:(NSString *_Nonnull)log key:(NSString *_Nonnull)key;
 
 /** 获取记录 */
-+ (NSArray *)getRecordList:(NSString *)key;
++ (NSArray *_Nullable)getRecordList:(NSString *_Nonnull)key;
 
 /** 获取记录 */
-+ (NSString *)getRecord:(NSString *)key;
++ (NSString *_Nullable)getRecord:(NSString *_Nonnull)key;
 
 @end

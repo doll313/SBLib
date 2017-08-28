@@ -89,7 +89,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (MBProgressHUD *)sb_showTips:(NSString *)tips showIndicator:(BOOL)showIndicator hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds;
 
 // 显示提示信息（可设定自动隐藏时间、是否显示转子， 结束事件）
-- (MBProgressHUD *)sb_showTips:(NSString *)tips showIndicator:(BOOL)showIndicator hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds completion:(void (^)())completion;
+- (MBProgressHUD *)sb_showTips:(NSString *)tips showIndicator:(BOOL)showIndicator hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds completion:(void (^ __nullable)())completion;
 
 /** 创建hud **/
 - (MBProgressHUD *)sb_createHud:(MBProgressHUDMode)mode;

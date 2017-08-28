@@ -25,14 +25,14 @@ NS_ASSUME_NONNULL_BEGIN
 //是arc
 /** 单例模式：声明 */
 #define SB_ARC_SINGLETON_DEFINE(_class_name_)  \
-+ (_class_name_ *)shared##_class_name_;          \
++ (nonnull _class_name_ *)shared##_class_name_;          \
 
 /** 单例模式：实现 */
 #define SB_ARC_SINGLETON_IMPLEMENT(_class_name) SB_ARC_SINGLETON_BOILERPLATE(_class_name, shared##_class_name)
 
 #define SB_ARC_SINGLETON_BOILERPLATE(_object_name_, _shared_obj_name_) \
 static _object_name_ *z##_shared_obj_name_ = nil;  \
-+ (_object_name_ *)_shared_obj_name_ {             \
++ (nonnull _object_name_ *)_shared_obj_name_ {             \
 static dispatch_once_t onceToken;              \
 dispatch_once(&onceToken, ^{                   \
 z##_shared_obj_name_ = [[self alloc] init];\
