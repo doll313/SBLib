@@ -19,6 +19,8 @@
 
 @implementation SBURLProtocol
 
+SB_ARC_SINGLETON_IMPLEMENT(SBURLProtocol)
+
 /**
  *  是否拦截处理指定的请求
  */

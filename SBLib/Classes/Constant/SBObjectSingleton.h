@@ -45,7 +45,7 @@ return z##_shared_obj_name_;                   \
 //非arc
 /** 单例模式：声明 */
 #define SB_NOARC_SINGLETON_DEFINE(_class_name_) \
-+ (_class_name_ *)shared##_class_name_;          \
++ (nonnull _class_name_ *)shared##_class_name_;          \
 + (void)destroy##_class_name_;
 
 /** 单例模式：实现 */
@@ -53,7 +53,7 @@ return z##_shared_obj_name_;                   \
 
 #define SB_NOARC_SINGLETON_BOILERPLATE(_object_name_, _shared_obj_name_) \
 static _object_name_ *z##_shared_obj_name_ = nil;  \
-+ (_object_name_ *)_shared_obj_name_ {             \
++ (nonnull _object_name_ *)_shared_obj_name_ {             \
     @synchronized(self) {                            \
         if (z##_shared_obj_name_ == nil) {             \
             /** Note that 'self' may not be the same as _object_name_ */                               \

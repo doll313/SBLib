@@ -90,19 +90,30 @@ static BOOL _data_item_detail_malloc = 0;
 
 /** 往当前数据容器的后端追加另一个数据容器所有的数据 */
 - (void)appendItems:(DataItemDetail *)detail {
+    [self appendItems:detail igoreKeys:nil];
+}
+
+
+/** 追加数据 并忽略部分key */
+- (void)appendItems:(DataItemDetail *)detail igoreKeys:(NSArray<NSString *> *)igoreKeys {
+
     //数据不合法
     if (detail == nil) {
         return;
     }
-    
+
     for (NSString *key in detail.dictData.allKeys) {
-        NSObject *object = [detail getObject:key];
-        [self setObject:object forKey:key];
+        if (![igoreKeys containsObject:key]) {
+            NSObject *object = [detail getObject:key];
+            [self setObject:object forKey:key];
+        }
     }
 
     for (NSString *key in detail.attributeData.allKeys) {
-        NSObject *object = [detail getObject:key];
-        [self setObject:object forKey:key];
+        if (![igoreKeys containsObject:key]) {
+            NSAttributedString *object = [detail getATTString:key];
+            [self setATTString:object forKey:key];
+        }
     }
 }
 
@@ -401,6 +412,27 @@ static BOOL _data_item_detail_malloc = 0;
     }
     
     return YES;
+}
+
+/** 把key1的数据映射到 key2 */
+- (BOOL)mapValue:(NSString *)key1 withKey2:(NSString *)key2 {
+    NSObject *obj = [self getObject:key1];
+    if (obj != nil) {
+        return [self setObject:obj forKey:key2];
+    }
+    return NO;
+}
+
+
+/** 数据映射到 另一个key */
+- (BOOL)mapValues:(NSDictionary<NSString *, NSString *> *)mapKeys {
+    BOOL success = NO;
+    for (NSString *key in mapKeys.allKeys) {
+        NSString *value = mapKeys[key];
+        BOOL flag = [self mapValue:key withKey2:value];
+        success = flag && success;
+    }
+    return success;
 }
 
 /** 清除所有元素 */

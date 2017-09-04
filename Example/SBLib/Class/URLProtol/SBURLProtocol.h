@@ -7,8 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SBObjectSingleton.h"
 
 /** 响应URL 协议 **/
 @interface SBURLProtocol : NSURLProtocol
+
+SB_ARC_SINGLETON_DEFINE(SBURLProtocol)
 
 @end

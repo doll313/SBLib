@@ -22,20 +22,20 @@
 
 @interface SBDownloadFilter : NSObject
 
-@property (nonatomic, strong) NSMutableDictionary *url2conn;
-@property (nonatomic, strong) NSMutableDictionary *conn2url;
-@property (nonatomic, strong) NSMutableDictionary *conn2delegate;
+@property (nonatomic, strong) NSMutableDictionary * _Nullable url2conn;
+@property (nonatomic, strong) NSMutableDictionary * _Nullable conn2url;
+@property (nonatomic, strong) NSMutableDictionary * _Nullable conn2delegate;
 
 /** 定义单例模式 */
 SB_NOARC_SINGLETON_DEFINE(SBDownloadFilter);
 
-+ (SBHttpTask *)addRequestURL:(NSString *)URL delegate:(id<SBHttpTaskDelegate>)delegate;
++ (SBHttpTask *_Nonnull)addRequestURL:(NSString *_Nullable)URL delegate:(id <SBHttpTaskDelegate> _Nullable)delegate;
 
-+ (SBHttpTask *)addRequestURL:(NSString *)URL postData:(NSData *)postData delegate:(id<SBHttpTaskDelegate>)delegate;
++ (SBHttpTask *_Nonnull)addRequestURL:(NSString *_Nullable)URL postData:(NSData *_Nullable)postData delegate:(id<SBHttpTaskDelegate>_Nullable)delegate;
 
-+ (void)removeRequestURL:(NSString *)URL delegate:(id<SBHttpTaskDelegate>)delegate;
++ (void)removeRequestURL:(NSString *_Nullable)URL delegate:(id<SBHttpTaskDelegate> _Nullable)delegate;
 
-+ (void)stopRequestURL:(NSString *)URL;
++ (void)stopRequestURL:(NSString *_Nullable)URL;
 
 + (void)stopAllRequest;
 

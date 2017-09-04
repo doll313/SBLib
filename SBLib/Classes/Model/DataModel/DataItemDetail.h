@@ -52,6 +52,9 @@
 /** 往当前数据容器的后端追加另一个数据容器所有的数据 */
 - (void)appendItems:(DataItemDetail *)detail;
 
+/** 追加数据 并忽略部分key */
+- (void)appendItems:(DataItemDetail *)detail igoreKeys:(NSArray<NSString *> *)igoreKeys;
+
 /** 设定数组 */
 - (BOOL)setArray:(NSArray *)array forKey:(NSString *)aKey;
 
@@ -135,6 +138,12 @@
 
 /** 是否存在匹配的键值对 */
 - (BOOL)hasKey:(NSString *)key withValue:(NSString *)value;
+
+/** 把key1的数据映射到 key2 */
+- (BOOL)mapValue:(NSString *)key1 withKey2:(NSString *)key2;
+
+/** 数据映射到 另一个key */
+- (BOOL)mapValues:(NSDictionary<NSString *, NSString *> *)mapKeys;
 
 /** 清除所有元素 */
 - (void)clear;

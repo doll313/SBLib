@@ -107,13 +107,32 @@
 }
 
 -(void)doLocation {
+    NSDictionary *dict = @{@"a": @"1",
+                           @"b": @"2",
+                           @"c": @"3",
+                           @"d": @"4",
+                           @"e": @"5",};
+    NSDictionary *dict2 = @{@"f": @"6",
+                           @"g": @"7",
+                           @"h": @"8",};
+    DataItemDetail *detail = [DataItemDetail detailFromDictionary:dict];
+    NSLog(@"%@", [detail whatInThis]) ;
 
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    [manager GET:@"http://api.douban.com/v2/book/isbn/9787505715660" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    DataItemDetail *detail2 = [DataItemDetail detailFromDictionary:dict2];
 
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+    [detail appendItems:detail2 igoreKeys:@[@"g"]];
+    NSLog(@"%@", [detail whatInThis]) ;
 
-    }];//    self.locationManager = [[CLLocationManager alloc] init];
+    [detail mapValues:@{@"a":@"x", @"b":@"y", @"c":@"z"}];
+    NSLog(@"%@", [detail whatInThis]) ;
+
+
+//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+//    [manager GET:@"http://api.douban.com/v2/book/isbn/9787505715660" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//
+//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//
+//    }];//    self.locationManager = [[CLLocationManager alloc] init];
 //    // 设置定位精度，十米，百米，最好
 //    [self.locationManager setDesiredAccuracy:kCLLocationAccuracyHundredMeters];
 //    self.locationManager.delegate = self;
