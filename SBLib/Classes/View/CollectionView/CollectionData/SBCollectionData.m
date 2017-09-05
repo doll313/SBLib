@@ -35,19 +35,25 @@
     if (self) {
         self.tableDataResult = [[DataItemResult alloc] init];
         self.httpStatus = SBTableDataStatusNotStart;         //默认没开始加载
-        self.pageAt = 1;                //默认第一页
-        self.pageSize = 20;             //默认一页xx条
-        self.isLoadDataOK = YES;             //默认加载完毕      //加载单元格的高度
-        
-        self.tag = 0;
-        
-        self.mDataCellClass  = nil;
-        self.mErrorCellClass = NSClassFromString(@"SBErrorCollectionCell");
-        self.mEmptyCellClass = NSClassFromString(@"SBEmptyCollectionCell");
-        self.mFooterClass = NSClassFromString(@"SBCollectionFooter");
+
+        [self createParams];
+        [self createCellClass];
     }
     
     return self;
+}
+- (void)createParams {
+    self.pageAt = 1;                //默认第一页
+    self.pageSize = 20;             //默认一页xx条
+    self.isLoadDataOK = YES;             //默认加载完毕      //加载单元格的高度
+    self.tag = 0;
+}
+
+- (void)createCellClass {
+    self.mDataCellClass  = nil;
+    self.mErrorCellClass = NSClassFromString(@"SBErrorCollectionCell");
+    self.mEmptyCellClass = NSClassFromString(@"SBEmptyCollectionCell");
+    self.mFooterClass = NSClassFromString(@"SBCollectionFooter");
 }
 
 - (void)dealloc {

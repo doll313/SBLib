@@ -44,25 +44,32 @@
     if (self) {
 		self.tableDataResult = [[DataItemResult alloc] init];
 		self.httpStatus = SBTableDataStatusNotStart;         //默认没开始加载
-		self.pageAt = 1;                //默认第一页
-		self.pageSize = 20;             //默认一页xx条
-        self.totalItems = 0;            //
-		self.isLoadDataOK = YES;             //默认加载完毕
-        self.isEmptyCellEnableClick = YES;      //默认允许点击
-        self.emptyCellHeight = -1;          //给一个负数
-        self.loadingCellHeight = APPCONFIG_UI_TABLE_CELL_HEIGHT;        //加载单元格的高度
 
-        self.tag = 0;
-
-        self.mDataCellClass  = nil;
-		self.mErrorCellClass = [SBErrorTableCell class];
-        self.mEmptyCellClass = [SBEmptyTableCell class];
-        self.mMoreCellClass  = [SBMoreTableCell class];
-		self.mLoadingCellClass = [SBLoadingTableCell class];
-        self.mFinishedCellClass = [SBFinishedTableCell class];
+        [self createParams];
+        [self createCellClass];
 	}
 
 	return self;
+}
+
+- (void)createParams {
+    self.pageAt = 1;                //默认第一页
+    self.pageSize = 20;             //默认一页xx条
+    self.totalItems = 0;            //
+    self.isLoadDataOK = YES;             //默认加载完毕
+    self.isEmptyCellEnableClick = YES;      //默认允许点击
+    self.emptyCellHeight = -1;          //给一个负数
+    self.loadingCellHeight = APPCONFIG_UI_TABLE_CELL_HEIGHT;        //加载单元格的高度
+    self.tag = 0;
+}
+
+- (void)createCellClass {
+    self.mDataCellClass  = nil;
+    self.mErrorCellClass = [SBErrorTableCell class];
+    self.mEmptyCellClass = [SBEmptyTableCell class];
+    self.mMoreCellClass  = [SBMoreTableCell class];
+    self.mLoadingCellClass = [SBLoadingTableCell class];
+    self.mFinishedCellClass = [SBFinishedTableCell class];
 }
 
 - (void)dealloc {
