@@ -76,6 +76,12 @@
 //加载完毕，并且这里的意思是没有后续数据了，对应 hasNextPage 方法
 - (BOOL)isLoadDataComplete;
 
+//配置参数项
+- (void)createParams;
+
+//配置单元格项
+- (void)createCellClass;
+
 //缓存列表数据
 - (BOOL)storeCacheData:(NSString *)cacheKey cacheData:(DataItemResult *)cacheResult;
 

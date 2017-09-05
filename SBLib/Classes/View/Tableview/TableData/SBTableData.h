@@ -85,6 +85,12 @@
 //加载下一页的数据
 - (void)loadDataforNextPage;
 
+//配置参数项
+- (void)createParams;
+
+//配置单元格项
+- (void)createCellClass;
+
 //缓存列表数据 只对第一页做处理
 - (BOOL)storeCacheData:(NSString *)cacheKey cacheData:(DataItemResult *)cacheResult;
 
