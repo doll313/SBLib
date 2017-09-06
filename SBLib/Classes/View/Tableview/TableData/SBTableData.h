@@ -85,12 +85,6 @@
 //加载下一页的数据
 - (void)loadDataforNextPage;
 
-//配置参数项
-- (void)createParams;
-
-//配置单元格项
-- (void)createCellClass;
-
 //缓存列表数据 只对第一页做处理
 - (BOOL)storeCacheData:(NSString *)cacheKey cacheData:(DataItemResult *)cacheResult;
 
@@ -106,4 +100,23 @@
 //销毁数据
 - (void)dispatchView;
 
+#pragma mark -
+#pragma mark 默认配置
+/** 设置默认的pagesize 大小 **/
++ (void)setDPageSize:(NSInteger)page;
+
+/** 设置默认的空单元格样式 **/
++ (void)setDEmptyCellCls:(NSString *)cString;
+
+/** 设置默认的错误单元格样式 **/
++ (void)setDErrorCellCls:(NSString *)cString;
+
+/** 设置默认的加载单元格样式 **/
++ (void)setDLoadingCellCls:(NSString *)cString;
+
+/** 设置默认的更多单元格样式 **/
++ (void)setDMoreCellCls:(NSString *)cString;
+
+/** 设置默认的完成单元格样式 **/
++ (void)setDFinishCellCls:(NSString *)cString;
 @end

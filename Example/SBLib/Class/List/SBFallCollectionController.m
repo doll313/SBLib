@@ -8,7 +8,6 @@
 
 #import "SBFallCollectionController.h"
 #import "SBFallLayout.h"
-#import "SBFallFooter.h"
 #import "SBConstant.h"
 
 @interface SBFallCollectionCell : SBDataCollectionCell
@@ -137,7 +136,6 @@
     // 帐户资料
     SBCollectionData *sectionData = [[SBCollectionData alloc] init];
     sectionData.mDataCellClass = [SBFallCollectionCell class];
-    sectionData.mFooterClass = [SBFallFooter class];
 //    sectionData.hasFinishCell = YES;
     [self.iCollectionView addSectionWithData:sectionData];
 

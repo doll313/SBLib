@@ -25,6 +25,11 @@
 #import "DataAppCacheDB.h"          //缓存数据库
 #import "STORE.h"
 
+static NSInteger dPageSize;
+static NSString *dEmptyCellCls = nil;
+static NSString *dErrorCellCls = nil;
+static NSString *dFooterCls = nil;
+
 @implementation SBCollectionData
 
 #pragma mark -
@@ -44,16 +49,20 @@
 }
 - (void)createParams {
     self.pageAt = 1;                //默认第一页
-    self.pageSize = 20;             //默认一页xx条
+    self.pageSize = dPageSize > 0 ? dPageSize : 20;             //默认一页xx条
     self.isLoadDataOK = YES;             //默认加载完毕      //加载单元格的高度
     self.tag = 0;
 }
 
 - (void)createCellClass {
+    Class emptyClass = NSClassFromString(dEmptyCellCls);
+    Class errorClass = NSClassFromString(dErrorCellCls);
+    Class footerClass = NSClassFromString(dFooterCls);
+
     self.mDataCellClass  = nil;
-    self.mErrorCellClass = NSClassFromString(@"SBErrorCollectionCell");
-    self.mEmptyCellClass = NSClassFromString(@"SBEmptyCollectionCell");
-    self.mFooterClass = NSClassFromString(@"SBCollectionFooter");
+    self.mErrorCellClass = errorClass ? errorClass : NSClassFromString(@"SBErrorCollectionCell");
+    self.mEmptyCellClass = emptyClass ? emptyClass : NSClassFromString(@"SBEmptyCollectionCell");
+    self.mFooterClass = footerClass ? footerClass : NSClassFromString(@"SBCollectionFooter");
 }
 
 - (void)dealloc {
@@ -383,12 +392,34 @@
 }
 
 #pragma mark -
-#pragma mark 界面操作
+#pragma mark
 //销毁数据加载等
 - (void)dispatchView {
     self.collectionView = nil;
     [self.dataLoader stopLoading];
     self.dataLoader = nil;
+}
+
+#pragma mark -
+#pragma mark 默认配置
+/** 设置默认的pagesize 大小 **/
++ (void)setDPageSize:(NSInteger)page {
+    dPageSize = page;
+}
+
+/** 设置默认的空单元格样式 **/
++ (void)setDEmptyCellCls:(NSString *)cString {
+    dEmptyCellCls = cString;
+}
+
+/** 设置默认的错误单元格样式 **/
++ (void)setDErrorCellCls:(NSString *)cString {
+    dErrorCellCls = cString;
+}
+
+/** 设置默认的footer样式 **/
++ (void)setDFooterCls:(NSString *)cString {
+    dFooterCls = cString;
 }
 
 @end

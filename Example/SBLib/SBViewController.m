@@ -31,6 +31,8 @@
 {
     [super viewDidLoad];
 
+    [SBCollectionData setDFooterCls:@"SBFallFooter"];
+
     [self tableDidLoad];
 }
 

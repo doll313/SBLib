@@ -94,4 +94,17 @@
 //销毁数据
 - (void)dispatchView;
 
+#pragma mark -
+#pragma mark 默认配置
+/** 设置默认的pagesize 大小 **/
++ (void)setDPageSize:(NSInteger)page;
+
+/** 设置默认的空单元格样式 **/
++ (void)setDEmptyCellCls:(NSString *)cString;
+
+/** 设置默认的错误单元格样式 **/
++ (void)setDErrorCellCls:(NSString *)cString;
+
+/** 设置默认的footer样式 **/
++ (void)setDFooterCls:(NSString *)cString;
 @end

@@ -155,6 +155,11 @@
 
 // 显示提示信息（可设定自动隐藏时间、是否显示转子、结束）
 - (MBProgressHUD *)sb_showTips:(NSString *)tips showIndicator:(BOOL)showIndicator hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds completion:(void (^__nullable)())completion {
+    return [self sb_showTips:tips showIndicator:showIndicator hiddenAfterSeconds:hiddenAfterSeconds isBlackBg:YES completion:completion];
+}
+
+// 显示提示信息（可设定自动隐藏时间、是否显示转子，背景色，结束事件）
+- (MBProgressHUD *)sb_showTips:(NSString *)tips showIndicator:(BOOL)showIndicator hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds isBlackBg:(BOOL)isBlackBg completion:(void (^ __nullable)())completion {
     if (!tips) {
         tips = @"";
     }
@@ -186,20 +191,29 @@
     if (completion) {
         hud.completionBlock = completion;
     }
-
+    
     return hud;
 }
 
 /** 创建hud **/
 - (MBProgressHUD *)sb_createHud:(MBProgressHUDMode)mode {
+    return [self sb_createHud:mode isBlackBg:YES];
+}
+
+/** 创建hud **/
+- (MBProgressHUD *)sb_createHud:(MBProgressHUDMode)mode isBlackBg:(BOOL)isBlackBg {
+    UIColor *bColor = isBlackBg ? [UIColor blackColor] : [UIColor whiteColor];
+    UIColor *sColor = isBlackBg ? [UIColor whiteColor] : [UIColor blackColor];
+
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self animated:YES];
     hud.label.numberOfLines = 10;
     hud.bezelView.style = MBProgressHUDBackgroundStyleSolidColor;
-    hud.bezelView.backgroundColor = [UIColor blackColor];
-    hud.contentColor = [UIColor whiteColor];
+    hud.bezelView.backgroundColor = bColor;
+    hud.contentColor = sColor;
     hud.mode = mode;
 
     return hud;
 }
+
 @end
 

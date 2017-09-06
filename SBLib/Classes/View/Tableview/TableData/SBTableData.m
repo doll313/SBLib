@@ -30,14 +30,21 @@
 #import "SBEmptyTableCell.h"          //空
 #import "SBFinishedTableCell.h"          //完成
 #import "SBMoreTableCell.h"         //更多
-
 #import "SBAppCoreInfo.h"             //应用信息
 #import "DataAppCacheDB.h"          //缓存数据库
+
+static NSInteger dPageSize;
+static NSString *dEmptyCellCls = nil;
+static NSString *dErrorCellCls = nil;
+static NSString *dLoadingCellCls = nil;
+static NSString *dMoreCellCls = nil;
+static NSString *dFinishCellCls = nil;
 
 @implementation SBTableData
 
 #pragma mark -
 #pragma mark 生命周期
+
 - (id)init {
 	self = [super init];
 
@@ -54,7 +61,7 @@
 
 - (void)createParams {
     self.pageAt = 1;                //默认第一页
-    self.pageSize = 20;             //默认一页xx条
+    self.pageSize = dPageSize > 0 ? dPageSize : 20;             //默认一页xx条
     self.totalItems = 0;            //
     self.isLoadDataOK = YES;             //默认加载完毕
     self.isEmptyCellEnableClick = YES;      //默认允许点击
@@ -64,12 +71,18 @@
 }
 
 - (void)createCellClass {
+    Class emptyClass = NSClassFromString(dEmptyCellCls);
+    Class errorClass = NSClassFromString(dErrorCellCls);
+    Class moreClass = NSClassFromString(dMoreCellCls);
+    Class loadingClass = NSClassFromString(dLoadingCellCls);
+    Class finishClass = NSClassFromString(dFinishCellCls);
+
     self.mDataCellClass  = nil;
-    self.mErrorCellClass = [SBErrorTableCell class];
-    self.mEmptyCellClass = [SBEmptyTableCell class];
-    self.mMoreCellClass  = [SBMoreTableCell class];
-    self.mLoadingCellClass = [SBLoadingTableCell class];
-    self.mFinishedCellClass = [SBFinishedTableCell class];
+    self.mErrorCellClass = errorClass ? errorClass : [SBErrorTableCell class];
+    self.mEmptyCellClass = emptyClass ? emptyClass : [SBEmptyTableCell class];
+    self.mMoreCellClass  = moreClass ? moreClass : [SBMoreTableCell class];
+    self.mLoadingCellClass = loadingClass ? loadingClass : [SBLoadingTableCell class];
+    self.mFinishedCellClass = finishClass ? finishClass : [SBFinishedTableCell class];
 }
 
 - (void)dealloc {
@@ -365,12 +378,44 @@
 }
 
 #pragma mark -
-#pragma mark 界面操作
+#pragma mark 操作
 //销毁数据加载等
 - (void)dispatchView {
     self.tableView = nil;
     [self.dataLoader stopLoading];
     self.dataLoader = nil;
+}
+
+#pragma mark -
+#pragma mark 默认配置
+/** 设置默认的pagesize 大小 **/
++ (void)setDPageSize:(NSInteger)page {
+    dPageSize = page;
+}
+
+/** 设置默认的空单元格样式 **/
++ (void)setDEmptyCellCls:(NSString *)cString {
+    dEmptyCellCls = cString;
+}
+
+/** 设置默认的错误单元格样式 **/
++ (void)setDErrorCellCls:(NSString *)cString {
+    dErrorCellCls = cString;
+}
+
+/** 设置默认的加载单元格样式 **/
++ (void)setDLoadingCellCls:(NSString *)cString {
+    dLoadingCellCls = cString;
+}
+
+/** 设置默认的更多单元格样式 **/
++ (void)setDMoreCellCls:(NSString *)cString {
+    dMoreCellCls = cString;
+}
+
+/** 设置默认的完成单元格样式 **/
++ (void)setDFinishCellCls:(NSString *)cString {
+    dFinishCellCls = cString;
 }
 
 @end
