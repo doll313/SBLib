@@ -81,6 +81,9 @@
         else if ([titleStr isEqualToString:@"location"]) {
             [__self doLocation];
         }
+        else if ([titleStr isEqualToString:@"tips"]) {
+            [tableView.ctrl.view sb_showTips:@"12345678" showIndicator:NO hiddenAfterSeconds:2 isBlackBg:NO completion:nil];
+        }
     };
 
     // 帐户资料
@@ -96,6 +99,7 @@
                             @"location",
                             @"collection",
                             @"database",
+                            @"tips",
                             ];
 
     //单元格

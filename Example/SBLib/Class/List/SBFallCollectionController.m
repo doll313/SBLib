@@ -9,6 +9,7 @@
 #import "SBFallCollectionController.h"
 #import "SBFallLayout.h"
 #import "SBConstant.h"
+#import "SBFallFooter.h"
 
 @interface SBFallCollectionCell : SBDataCollectionCell
 
@@ -138,6 +139,16 @@
     sectionData.mDataCellClass = [SBFallCollectionCell class];
 //    sectionData.hasFinishCell = YES;
     [self.iCollectionView addSectionWithData:sectionData];
+
+    //只在wifi下
+    if (SBGetNetworkReachability() == SBNetworkReachabilityWifi) {
+        MJRefreshFooter *footer = self.iCollectionView.mj_footer;
+        if ([footer isKindOfClass:[SBFallFooter class]]) {
+            SBFallFooter *f = (SBFallFooter *)footer;
+            f.preAutomaticallyHeightPercent = 2.5f;//预加载
+        }
+
+    }
 
     [sectionData refreshData];
 }

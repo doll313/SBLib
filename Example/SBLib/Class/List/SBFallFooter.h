@@ -6,8 +6,8 @@
 //  Copyright © 2017年 yuki.wang. All rights reserved.
 //
 
-#import <MJRefresh/MJRefresh.h>
+#import "SBRefreshFooter.h"
 
-@interface SBFallFooter : MJRefreshAutoFooter
+@interface SBFallFooter : SBRefreshFooter
 
 @end

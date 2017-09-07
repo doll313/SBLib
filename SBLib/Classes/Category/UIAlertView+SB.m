@@ -174,7 +174,7 @@
     [MBProgressHUD hideHUDForView:self animated:YES];
 
     MBProgressHUDMode mode = showIndicator ? MBProgressHUDModeIndeterminate : MBProgressHUDModeText;
-    MBProgressHUD *hud = [self sb_createHud:mode];
+    MBProgressHUD *hud = [self sb_createHud:mode isBlackBg:isBlackBg];
     if ([tips isKindOfClass:[NSAttributedString class]]) {
         hud.label.attributedText = (NSAttributedString *)tips;
     }
