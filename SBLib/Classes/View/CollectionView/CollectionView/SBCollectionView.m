@@ -135,7 +135,7 @@
     NSUInteger rowCount = [sectionData.tableDataResult count];
     
     CGFloat width = CGRectGetWidth(collectionView.bounds);
-    CGFloat height = CGRectGetHeight(collectionView.bounds) - self.contentInset.top - self.contentInset.bottom;
+    CGFloat height = CGRectGetHeight(collectionView.bounds);
         
     //加载状态，显示加载样式
     if (SBTableDataStatusLoading == sectionData.httpStatus && indexPath.row >= [sectionData.tableDataResult count]) {
@@ -345,6 +345,9 @@
 
 // called on finger up if the user dragged. decelerate is true if it will continue moving afterwards
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if (self.didEndDragging) {
+        self.didEndDragging(self, decelerate);
+    }
 
 }
 

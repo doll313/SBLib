@@ -49,6 +49,8 @@
 @property (nonatomic, copy) void (^willBeginDragging)(SBCollectionView *collectionView);
 // 结束拖动
 @property (nonatomic, copy) void (^willEndDragging)(SBCollectionView *collectionView);
+// 已经结束拖动
+@property (nonatomic, copy) void (^didEndDragging)(SBCollectionView *collectionView, BOOL decelerate);
 // 滑动松手
 @property (nonatomic, copy) void(^endDecelerating)(SBCollectionView *collectionView);
 

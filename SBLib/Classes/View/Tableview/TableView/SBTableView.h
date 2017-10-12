@@ -89,6 +89,8 @@
 @property (nonatomic, copy) void (^willBeginDragging)(SBTableView *table);
 // 结束拖动
 @property (nonatomic, copy) void (^willEndDragging)(SBTableView *table);
+// 已经结束拖动
+@property (nonatomic, copy) void (^didEndDragging)(SBTableView *table, BOOL decelerate);
 // 空单元格点击事件
 @property (nonatomic, copy) void (^emptyCellClicked)(SBTableData *tableViewData);
 

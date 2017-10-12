@@ -110,7 +110,7 @@
 /** 撑满列表的单元格高度 */
 - (CGFloat)fullCellHeight {
     CGFloat tableHeight = CGRectGetHeight(self.bounds);
-    tableHeight = tableHeight - self.contentInset.top - self.contentInset.bottom;
+    //tableHeight = tableHeight - self.contentInset.top - self.contentInset.bottom;
     CGFloat tableHeaderHeight = CGRectGetHeight(self.tableHeaderView.bounds);
     if (tableHeight - tableHeaderHeight >= APPCONFIG_UI_TABLE_CELL_HEIGHT) {
         //撑满屏幕
@@ -700,20 +700,20 @@
 
 // called on finger up if the user dragged. decelerate is true if it will continue moving afterwards
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-
+    if (self.didEndDragging) {
+        self.didEndDragging(self, decelerate);
+    }
 }
 
 /** view已经停止滚动 */
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (self.endDecelerating) {
         self.endDecelerating(self);
-    } else {
-        [self autoCheckAndLoadNextPage:scrollView];
     }
+    [self autoCheckAndLoadNextPage:scrollView];
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-
     if (self.willBeginDragging) {
         self.willBeginDragging(self);
     }
