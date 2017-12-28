@@ -119,7 +119,7 @@ extern NSString* kOHEmoitAttributeName;
 
 
 //设置行间距 和段间距
--(void)setLineSpacing:(CGFloat)lineSpace  paragraphSpacing:(CGFloat)paraSpace;
+-(NSMutableAttributedString *)setLineSpacing:(CGFloat)lineSpace  paragraphSpacing:(CGFloat)paraSpace;
 
 
 //设置链接

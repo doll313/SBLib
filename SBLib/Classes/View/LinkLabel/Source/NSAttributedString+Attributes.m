@@ -42,28 +42,22 @@ NSString* kOHEmoitAttributeName = @"NSEmoitAttributeName1234567";
         return nil;
     }
 }
+static inline CGSize ajustedSize(CGSize originalSize) {
+    CGSize ajustedSize = originalSize;
+    ajustedSize.width = ceilf(originalSize.width);
+    ajustedSize.height = ceilf(originalSize.height);
+    return ajustedSize;
+}
 
 -(CGSize)sizeConstrainedToSize:(CGSize)maxSize {
-	return [self sizeConstrainedToSize:maxSize fitRange:NULL];
+    return ajustedSize([self sizeConstrainedToSize:maxSize fitRange:NULL]);
 }
 
 -(CGSize)sizeConstrainedToSize:(CGSize)maxSize fitRange:(NSRange*)fitRange
 {
-	CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((BRIDGE_CAST CFAttributedStringRef)self);
-    CGSize sz = CGSizeMake(0.f, 0.f);
-    if (framesetter)
-    {
-        CFRange fitCFRange = CFRangeMake(0,0);
-        sz = CTFramesetterSuggestFrameSizeWithConstraints(framesetter,CFRangeMake(0,0),NULL,maxSize,&fitCFRange);
-        sz = CGSizeMake( ceil(sz.width+1) , ceil(sz.height+1) ); // take 1pt of margin for security
-        CFRelease(framesetter);
-
-        if (fitRange)
-        {
-            *fitRange = NSMakeRange(fitCFRange.location, fitCFRange.length);
-        }
-    }
-    return sz;
+    CGSize size = [self boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin |
+                   NSStringDrawingUsesFontLeading context:nil].size;
+    return ajustedSize(size);
 }
 
 -(CTFontRef)fontAtIndex:(NSUInteger)index effectiveRange:(NSRangePointer)aRange {
@@ -115,7 +109,34 @@ NSString* kOHEmoitAttributeName = @"NSEmoitAttributeName1234567";
 
 //根据显示的宽度计算文字所占的高度
 -(CGFloat)textHeightOfConstrainedWidth:(CGFloat)width {
-    return [self sizeConstrainedToSize:CGSizeMake(width, INT32_MAX)].height;
+    CGFloat height = [self sizeConstrainedToSize:CGSizeMake(width, INT32_MAX)].height;
+    return [self adjustHeight:height attributeString:self];
+}
+
+//区分行数，一行高度不加行间距
+-(CGFloat)adjustHeight:(CGFloat)height attributeString:(NSAttributedString * )string{
+    __block CGFloat fontHeight;
+    __block CGFloat lineSpace;
+    [string enumerateAttributesInRange:NSMakeRange(0, string.length) options:NSAttributedStringEnumerationReverse usingBlock:^(NSDictionary<NSString *,id> * _Nonnull attrs, NSRange range, BOOL * _Nonnull stop) {
+        fontHeight = [(UIFont *)attrs[NSFontAttributeName] lineHeight];
+        lineSpace = [(NSParagraphStyle *)attrs[NSParagraphStyleAttributeName] lineSpacing];
+        fontHeight = ceilf(fontHeight);
+    }];
+    
+    if ((height - fontHeight) <= lineSpace) {
+        height = fontHeight;
+    }
+    return height;
+}
+
+- (BOOL)containChinese:(NSString *)str {
+    for(int i=0; i< [str length];i++){
+        int a = [str characterAtIndex:i];
+        if( a > 0x4e00 && a < 0x9fff){
+            return YES;
+        }
+    }
+    return NO;
 }
 
 @end
@@ -129,11 +150,15 @@ NSString* kOHEmoitAttributeName = @"NSEmoitAttributeName1234567";
 
 -(void)setFont:(UIFont*)font
 {
-	[self setFontName:font.fontName size:font.pointSize];
+    if (self.length > 0) {
+        [self addAttribute:NSFontAttributeName value:font range:NSMakeRange(0,self.length)];
+    }
 }
 -(void)setFont:(UIFont*)font range:(NSRange)range
 {
-	[self setFontName:font.fontName size:font.pointSize range:range];
+    if (self.length > 0) {
+        [self addAttribute:NSFontAttributeName value:font range:range];
+    }
 }
 -(void)setFontName:(NSString*)fontName size:(CGFloat)size
 {
@@ -255,31 +280,23 @@ NSString* kOHEmoitAttributeName = @"NSEmoitAttributeName1234567";
 //设置文字间距
 -(void)setTextSpacing:(CGFloat )number
 {
-    CGFloat spacing = number;
-    NSRange range = NSMakeRange(0, self.length);
-    CFNumberRef num = CFNumberCreate(kCFAllocatorDefault,kCFNumberSInt8Type,&spacing);
-    [self addAttribute:(id)kCTKernAttributeName value:(BRIDGE_CAST id)num range:range];
-    CFRelease(num);
+    [self addAttribute:NSKernAttributeName value:@(number) range:NSMakeRange(0, self.length)];
 }
 //设置行间距 和段间距
--(void)setLineSpacing:(CGFloat)lineSpacing  paragraphSpacing:(CGFloat)paragraphSpacing{
-    
-    CTParagraphStyleSetting paraStyles[] = {
-        {.spec = kCTParagraphStyleSpecifierLineSpacingAdjustment, .valueSize = sizeof(CGFloat), .value = (const void*)&lineSpacing},
-        {.spec = kCTParagraphStyleSpecifierParagraphSpacing, .valueSize = sizeof(CGFloat), .value = (const void*)&paragraphSpacing},
-    };
-    
-    CTParagraphStyleRef aStyle = CTParagraphStyleCreate(paraStyles, 2);
-	[self addAttribute:(BRIDGE_CAST NSString*)kCTParagraphStyleAttributeName value:(BRIDGE_CAST id)aStyle range:NSMakeRange(0, self.length)];
-	CFRelease(aStyle);
+-(NSMutableAttributedString *)setLineSpacing:(CGFloat)lineSpacing  paragraphSpacing:(CGFloat)paragraphSpacing{
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.lineSpacing = lineSpacing;// 字体的行间距
+    paragraphStyle.paragraphSpacing = paragraphSpacing;
+    [self addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, self.length)];
+    return self;
 }
 
 
 -(void)setLink:(NSURL*)link range:(NSRange)range
 {
-    [self removeAttribute:kOHLinkAttributeName range:range]; // Work around for Apple leak
+    [self removeAttribute:NSLinkAttributeName range:range]; // Work around for Apple leak
     if (link) {
-        [self addAttribute:kOHLinkAttributeName value:link range:range];
+        [self addAttribute:NSLinkAttributeName value:link range:range];
     }
 }
 
@@ -292,5 +309,6 @@ NSString* kOHEmoitAttributeName = @"NSEmoitAttributeName1234567";
 }
 
 @end
+
 
 
