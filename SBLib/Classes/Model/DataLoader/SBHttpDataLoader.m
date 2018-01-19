@@ -58,6 +58,20 @@
     return self;
 }
 
+//初始化网络数据,带额外设置
+- (id)initWithURL:(NSString *)URL httpMethod:(NSString *)httpMethod delegate:(id<SBHttpDataLoaderDelegate>)target settingBlock:(void(^)(SBHttpTask *sbHttpTask))settingBlock{
+    self = [super init];
+    
+    if(nil != self){
+        self.dataItemResult = [[DataItemResult alloc] init];
+        self.delegate = target;
+        
+        self.httpTask = [[SBHttpTask alloc] initWithURLString:URL httpMethod:httpMethod delegate:self settingBlock:settingBlock];
+    }
+    
+    return self;
+}
+
 - (void)taskBlock {
     SBWS(__self);
 

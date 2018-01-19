@@ -119,4 +119,8 @@ static BOOL _cell_alloc_debug;
     
 }
 
++ (CGFloat)cellHeight:(DataItemDetail *)detail{
+    return 44.0f;
+}
+
 @end

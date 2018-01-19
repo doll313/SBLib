@@ -104,8 +104,15 @@
 /** 为表格添加一个表格段 */
 - (void)addSectionWithData:(SBTableData *)sectionData;
 
+/** 在表格某个位置添加一个表格段 */
+- (void)insertSectionWithData:(SBTableData *)sectionData atIndex:(NSUInteger)index;
+
 /** 删除一个表格段 */
 - (void)removeSection:(NSUInteger)section;
+
+/** 删除一个表格段 */
+- (void)removeSectionWithRange:(NSRange)range;
+
 
 /** 删除一个单元格  ui和 数据上  */
 - (void)removeCell:(NSIndexPath *)indexPath;
@@ -113,6 +120,9 @@
 
 /** 获取指定表格段的数据 */
 - (SBTableData *)dataOfSection:(NSInteger)section;
+
+/** 获取末尾表格段的数据 */
+- (SBTableData *)lastSection;
 
 /** 获取指定单元格的数据 */
 - (DataItemDetail *)dataOfIndexPath:(NSIndexPath *)indexPath;

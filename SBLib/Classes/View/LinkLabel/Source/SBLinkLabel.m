@@ -20,6 +20,7 @@
 #import "SBLinkLabel.h"
 #import "CoreTextUtils.h"
 #import "NSString+SBMODULE.h"
+#import <SBLib/NSAttributedString+Attributes.h>
 
 #pragma mark - 私有变量 私有方法
 const int UITextAlignmentJustify = ((UITextAlignment)kCTJustifiedTextAlignment);

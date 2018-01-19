@@ -85,6 +85,28 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     return self;
 }
 
+- (id)initWithURLString:(NSString *)aURLString
+             httpMethod:(NSString *)method
+               delegate:(id<SBHttpTaskDelegate>)delegate
+           settingBlock:(void(^)(SBHttpTask *sbHttpTask))settingBlock{
+    self = [super init];
+    
+    [self commonInit];
+    self.aURLString = aURLString;
+    self.HTTPMethod = method;
+    self.delegate = delegate;
+    
+    //如果有多余的设置就在block里面运行
+    if (settingBlock) {
+        settingBlock(self);
+    }
+    
+    //进入queue
+    SBHttpTaskQueue *queue = [SBHttpTaskQueue sharedSBHttpTaskQueue];
+    [queue addOperation:self];
+    return self;
+}
+
 //释放资源
 - (void)dealloc {
     [self stopLoading];

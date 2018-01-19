@@ -603,9 +603,22 @@
 	[self.arrTableData addObject:sectionData];
 }
 
+- (void)insertSectionWithData:(SBTableData *)sectionData atIndex:(NSUInteger)index{
+    if (sectionData.mDataCellClass && (index <= self.arrTableData.count)) {
+        sectionData.tableView = self;
+        [self.arrTableData insertObject:sectionData atIndex:index];
+    }
+}
+
 - (void)removeSection:(NSUInteger)section {
     if (section < self.arrTableData.count) {
         [self.arrTableData removeObjectAtIndex:section];
+    }
+}
+
+- (void)removeSectionWithRange:(NSRange)range{
+    if (range.location > (self.arrTableData.count +1)) {
+        [self.arrTableData removeObjectsInRange:range];
     }
 }
 
@@ -616,6 +629,10 @@
     }
     
     return nil;
+}
+
+- (SBTableData *)lastSection{
+    return self.arrTableData.lastObject;
 }
 
 /** 获取指定单元格的数据 */

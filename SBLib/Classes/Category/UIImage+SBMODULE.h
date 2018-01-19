@@ -62,6 +62,8 @@
 /** 文字转图片 */
 +(UIImage *)sb_imageFromText:(NSString *)string size:(CGSize)size font:(NSInteger)fontsize textColor:(UIColor *)textColor backColor:(UIColor *)backColor;
 
++ (UIImage *)sb_imageFromBar:(NSString *)barcode;
+
 //渐变色
 + (UIImage*)sb_drawGradientInRect:(CGSize)size withColors:(NSArray*)colors;
 

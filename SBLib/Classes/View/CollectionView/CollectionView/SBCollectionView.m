@@ -399,6 +399,13 @@
     }
 }
 
+/** 为所有section添加一个boolvalue */
+- (void)addAllSectionBoolFlagWithKey:(NSString *)itemsKey{
+    for (SBCollectionData *collectionData in self.arrCollectionData) {
+        [collectionData.tableDataResult setAllItemsKey:itemsKey withBool:NO];
+    }
+}
+
 - (NSString *)cellWithIdentifier:(Class)cellClass {
     NSString *cellIdentifier = [NSString stringWithFormat:@"dequeueReusableCellWithIdentifier-%@", cellClass];
     return cellIdentifier;

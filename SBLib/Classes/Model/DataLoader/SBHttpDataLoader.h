@@ -71,6 +71,10 @@ typedef NS_ENUM(NSInteger, SBTableDataStatus) {
 /** 初始化Request方式请求的网络数据 */
 - (id)initWithURLRequest:(NSMutableURLRequest *)request delegate:(nullable id<SBHttpDataLoaderDelegate>)target;
 
+//初始化网络数据,带额外设置
+- (id)initWithURL:(NSString *)URL httpMethod:(NSString *)httpMethod delegate:(id<SBHttpDataLoaderDelegate>)target settingBlock:(void(^)(SBHttpTask *sbHttpTask))settingBlock;
+
+
 /** 获取本地解析好的数据 */
 - (DataItemResult *)getDataItemResult;
 

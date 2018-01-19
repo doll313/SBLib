@@ -90,6 +90,9 @@
 /** 为表格添加一个表格段 */
 - (void)addSectionWithData:(SBCollectionData *)sectionData;
 
+/** 为所有section添加一个boolvalue */
+- (void)addAllSectionBoolFlagWithKey:(NSString *)itemsKey;
+
 /** 注册单元格类型 */
 - (void)registerClass:(Class)cellClass;
 

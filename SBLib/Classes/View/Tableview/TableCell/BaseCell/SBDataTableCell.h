@@ -78,4 +78,7 @@
 //绑定单元格的控件
 - (void)bindCellData;
 
+//计算cell高度
++ (CGFloat)cellHeight:(DataItemDetail *)detail;
+
 @end

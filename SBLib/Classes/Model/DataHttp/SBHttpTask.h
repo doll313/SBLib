@@ -78,7 +78,7 @@ typedef NS_ENUM(NSInteger, SBHttpTaskState) {
 @property (nonatomic, strong) NSMutableDictionary *jsonDict;
 
 /** request  */
-@property (nonatomic, strong) NSURLRequest *aURLrequest;
+@property (nonatomic, strong) NSMutableURLRequest *aURLrequest;
 
 /** 上传的文件数据 */
 @property (nonatomic, strong, nullable) NSData *fileData;
@@ -158,6 +158,12 @@ typedef NS_ENUM(NSInteger, SBHttpTaskState) {
 /** 初始化一个HTTP请求 直接用 request  */
 - (id)initWithRequest:(nonnull NSMutableURLRequest *)request
                delegate:(nullable id<SBHttpTaskDelegate>)delegate;
+
+//如果有额外参数设置用这个方法
+- (id)initWithURLString:(NSString *)aURLString
+             httpMethod:(NSString *)method
+               delegate:(id<SBHttpTaskDelegate>)delegate
+           settingBlock:(void(^)(SBHttpTask *sbHttpTask))settingBlock;
 
 /** 终止数据加载 */
 - (void)stopLoading;
