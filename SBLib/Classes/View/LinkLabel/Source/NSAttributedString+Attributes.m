@@ -20,8 +20,7 @@
 
 #import "NSAttributedString+Attributes.h"
 
-NSString* kOHLinkAttributeName = @"NSLinkAttributeName"; // Use the same value as OSX, to be compatible in case Apple port this to iOS one day too
-NSString* kOHEmoitAttributeName = @"NSEmoitAttributeName1234567";
+//NSString* kOHLinkAttributeName = @"NSLinkAttributeName"; // Use the same value as OSX, to be compatible in case Apple port this to iOS one day too
 
 /////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - NSAttributedString Additions

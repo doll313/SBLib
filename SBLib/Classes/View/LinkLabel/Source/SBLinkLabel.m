@@ -124,7 +124,7 @@ const int UITextAlignmentJustify = ((UITextAlignment)kCTJustifiedTextAlignment);
         };
         
         // 让链接位置变颜色
-        [_attributedText enumerateAttribute:kOHLinkAttributeName inRange:NSMakeRange(0, [_attributedText length])
+        [_attributedText enumerateAttribute:NSLinkAttributeName inRange:NSMakeRange(0, [_attributedText length])
                                     options:NSAttributedStringEnumerationReverse usingBlock:^(id value, NSRange range, BOOL *stop)
          {
              if (value)
@@ -151,7 +151,7 @@ const int UITextAlignmentJustify = ((UITextAlignment)kCTJustifiedTextAlignment);
     {
         // Links set by text attribute
         if (_attributedText) {
-            [_attributedText enumerateAttribute:kOHLinkAttributeName inRange:NSMakeRange(0, [_attributedText length])
+            [_attributedText enumerateAttribute:NSLinkAttributeName inRange:NSMakeRange(0, [_attributedText length])
                                         options:0 usingBlock:^(id value, NSRange range, BOOL *stop)  {
                  if (value && NSLocationInRange(idx, range)) {
                      NSTextCheckingResult* result = [NSTextCheckingResult linkCheckingResultWithRange:range URL:(NSURL*)value];

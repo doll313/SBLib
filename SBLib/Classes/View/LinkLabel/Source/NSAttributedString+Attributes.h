@@ -43,9 +43,6 @@
 #define MRC_AUTORELEASE(x) (x)
 #endif
 
-extern NSString* kOHLinkAttributeName;
-extern NSString* kOHEmoitAttributeName;
-
 //NSAttributedString扩展
 @interface NSAttributedString (OHCommodityConstructors)
 //初始化方法
