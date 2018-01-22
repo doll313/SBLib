@@ -302,9 +302,9 @@ static inline CGSize ajustedSize(CGSize originalSize) {
 
 -(void)setEmoit:(NSString *)link range:(NSRange)range
 {
-    [self removeAttribute:kOHEmoitAttributeName range:range]; // Work around for Apple leak
+    [self removeAttribute:NSLinkAttributeName range:range]; // Work around for Apple leak
     if (link) {
-        [self addAttribute:kOHEmoitAttributeName value:link range:range];
+        [self addAttribute:NSLinkAttributeName value:link range:range];
     }
 }
 
