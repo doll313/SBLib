@@ -321,7 +321,7 @@ const int UITextAlignmentJustify = ((UITextAlignment)kCTJustifiedTextAlignment);
                     self.images = [NSMutableArray array];
                 }
                 
-                [_attributedText enumerateAttribute:NSLinkAttributeName inRange:NSMakeRange(0, [_attributedText length])
+                [_attributedText enumerateAttribute:kOHEmoitAttributeName inRange:NSMakeRange(0, [_attributedText length])
                                             options:0 usingBlock:^(id value, NSRange range, BOOL *stop) {
                      if (value)  {
                          

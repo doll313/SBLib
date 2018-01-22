@@ -20,7 +20,10 @@
 
 #import "NSAttributedString+Attributes.h"
 
+NSString* kOHLinkAttributeName = @"NSLinkAttributeName"; // Use the same value as OSX, to be compatible in case Apple port this to iOS one day too
+NSString* kOHEmoitAttributeName = @"NSEmoitAttributeName1234567";
 
+/////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - NSAttributedString Additions
 
 @implementation NSAttributedString (OHCommodityConstructors)
@@ -100,7 +103,7 @@ static inline CGSize ajustedSize(CGSize originalSize) {
 }
 
 -(NSURL*)linkAtIndex:(NSUInteger)index effectiveRange:(NSRangePointer)aRange {
-    return [self attribute:NSLinkAttributeName atIndex:index effectiveRange:aRange];
+    return [self attribute:kOHLinkAttributeName atIndex:index effectiveRange:aRange];
 }
 
 
@@ -299,9 +302,9 @@ static inline CGSize ajustedSize(CGSize originalSize) {
 
 -(void)setEmoit:(NSString *)link range:(NSRange)range
 {
-    [self removeAttribute:NSLinkAttributeName range:range]; // Work around for Apple leak
+    [self removeAttribute:kOHEmoitAttributeName range:range]; // Work around for Apple leak
     if (link) {
-        [self addAttribute:NSLinkAttributeName value:link range:range];
+        [self addAttribute:kOHEmoitAttributeName value:link range:range];
     }
 }
 

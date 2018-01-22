@@ -95,12 +95,7 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     self.aURLString = aURLString;
     self.HTTPMethod = method;
     self.delegate = delegate;
-    
-    //如果有多余的设置就在block里面运行
-    if (settingBlock) {
-        settingBlock(self);
-    }
-    
+    self.settingBlock = settingBlock;
     //进入queue
     SBHttpTaskQueue *queue = [SBHttpTaskQueue sharedSBHttpTaskQueue];
     [queue addOperation:self];
@@ -205,6 +200,8 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:aURL
                                                            cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
                                                        timeoutInterval:self.timeout];
+    //赋值
+    self.aURLrequest = request;
 
     /** 如果post数据为空，则用GET方式提交数据 */
     [request setHTTPMethod:@"POST"];
@@ -229,7 +226,10 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     [request setHTTPShouldHandleCookies:NO];
 
     [request setValue:[self userAgent] forHTTPHeaderField:@"User-Agent"];
-
+    //如果有多余的设置就在block里面运行
+    if (self.settingBlock) {
+        self.settingBlock(self);
+    }
     //header参数
     for (NSString *filedkey in self.aHTTPHeaderField) {
         [request addValue:self.aHTTPHeaderField[filedkey] forHTTPHeaderField:filedkey];
@@ -246,10 +246,6 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     //    }];
     //
     //    [self.sessionDataTask resume];
-
-    //赋值
-    self.aURLrequest = request;
-
     //网络请求返回
     self.sessionDataTask =[[SBHttpTask sessionManager] dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
         [self doResponse:response responseObject:responseObject error:error];
@@ -270,7 +266,8 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:aURL
                                                            cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
                                                        timeoutInterval:self.timeout];
-
+    //赋值
+    self.aURLrequest = request;
     /** 如果post数据为空，则用GET方式提交数据 */
     [request setHTTPMethod:@"GET"];
 
@@ -281,7 +278,10 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     [request setHTTPShouldHandleCookies:NO];
 
     [request setValue:[self userAgent] forHTTPHeaderField:@"User-Agent"];
-
+    //如果有多余的设置就在block里面运行
+    if (self.settingBlock) {
+        self.settingBlock(self);
+    }
     //header参数
     for (NSString *filedkey in self.aHTTPHeaderField) {
         [request addValue:self.aHTTPHeaderField[filedkey] forHTTPHeaderField:filedkey];
@@ -298,9 +298,6 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     //    }];
     //
     //    [self.sessionDataTask resume];
-    //赋值
-    self.aURLrequest = request;
-
     //网络请求返回
     self.sessionDataTask =[[SBHttpTask sessionManager] dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
         [self doResponse:response responseObject:responseObject error:error];
@@ -322,7 +319,10 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
                                                                    } error:&serializationError];
 
     self.aURLrequest = request;
-
+    //如果有多余的设置就在block里面运行
+    if (self.settingBlock) {
+        self.settingBlock(self);
+    }
     //网络请求返回
     self.sessionDataTask = [[SBHttpTask sessionManager] dataTaskWithRequest:request uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
         if (self.onUpload) {
@@ -345,7 +345,10 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
 
     self.aURLrequest = request;
-
+    //如果有多余的设置就在block里面运行
+    if (self.settingBlock) {
+        self.settingBlock(self);
+    }
     self.sessionDataTask = [[SBHttpTask sessionManager] downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
         if (self.onDownload) {
             self.onDownload(self, downloadProgress);
@@ -373,6 +376,10 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 
 /** 用request 请求 **/
 - (void)doRequest {
+    //如果有多余的设置就在block里面运行
+    if (self.settingBlock) {
+        self.settingBlock(self);
+    }
     //网络请求返回
     self.sessionDataTask = [[SBHttpTask sessionManager] dataTaskWithRequest:self.aURLrequest uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
         if (self.onUpload) {

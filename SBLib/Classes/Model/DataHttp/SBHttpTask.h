@@ -146,7 +146,8 @@ typedef NS_ENUM(NSInteger, SBHttpTaskState) {
 
 /** 下载的返回地址 如果是下载请求  必须实现该回调 */
 @property (nonatomic, copy) NSURL *(^destination)(NSURL *targetPath, NSURLResponse *response);
-
+/** 额外设置属性block */
+@property (nonatomic, copy) void (^settingBlock)(SBHttpTask *sbHttpTask);
 
 ////// 调用方法 /////
 
