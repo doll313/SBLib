@@ -20,9 +20,7 @@
 
 #import "NSAttributedString+Attributes.h"
 
-//NSString* kOHLinkAttributeName = @"NSLinkAttributeName"; // Use the same value as OSX, to be compatible in case Apple port this to iOS one day too
 
-/////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - NSAttributedString Additions
 
 @implementation NSAttributedString (OHCommodityConstructors)
@@ -102,7 +100,7 @@ static inline CGSize ajustedSize(CGSize originalSize) {
 }
 
 -(NSURL*)linkAtIndex:(NSUInteger)index effectiveRange:(NSRangePointer)aRange {
-    return [self attribute:kOHLinkAttributeName atIndex:index effectiveRange:aRange];
+    return [self attribute:NSLinkAttributeName atIndex:index effectiveRange:aRange];
 }
 
 
