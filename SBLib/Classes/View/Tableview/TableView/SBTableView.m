@@ -617,7 +617,7 @@
 }
 
 - (void)removeSectionWithRange:(NSRange)range{
-    if (range.location > (self.arrTableData.count +1)) {
+     if (range.location + range.length < (self.arrTableData.count +1)) {
         [self.arrTableData removeObjectsInRange:range];
     }
 }
