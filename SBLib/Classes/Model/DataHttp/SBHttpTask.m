@@ -205,7 +205,12 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 
     /** 如果post数据为空，则用GET方式提交数据 */
     [request setHTTPMethod:@"POST"];
-
+    /** 不支持cookies */
+    [request setHTTPShouldHandleCookies:NO];
+    //如果有多余的设置就在block里面运行
+    if (self.settingBlock) {
+        self.settingBlock(self);
+    }
     //json
     if (self.jsonDict) {
         [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];  //设置请求头
@@ -222,14 +227,8 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 
     [request setHTTPBody:self.postData];
 
-    /** 不支持cookies */
-    [request setHTTPShouldHandleCookies:NO];
-
     [request setValue:[self userAgent] forHTTPHeaderField:@"User-Agent"];
-    //如果有多余的设置就在block里面运行
-    if (self.settingBlock) {
-        self.settingBlock(self);
-    }
+
     //header参数
     for (NSString *filedkey in self.aHTTPHeaderField) {
         [request addValue:self.aHTTPHeaderField[filedkey] forHTTPHeaderField:filedkey];
@@ -270,18 +269,17 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     self.aURLrequest = request;
     /** 如果post数据为空，则用GET方式提交数据 */
     [request setHTTPMethod:@"GET"];
-
-    NSString *paramURL = [self.aURLString sb_httpGetMethodParamsString];
-    self.jsonDict = [[paramURL sb_httpGetMethodParams] mutableCopy];
-
     /** 不支持cookies */
     [request setHTTPShouldHandleCookies:NO];
-
-    [request setValue:[self userAgent] forHTTPHeaderField:@"User-Agent"];
     //如果有多余的设置就在block里面运行
     if (self.settingBlock) {
         self.settingBlock(self);
     }
+    NSString *paramURL = [self.aURLString sb_httpGetMethodParamsString];
+    self.jsonDict = [[paramURL sb_httpGetMethodParams] mutableCopy];
+
+    [request setValue:[self userAgent] forHTTPHeaderField:@"User-Agent"];
+
     //header参数
     for (NSString *filedkey in self.aHTTPHeaderField) {
         [request addValue:self.aHTTPHeaderField[filedkey] forHTTPHeaderField:filedkey];
@@ -309,6 +307,10 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 //上传
 - (void)doUpload {
     NSError *serializationError = nil;
+    //如果有多余的设置就在block里面运行
+    if (self.settingBlock) {
+        self.settingBlock(self);
+    }
     NSMutableURLRequest *request = [[SBHttpTask sessionManager].requestSerializer multipartFormRequestWithMethod:@"POST"
                                                                                    URLString:self.aURLString parameters:self.jsonDict
                                                                    constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
@@ -319,10 +321,6 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
                                                                    } error:&serializationError];
 
     self.aURLrequest = request;
-    //如果有多余的设置就在block里面运行
-    if (self.settingBlock) {
-        self.settingBlock(self);
-    }
     //网络请求返回
     self.sessionDataTask = [[SBHttpTask sessionManager] dataTaskWithRequest:request uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
         if (self.onUpload) {
@@ -343,7 +341,6 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 
     NSURL *URL = [NSURL URLWithString:self.aURLString];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
-
     self.aURLrequest = request;
     //如果有多余的设置就在block里面运行
     if (self.settingBlock) {
