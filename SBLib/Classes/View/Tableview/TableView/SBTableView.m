@@ -67,6 +67,9 @@
     self.delegate = self;
     self.dataSource = self;
     
+    self.estimatedRowHeight = 0;
+    self.estimatedSectionFooterHeight = 0;
+    self.estimatedSectionHeaderHeight = 0;
     self.tableFooterView = [[UIView alloc] init];
 }
 
