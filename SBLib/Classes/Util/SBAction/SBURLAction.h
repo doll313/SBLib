@@ -81,9 +81,6 @@
 - (id)anyObjectForKey:(NSString *)key;
 
 /**
- *  parameters for navigator
- *
- *  @return
  */
 - (NSDictionary *)queryDictionary;
 
@@ -92,7 +89,7 @@
 
 /** url跳转 会猜测根nav来跳转 c方法 */
 UIViewController *sb_openCtrl(SBURLAction *urlAction);
-void sb_colseCtrl();
+void sb_colseCtrl(void);
 
 @interface UIViewController (urlAction)
 @property (nonatomic, strong) SBURLAction *urlAction;

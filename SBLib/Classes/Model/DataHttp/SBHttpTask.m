@@ -19,10 +19,12 @@
  */
 
 #import "SBHttpTask.h"
+#import "DataItemDetail.h"
 #import "SBHttpHelper.h"
 #import "SBAppCoreInfo.h"               //
 #import "SBHttpTaskQueue.h"         //网络请求队列
 #import "SBExceptionLog.h"      //异常记录
+#import "SBURLRecorder.h"           //URL记录
 
 static BOOL _url_print_debug;             //调试url输出
 static BOOL _recieve_data_ram_debug;             //调试接收数据大小
@@ -48,6 +50,14 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 - (id)initWithURLString:(nonnull NSString *)aURLString
              httpMethod:(nonnull NSString *)method
                delegate:(nullable id<SBHttpTaskDelegate>)delegate {
+    return [self initWithURLString:aURLString httpMethod:method delegate:delegate settingBlock:^(SBHttpTask * _Nonnull sbHttpTask) {}];
+}
+
+
+- (id)initWithURLString:(NSString *)aURLString
+             httpMethod:(NSString *)method
+               delegate:(id<SBHttpTaskDelegate>)delegate
+           settingBlock:(void(^)(SBHttpTask *sbHttpTask))settingBlock{
     self = [super init];
 
     [self commonInit];
@@ -55,16 +65,16 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     self.aURLString = aURLString;
     self.HTTPMethod = method;
     self.delegate = delegate;
+    self.settingBlock = settingBlock;
 
     self.gzip = YES;
 
     //进入queue
-    NSOperationQueue *queue = [SBHttpTaskQueue sharedSBHttpTaskQueue];
+    SBHttpTaskQueue *queue = [SBHttpTaskQueue sharedSBHttpTaskQueue];
     [queue addOperation:self];
 
     return self;
 }
-
 
 /** 初始化一个HTTP请求 直接用 request  */
 - (id)initWithRequest:(nonnull NSMutableURLRequest *)request
@@ -82,23 +92,6 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     SBHttpTaskQueue *queue = [SBHttpTaskQueue sharedSBHttpTaskQueue];
     [queue addOperation:self];
 
-    return self;
-}
-
-- (id)initWithURLString:(NSString *)aURLString
-             httpMethod:(NSString *)method
-               delegate:(id<SBHttpTaskDelegate>)delegate
-           settingBlock:(void(^)(SBHttpTask *sbHttpTask))settingBlock{
-    self = [super init];
-    
-    [self commonInit];
-    self.aURLString = aURLString;
-    self.HTTPMethod = method;
-    self.delegate = delegate;
-    self.settingBlock = settingBlock;
-    //进入queue
-    SBHttpTaskQueue *queue = [SBHttpTaskQueue sharedSBHttpTaskQueue];
-    [queue addOperation:self];
     return self;
 }
 
@@ -122,7 +115,7 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
 
 - (void)doStartRequest {
 
-    void (^startBlock)() = ^void(){
+    void (^startBlock)(void) = ^void(){
         //开始请求
         if (self.willStart) {
             self.willStart(self);
@@ -438,7 +431,7 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
         return;
     }
 
-    void (^finishBlock)() = ^void(){
+    void (^finishBlock)(void) = ^void(){
         //停止
         self.endDate = [NSDate date];
         self.durationTime = [self.endDate timeIntervalSinceDate:self.startDate];
@@ -471,6 +464,9 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
             NSLog(@"接收到的数据大小:%fk", self.recieveData.length / 1024.0f);
         }
 
+        //记录
+        [self recordHttpTask];
+
         //
         [self stopLoading];
     };
@@ -481,6 +477,14 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
         finishBlock();
     }
 }
+
+/** 记录 **/
+- (void)recordHttpTask {
+    DataItemDetail *tDetail = [DataItemDetail new];
+    [tDetail setObject:self forKey:__KEY_CELL_CODE];
+    [SBURLRecorder record:tDetail];
+}
+
 
 - (BOOL)isConcurrent {
     return YES;
@@ -544,6 +548,7 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     _jsonDict = [aDecoder decodeObjectForKey:@"jsonDict"];
     _aURLrequest = [aDecoder decodeObjectForKey:@"aURLrequest"];
     _fileData = [aDecoder decodeObjectForKey:@"fileData"];
+    _filePath = [aDecoder decodeObjectForKey:@"filePath"];
     _tag = [aDecoder decodeIntegerForKey:@"tag"];
     _userInfo = [aDecoder decodeObjectForKey:@"userInfo"];
     _delegate = [aDecoder decodeObjectForKey:@"delegate"];
@@ -569,6 +574,7 @@ static BOOL _recieve_data_ram_debug;             //调试接收数据大小
     [aCoder encodeObject:_jsonDict forKey:@"jsonDict"];
     [aCoder encodeObject:_aURLrequest forKey:@"aURLrequest"];
     [aCoder encodeObject:_fileData forKey:@"fileData"];
+    [aCoder encodeObject:_filePath forKey:@"filePath"];
     [aCoder encodeInteger:_tag forKey:@"tag"];
     [aCoder encodeObject:_userInfo forKey:@"userInfo"];
     [aCoder encodeObject:_delegate forKey:@"delegate"];

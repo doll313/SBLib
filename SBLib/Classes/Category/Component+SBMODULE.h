@@ -36,6 +36,16 @@
 
 @interface UITextView (sbmodule)
 
+/** placeholder **/
+@property (nonatomic, readonly) UILabel *placeholderLabel;
+
+@property (nonatomic, strong) IBInspectable NSString *placeholder;
+@property (nonatomic, strong) NSAttributedString *attributedPlaceholder;
+@property (nonatomic, strong) IBInspectable UIColor *placeholderColor;
+
++ (UIColor *)defaultPlaceholderColor;
+
+/** 在光标处插入数据 **/
 - (void)sb_insertTextAtCursor:(NSString *)text;
 
 /**

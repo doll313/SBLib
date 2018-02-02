@@ -103,6 +103,9 @@
 - (CGFloat)sb_heightWithContentWidth:(CGFloat)width font:(UIFont *)font;
 - (CGFloat)sb_widthWithContentHeight:(CGFloat)height font:(UIFont *)font;
 
+/** 随机汉字 **/
++ (NSString *)sb_randomHanzi:(NSInteger)count;
+
 //中文的拼音首字母
 - (NSString *)sb_cnFirstLetter;
 
@@ -150,8 +153,6 @@
  fuck the server end
  后台传过来的“JSON”可能有错误导致无法解析，这里对可能出现的问题进行修正。
  但是由于后台的问题千奇百怪，无法保证所有问题都可以修正
- 
- @param jsonString 可能有问题的JSON
  
  @return 可能没问题的JSON
  */

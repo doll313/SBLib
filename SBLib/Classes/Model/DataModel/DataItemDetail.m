@@ -450,7 +450,27 @@ static BOOL _data_item_detail_malloc = 0;
     NSArray *keys = [self.dictData allKeys];
     
     for (NSString *key in keys) {
-        NSLog(@"Dump:  [%@] => %@", key, self.dictData[key.lowercaseString]);
+
+        id ob = self.dictData[key.lowercaseString];
+        //递归
+        if ([ob isKindOfClass:[DataItemDetail class]]) {
+            [ob dump];
+        }
+        else if ([ob isKindOfClass:[NSArray class]]) {
+            for (id subOb in ob) {
+                //如果还是detail
+                if ([subOb isKindOfClass:[DataItemDetail class]]) {
+                    [subOb dump];
+                }
+                else {
+                    NSLog(@"Dump:  [%@-sub] => %@", key, subOb);
+                }
+            }
+        }
+        else {
+            NSLog(@"Dump:  [%@] => %@", key, ob);
+        }
+
     }
 
     NSArray *keys2 = [self.attributeData allKeys];
@@ -472,7 +492,20 @@ static BOOL _data_item_detail_malloc = 0;
         //递归
         if ([ob isKindOfClass:[DataItemDetail class]]) {
             line = [ob whatInThis];
-        } else {
+        }
+        //队列 需要循环子模型
+        else if ([ob isKindOfClass:[NSArray class]]) {
+            for (id subOb in ob) {
+                //如果还是detail
+                if ([subOb isKindOfClass:[DataItemDetail class]]) {
+                    line = [line stringByAppendingString:[subOb whatInThis]];
+                }
+                else {
+                    line = [NSString stringWithFormat:@"[%@-sub] => %@\r\n",key, subOb];
+                }
+            }
+        }
+        else {
             line = [NSString stringWithFormat:@"[%@] => %@\r\n", key, ob];
         }
         what = [what stringByAppendingString:line];

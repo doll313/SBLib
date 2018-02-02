@@ -84,6 +84,9 @@
         else if ([titleStr isEqualToString:@"tips"]) {
             [tableView.ctrl.view sb_showTips:@"12345678" showIndicator:NO hiddenAfterSeconds:2 isBlackBg:NO completion:nil];
         }
+        else if ([titleStr isEqualToString:@"httprecord"]) {
+            [tableView.ctrl sb_quickOpenCtrl:@"SBApiRecordController"];
+        }
     };
 
     // 帐户资料
@@ -100,6 +103,7 @@
                             @"collection",
                             @"database",
                             @"tips",
+                            @"httprecord",
                             ];
 
     //单元格

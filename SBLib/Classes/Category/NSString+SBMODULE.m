@@ -471,6 +471,25 @@ static inline CGSize ajustedSize(CGSize originalSize) {
     return [self sb_sizeWithFont:font constrainedToSize:size].width;
 }
 
+/** 随机汉字 **/
++ (NSString *)sb_randomHanzi:(NSInteger)count {
+    NSString *text = @"";
+    for (int i=0; i<count; i++) {
+        NSStringEncoding gbkEncoding = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+        NSInteger randomH = 0xA1+arc4random()%(0xFE - 0xA1+1);
+        NSInteger randomL = 0xB0+arc4random()%(0xF7 - 0xB0+1);
+        NSInteger number = (randomH<<8)+randomL;
+        NSData *data = [NSData dataWithBytes:&number length:2];
+
+        NSString *string = [[NSString alloc] initWithData:data encoding:gbkEncoding];
+
+        text = [text stringByAppendingString:string];
+    }
+
+
+    return text;
+}
+
 //中文的拼音首字母
 - (NSString *)sb_cnFirstLetter {
     NSString *str = [NSString stringWithString:self];
