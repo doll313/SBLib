@@ -349,7 +349,7 @@ typedef NS_ENUM(NSInteger, SBRefreshState){
 }
 
 /** 计算动态改变的大小 */
-CGFloat fetchLerp1(CGFloat a,CGFloat b,CGFloat p) {
+CGFloat sb_fetchlerp1(CGFloat a,CGFloat b,CGFloat p) {
     return a + (b - a) * p;
 }
 
@@ -375,16 +375,16 @@ CGFloat fetchLerp1(CGFloat a,CGFloat b,CGFloat p) {
     CGFloat percentage = 1 - (distance / kSBRefreshMaxDistnce);
     
     //上面间隙
-    CGFloat currentTopPadding = fetchLerp1(kSBRefreshTopMinPadding, kSBRefreshTopMaxPadding, percentage);
+    CGFloat currentTopPadding = sb_fetchlerp1(kSBRefreshTopMinPadding, kSBRefreshTopMaxPadding, percentage);
     
     //上圆的半径
-    CGFloat currentTopRadius = fetchLerp1(kSBRefreshTopMinRadius, kSBRefreshTopMaxRadius, percentage);
+    CGFloat currentTopRadius = sb_fetchlerp1(kSBRefreshTopMinRadius, kSBRefreshTopMaxRadius, percentage);
     
     //下圆的半径
-    CGFloat currentBottomRadius = fetchLerp1(kSBRefreshBottomMinRadius, kSBRefreshBottomMaxRadius, percentage);
+    CGFloat currentBottomRadius = sb_fetchlerp1(kSBRefreshBottomMinRadius, kSBRefreshBottomMaxRadius, percentage);
     
     //下面的间隙
-    CGFloat currentBottomPadding = fetchLerp1(kSBRefreshBottomMinPadding, kSBRefreshBottomMaxPadding, percentage);
+    CGFloat currentBottomPadding = sb_fetchlerp1(kSBRefreshBottomMinPadding, kSBRefreshBottomMaxPadding, percentage);
     
     //下圆心
     CGPoint bottomOrigin = CGPointMake(self.bounds.size.width/2, self.bounds.size.height - currentBottomPadding - currentBottomRadius);
@@ -406,16 +406,16 @@ CGFloat fetchLerp1(CGFloat a,CGFloat b,CGFloat p) {
     CGPathAddArc(path, NULL, topOrigin.x, topOrigin.y, currentTopRadius, 0, M_PI, YES);
     
     //左外切曲线
-    CGPoint leftCp1 = CGPointMake(fetchLerp1(topOrigin.x - currentTopRadius, bottomOrigin.x - currentBottomRadius, 0.1), fetchLerp1(topOrigin.y, bottomOrigin.y, 0.2));
-    CGPoint leftCp2 = CGPointMake(fetchLerp1(topOrigin.x - currentTopRadius, bottomOrigin.x - currentBottomRadius, 0.9), fetchLerp1(topOrigin.y, bottomOrigin.y, 0.2));
+    CGPoint leftCp1 = CGPointMake(sb_fetchlerp1(topOrigin.x - currentTopRadius, bottomOrigin.x - currentBottomRadius, 0.1), sb_fetchlerp1(topOrigin.y, bottomOrigin.y, 0.2));
+    CGPoint leftCp2 = CGPointMake(sb_fetchlerp1(topOrigin.x - currentTopRadius, bottomOrigin.x - currentBottomRadius, 0.9), sb_fetchlerp1(topOrigin.y, bottomOrigin.y, 0.2));
     CGPoint leftDestination = CGPointMake(bottomOrigin.x - currentBottomRadius, bottomOrigin.y);
     CGPathAddCurveToPoint(path, NULL, leftCp1.x, leftCp1.y, leftCp2.x, leftCp2.y, leftDestination.x, leftDestination.y);
     //绘下圆
     CGPathAddArc(path, NULL, bottomOrigin.x, bottomOrigin.y, currentBottomRadius, M_PI, 0, YES);
     
     //右外切曲线
-    CGPoint rightCp1 = CGPointMake(fetchLerp1(topOrigin.x + currentTopRadius, bottomOrigin.x + currentBottomRadius, 0.9), fetchLerp1(topOrigin.y, bottomOrigin.y, 0.2));
-    CGPoint rightCp2 = CGPointMake(fetchLerp1(topOrigin.x + currentTopRadius, bottomOrigin.x + currentBottomRadius, 0.1), fetchLerp1(topOrigin.y, bottomOrigin.y, 0.2));
+    CGPoint rightCp1 = CGPointMake(sb_fetchlerp1(topOrigin.x + currentTopRadius, bottomOrigin.x + currentBottomRadius, 0.9), sb_fetchlerp1(topOrigin.y, bottomOrigin.y, 0.2));
+    CGPoint rightCp2 = CGPointMake(sb_fetchlerp1(topOrigin.x + currentTopRadius, bottomOrigin.x + currentBottomRadius, 0.1), sb_fetchlerp1(topOrigin.y, bottomOrigin.y, 0.2));
     CGPoint rightDestination = CGPointMake(topOrigin.x + currentTopRadius, topOrigin.y);
     CGPathAddCurveToPoint(path, NULL, rightCp1.x, rightCp1.y, rightCp2.x, rightCp2.y, rightDestination.x, rightDestination.y);
     
@@ -431,9 +431,9 @@ CGFloat fetchLerp1(CGFloat a,CGFloat b,CGFloat p) {
         ////绘制箭头
         
         //箭头宽度
-        CGFloat currentArrowSize = fetchLerp1(kSBRefreshArrowMinSize, kSBRefreshArrowMaxSize, percentage);
+        CGFloat currentArrowSize = sb_fetchlerp1(kSBRefreshArrowMinSize, kSBRefreshArrowMaxSize, percentage);
         //箭头半径
-        CGFloat currentArrowRadius = fetchLerp1(kSBRefreshArrowMinRadius, kSBRefreshArrowMaxRadius, percentage);
+        CGFloat currentArrowRadius = sb_fetchlerp1(kSBRefreshArrowMinRadius, kSBRefreshArrowMaxRadius, percentage);
         //箭头外圆
         CGFloat arrowBigRadius = currentArrowRadius + currentArrowSize*0.5;
         //箭头内圆
@@ -461,7 +461,7 @@ CGFloat fetchLerp1(CGFloat a,CGFloat b,CGFloat p) {
     } else {
         
         //消失动画
-        CGFloat radius = fetchLerp1(kSBRefreshBottomMinRadius, kSBRefreshBottomMaxRadius, 0.2);
+        CGFloat radius = sb_fetchlerp1(kSBRefreshBottomMinRadius, kSBRefreshBottomMaxRadius, 0.2);
         CABasicAnimation *pathMorph = [CABasicAnimation animationWithKeyPath:@"path"];
         pathMorph.duration = 0.15;
         pathMorph.fillMode = kCAFillModeForwards;
