@@ -58,7 +58,7 @@
         _presentedTransitioning = [SBSmallWindowPresentAnimator new];
         
     } else if (_presentStyle == SBSmallWindowPresentStyle_FromBottom) {
-        _presentedTransitioning = [ELPresentFromBottomAnimator new];
+        _presentedTransitioning = [SBPresentFromBottomAnimator new];
     }
     return _presentedTransitioning;
 }

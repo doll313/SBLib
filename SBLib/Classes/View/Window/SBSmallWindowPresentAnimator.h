@@ -20,7 +20,7 @@
 
 
 /**从下弹窗，在底部*/
-@interface ELPresentFromBottomAnimator : SBSmallWindowPresentAnimator
+@interface SBPresentFromBottomAnimator : SBSmallWindowPresentAnimator
 
 @end
 

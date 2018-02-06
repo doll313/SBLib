@@ -96,7 +96,7 @@
 
 @end
 
-@implementation ELPresentFromBottomAnimator
+@implementation SBPresentFromBottomAnimator
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext{
     return 0.3f;
