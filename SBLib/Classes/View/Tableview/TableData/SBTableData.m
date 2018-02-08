@@ -179,8 +179,7 @@ static NSString *dFinishCellCls = nil;
         //如果是下拉列表
         if (!self.tableView.isRefreshType) {
 
-            [self resetTable];
-            
+            [self.tableDataResult clear];
             //显示刷新样式
             [self.tableView reloadData];
         }
@@ -303,7 +302,7 @@ static NSString *dFinishCellCls = nil;
 
 //整理数据
 - (void)prepareData {
-    if (self.pageAt == 1) {
+    if (self.pageAt == 1 && self == [self.tableView dataOfSection:0]) {
         //数据如果有问题，则还是上一次的数据
         if (self.isLoadDataOK) {
 
