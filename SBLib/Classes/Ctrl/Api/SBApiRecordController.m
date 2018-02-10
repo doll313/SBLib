@@ -160,6 +160,10 @@
     if (recieve) {
         string = [string stringByAppendingString:recieve];
     }
+    else {
+        NSString *temp = [[NSString alloc] initWithData:task.recieveData encoding:NSUTF8StringEncoding];
+        string = [string stringByAppendingString:temp];
+    }
 
     SBApiInfoController *iCtrl = [[SBApiInfoController alloc] init];
     iCtrl.textString = string;
