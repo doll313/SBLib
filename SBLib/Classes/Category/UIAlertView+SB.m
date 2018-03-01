@@ -154,12 +154,12 @@
 }
 
 // 显示提示信息（可设定自动隐藏时间、是否显示转子、结束）
-- (MBProgressHUD *)sb_showTips:(NSString *)tips showIndicator:(BOOL)showIndicator hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds completion:(void (^__nullable)())completion {
+- (MBProgressHUD *)sb_showTips:(NSString *)tips showIndicator:(BOOL)showIndicator hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds completion:(void (^__nullable)(void))completion {
     return [self sb_showTips:tips showIndicator:showIndicator hiddenAfterSeconds:hiddenAfterSeconds isBlackBg:YES completion:completion];
 }
 
 // 显示提示信息（可设定自动隐藏时间、是否显示转子，背景色，结束事件）
-- (MBProgressHUD *)sb_showTips:(NSString *)tips showIndicator:(BOOL)showIndicator hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds isBlackBg:(BOOL)isBlackBg completion:(void (^ __nullable)())completion {
+- (MBProgressHUD *)sb_showTips:(NSString *)tips showIndicator:(BOOL)showIndicator hiddenAfterSeconds:(CGFloat)hiddenAfterSeconds isBlackBg:(BOOL)isBlackBg completion:(void (^ __nullable)(void))completion {
     if (!tips) {
         tips = @"";
     }

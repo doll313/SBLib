@@ -60,8 +60,10 @@
     //默认给个
     self.frame = CGRectMake(0, 0, 1, 1);
     self.backgroundColor = [UIColor clearColor];
-    if (APPCONFIG_VERSION_OVER_9) {
+    if (@available(iOS 9.0, *)) {
         self.cellLayoutMarginsFollowReadableWidth = NO;
+    } else {
+        // Fallback on earlier versions
     }
     
     self.delegate = self;

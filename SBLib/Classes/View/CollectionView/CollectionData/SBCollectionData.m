@@ -83,7 +83,7 @@ static NSString *dFooterCls = nil;
         return;
     }
 
-    void (^refreshBlock)() = ^void(){
+    void (^refreshBlock)(void) = ^void(){
         //从第一页开始
         self.pageAt = 1;
 
@@ -116,7 +116,7 @@ static NSString *dFooterCls = nil;
         return;
     }
 
-    void (^replaceBlock)() = ^void(){
+    void (^replaceBlock)(void) = ^void(){
         //从第一页开始
         self.pageAt = 1;
 

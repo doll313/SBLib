@@ -32,10 +32,10 @@ typedef enum {
 } SBNetworkReachability;
 
 //只会返回 wifi 移动 和 没有网络
-NSString* SBGetNetworkReachabilityDescribe();
+NSString* SBGetNetworkReachabilityDescribe(void);
 
 //只会返回 wifi 移动 和 没有网络
-SBNetworkReachability SBGetNetworkReachability();
+SBNetworkReachability SBGetNetworkReachability(void);
 
 //ios7以上，返回具体的网络 否则同上一个方法
-SBNetworkReachability SBGetAccurateNetworkReachability();
+SBNetworkReachability SBGetAccurateNetworkReachability(void);

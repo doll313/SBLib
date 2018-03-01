@@ -87,6 +87,9 @@
 @property (nonatomic, copy) void(^didEndDisplayingSupplementaryView)(SBCollectionView *collectionView, UICollectionReusableView *cell, NSIndexPath *indexPath);
 
 
+/** 更新刷新头部 **/
+- (void)reloadRefreshHeader;
+
 /** 为表格添加一个表格段 */
 - (void)addSectionWithData:(SBCollectionData *)sectionData;
 

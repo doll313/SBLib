@@ -101,6 +101,9 @@
 /**  表格初始化，会在initWithStyle:时调用 */
 - (void)customInit;
 
+/** 更新刷新头部 **/
+- (void)reloadRefreshHeader;
+
 /** 为表格添加一个表格段 */
 - (void)addSectionWithData:(SBTableData *)sectionData;
 
