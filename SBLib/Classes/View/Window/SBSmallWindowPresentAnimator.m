@@ -12,72 +12,89 @@
 
 @implementation SBSmallWindowPresentAnimator
 
-- (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext{
-    return 0.3f;
+- (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext {
+    return SBSmallWindowPresentDuration;
 }
 
-- (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext{
-    UIView *containerView = transitionContext.containerView;
+- (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext {
     
-    UIView *fromView = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey].view;
-    fromView.tintAdjustmentMode = UIViewTintAdjustmentModeDimmed;
-    fromView.userInteractionEnabled = NO;
+    [self commonInit:transitionContext];
+    [self presentSmallWindow:transitionContext];
+    
+}
+
+- (void)commonInit:(id <UIViewControllerContextTransitioning>)transitionContext {
+    self.containerView = transitionContext.containerView;
+    
+    self.fromView = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey].view;
+    self.fromView.tintAdjustmentMode = UIViewTintAdjustmentModeDimmed;
+    self.fromView.userInteractionEnabled = NO;
     
     self.toCtrl = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-    UIView *toView = self.toCtrl.view;
+    self.toView = self.toCtrl.view;
     
-    UIView *maskView = [[UIView alloc] initWithFrame:fromView.bounds];
-    maskView.backgroundColor = self.toCtrl.hideMask ? [UIColor clearColor] : [UIColor colorWithRed:0 green:0 blue:0 alpha:0.3];
-    if (self.toCtrl.needTapGesture) {
-        [maskView sb_setTapGesture:self action:@selector(dismissSmallWindow:)];
-    }
+    self.maskView = [[UIView alloc] initWithFrame:self.fromView.bounds];
+    [self.maskView sb_setTapGesture:self action:@selector(dismissSmallWindow:)];
+    
+    [self.containerView addSubview:self.maskView];
+    [self.containerView addSubview:self.toView];
+    
+    self.maskView.frame = self.containerView.bounds;
+}
 
-    [containerView addSubview:maskView];
-    [containerView addSubview:toView];
-
-    maskView.frame = containerView.bounds;
-
-    toView.width = self.toCtrl.windowW;
-    toView.height = self.toCtrl.windowH;
+- (void)presentSmallWindow:(id <UIViewControllerContextTransitioning>)transitionContext  {
+    self.toView.width = self.toCtrl.windowW;
+    self.toView.height = self.toCtrl.windowH;
     CGFloat top = self.toCtrl.windowY;
-    CGFloat left = (containerView.width - toView.width) / 2;
+    CGFloat left = (self.containerView.width - self.toView.width) / 2;
     CGFloat width = self.toCtrl.windowW;
     CGFloat height = self.toCtrl.windowH;
-
+    
     if (top == -1) {//默认上下居中
-        top = (containerView.height - toView.height) / 2;
+        top = (self.containerView.height - self.toView.height) / 2;
         top = MAX(top, 10);
     }
-
-    if (width == 0) {
-        width = toView.width;
-    }
-
-    if (width == 0) {
-        height = toView.height;
-    }
-
-    toView.left = left;
-    toView.top = top;
-    toView.width = width;
-    toView.height = height;
     
-    toView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.8f, 0.8f);
-    [UIView animateWithDuration:[self transitionDuration:transitionContext] // 动画时长
+    if (width == 0) {
+        width = self.toView.width;
+    }
+    
+    if (width == 0) {
+        height = self.toView.height;
+    }
+    
+    self.toView.left = left;
+    self.toView.top = top;
+    self.toView.width = width;
+    self.toView.height = height;
+    
+    self.toView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.8f, 0.8f);
+    [UIView animateWithDuration:SBSmallWindowPresentDuration // 动画时长
                           delay:0.0 // 动画延迟
          usingSpringWithDamping:0.5 // 类似弹簧振动效果 0~1
           initialSpringVelocity:5.0 // 初始速度
                         options:UIViewAnimationOptionCurveEaseInOut // 动画过渡效果
                      animations:^{
-                         toView.transform = CGAffineTransformIdentity;
+                         self.maskView.backgroundColor = self.toCtrl.hideMask ? [UIColor clearColor] : [UIColor colorWithRed:0 green:0 blue:0 alpha:0.3];
+                         self.toView.transform = CGAffineTransformIdentity;
                      } completion:^(BOOL finished) {
                          [transitionContext completeTransition:YES];
                      }];
-    
 }
 
+
 - (void)dismissSmallWindow:(id)sender {
-    [self.toCtrl dismissViewControllerAnimated:YES completion:nil];
+    if (self.tapBlankBlock) {
+        self.tapBlankBlock();
+    }
+    
+    if (self.toCtrl.needTapGesture) {
+        [self.toCtrl dismissViewControllerAnimated:YES completion:^{
+            if (self.dismissWindowBlock) {
+                self.dismissWindowBlock();
+            }
+        }];
+    }
 }
 
 - (BOOL)hasTextFieldInView:(UIView *)view {
@@ -99,62 +116,95 @@
 @implementation SBPresentFromBottomAnimator
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext{
-    return 0.3f;
+    return SBSmallWindowPresentDuration;
 }
 
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext{
-    UIView *containerView = transitionContext.containerView;
-    UIView *fromView = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey].view;
-    fromView.tintAdjustmentMode = UIViewTintAdjustmentModeDimmed;
-    fromView.userInteractionEnabled = NO;
+    [self commonInit:transitionContext];
+    [self presentSmallWindow:transitionContext];
     
-    self.toCtrl = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-    UIView *toView = self.toCtrl.view;
+}
 
-    UIView *maskView = [[UIView alloc] initWithFrame:fromView.bounds];
-    maskView.backgroundColor = self.toCtrl.hideMask ? [UIColor clearColor] : [UIColor colorWithRed:0 green:0 blue:0 alpha:0.3];
-    if (self.toCtrl.needTapGesture) {
-        [maskView sb_setTapGesture:self action:@selector(dismissSmallWindow:)];
-    }
-    [containerView addSubview:maskView];
-    [containerView addSubview:toView];
-
-    maskView.frame = containerView.bounds;
+//重写
+- (void)presentSmallWindow:(id <UIViewControllerContextTransitioning>)transitionContext  {
     
     if (self.toCtrl.isFullWidth) {
-        toView.top = containerView.bottom;
-        toView.width = containerView.width;
+        self.toView.top = self.containerView.bottom;
+        self.toView.width = self.containerView.width;
         if (self.toCtrl.windowH > 0) {
-            toView.height = self.toCtrl.windowH;
+            self.toView.height = self.toCtrl.windowH;
         }
     } else{
-        CGFloat left = (containerView.width - toView.width) / 2;
-        toView.top = containerView.bottom;
-        toView.left = left;
-
+        CGFloat left = (self.containerView.width - self.toView.width) / 2;
+        self.toView.top = self.containerView.bottom;
+        self.toView.left = left;
+        
         //外面写死高宽的情况
         if (self.toCtrl.windowH > 0) {
-            toView.height = self.toCtrl.windowH;
+            self.toView.height = self.toCtrl.windowH;
         }
         if (self.toCtrl.windowW) {
-            toView.width = self.toCtrl.windowW;
+            self.toView.width = self.toCtrl.windowW;
         }
     }
-
-    [containerView layoutIfNeeded];
-
-    [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
-        maskView.backgroundColor = self.toCtrl.hideMask ? [UIColor clearColor] : [UIColor colorWithRed:0 green:0 blue:0 alpha:0.3];
-        toView.bottom = containerView.bottom;
-        [containerView layoutIfNeeded];
+    
+    [self.containerView layoutIfNeeded];
+    
+    [UIView animateWithDuration:SBSmallWindowPresentDuration animations:^{
+        self.maskView.backgroundColor = self.toCtrl.hideMask ? [UIColor clearColor] : [UIColor colorWithRed:0 green:0 blue:0 alpha:0.3];
+        self.toView.bottom = self.containerView.bottom;
+        [self.containerView layoutIfNeeded];
     } completion:^(BOOL finished) {
         [transitionContext completeTransition:YES];
     }];
 }
 
-- (void)dismissSmallWindow:(id)sender {
-    [self.toCtrl dismissViewControllerAnimated:YES completion:nil];
+@end
+
+@implementation SBPresentFromRightAnimator
+
+- (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext{
+    return SBSmallWindowPresentDuration;
 }
 
+- (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext{
+    [self commonInit:transitionContext];
+    [self presentSmallWindow:transitionContext];
+}
+
+//重写
+- (void)presentSmallWindow:(id <UIViewControllerContextTransitioning>)transitionContext  {
+    if (self.toCtrl.isFullHeight) {
+        self.toView.top = 0;
+        self.toView.height = self.containerView.height;
+        self.toView.left = self.containerView.right;
+        if (self.toCtrl.windowW > 0) {
+            self.toView.width = self.toCtrl.windowW;
+        }
+    } else{
+        
+        self.toView.left = self.containerView.right;
+        self.toView.centerY = self.containerView.height / 2;
+        //外面写死高宽的情况
+        if (self.toCtrl.windowH > 0) {
+            self.toView.height = self.toCtrl.windowH;
+        }
+        if (self.toCtrl.windowW) {
+            self.toView.width = self.toCtrl.windowW;
+        }
+    }
+    
+    [self.containerView layoutIfNeeded];
+    [UIView animateWithDuration:SBSmallWindowPresentDuration animations:^{
+        self.maskView.backgroundColor = self.toCtrl.hideMask ? [UIColor clearColor] : [UIColor colorWithRed:0 green:0 blue:0 alpha:0.3];
+        
+        self.toView.right = self.containerView.right;
+        
+        [self.containerView layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        [transitionContext completeTransition:YES];
+    }];
+}
 @end
+
 

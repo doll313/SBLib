@@ -116,7 +116,6 @@
 /** 删除一个表格段 */
 - (void)removeSectionWithRange:(NSRange)range;
 
-
 /** 删除一个单元格  ui和 数据上  */
 - (void)removeCell:(NSIndexPath *)indexPath;
 - (void)removeCell:(NSIndexPath *)indexPath animation:(UITableViewRowAnimation)animation;

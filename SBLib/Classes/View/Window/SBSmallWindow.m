@@ -59,17 +59,23 @@
         
     } else if (_presentStyle == SBSmallWindowPresentStyle_FromBottom) {
         _presentedTransitioning = [SBPresentFromBottomAnimator new];
+    } else if (_presentStyle == SBSmallWindowPresentStyle_FromRight) {
+        _presentedTransitioning = [SBPresentFromRightAnimator new];
     }
+    [(SBSmallWindowPresentAnimator *)_presentedTransitioning setTapBlankBlock:self.tapBlankBlock];
+    [(SBSmallWindowPresentAnimator *)_presentedTransitioning setDismissWindowBlock:self.dismissWindowBlock];
     return _presentedTransitioning;
 }
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
     if (_presentStyle == SBSmallWindowPresentStyle_Normal) {
         _dimissTransitioning = [SBSmallWindowDismissAnimator new];
-
     } else if (_presentStyle == SBSmallWindowPresentStyle_FromBottom) {
         _dimissTransitioning = [SBDismissToBottomAnimator new];
-    } 
+    } else if (_presentStyle == SBSmallWindowPresentStyle_FromRight) {
+        _dimissTransitioning = [SBDismissToRightAnimator new];
+    }
+    [(SBSmallWindowDismissAnimator *)_dimissTransitioning setDismissWindowBlock:self.dismissWindowBlock];
     return _dimissTransitioning;
 }
 

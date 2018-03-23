@@ -226,14 +226,17 @@ static BOOL sbIsCtrlAnimating = NO;
 
 - (UIViewController *)sb_openCtrl:(SBURLAction *)urlAction {
     UIViewController *controller = [self sb_makeCtrl:urlAction];
-    [self.navigationController pushViewController:controller animated:YES];
+    if (controller) {
+        [self.navigationController pushViewController:controller animated:YES];
+    }
     return controller;
 }
 
 - (UIViewController *)sb_modalCtrl:(SBURLAction *)urlAction {
     UIViewController *controller = [self sb_makeCtrl:urlAction];
-    [self.navigationController presentViewController:controller animated:YES completion:^{
-    }];
+    if (controller) {
+        [self.navigationController presentViewController:controller animated:YES completion:^{}];
+    }
     return controller;
 }
 

@@ -43,12 +43,19 @@
     return [self initWithStyle:NO];
 }
 
+//
+- (id)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame style:UITableViewStylePlain];
+    
+    //列表配制
+    [self customInit];
+    
+    return self;
+}
+
 /** 初始化表格，isGrouped为YES时，表示初始化一个圆角表格 */
 - (id)initWithStyle:(BOOL)isGrouped {
-	self = [super initWithFrame:CGRectZero style:isGrouped ? UITableViewStyleGrouped : UITableViewStylePlain];
-
-    //列表数据
-    self.arrTableData = [[NSMutableArray alloc] init];
+	self = [super initWithFrame:CGRectMake(0, 0, 1, 1) style:isGrouped ? UITableViewStyleGrouped : UITableViewStylePlain];
     
     //列表配制
 	[self customInit];
@@ -57,8 +64,9 @@
 }
 
 - (void)customInit {
-    //默认给个
-    self.frame = CGRectMake(0, 0, 1, 1);
+    //列表数据
+    self.arrTableData = [[NSMutableArray alloc] init];
+    
     self.backgroundColor = [UIColor clearColor];
     if (@available(iOS 9.0, *)) {
         self.cellLayoutMarginsFollowReadableWidth = NO;

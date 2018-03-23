@@ -12,22 +12,32 @@
 @implementation SBSmallWindowDismissAnimator
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext {
-    return 0.3f;
+    return SBSmallWindowDismissDuration;
 }
 
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext {
+    [self commonInit:transitionContext];
+    [self dismissSmallWindow:transitionContext];
+}
+
+- (void)commonInit:(id <UIViewControllerContextTransitioning>)transitionContext {
+    self.fromView = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey].view;
     
-    UIView *toView = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey].view;
-    toView.tintAdjustmentMode = UIViewTintAdjustmentModeAutomatic;
-    toView.userInteractionEnabled = YES;
-    
-    UIViewController *fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-    
-    [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        fromVC.view.alpha = 0;
+    self.toView = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey].view;
+    self.toView.tintAdjustmentMode = UIViewTintAdjustmentModeAutomatic;
+    self.toView.userInteractionEnabled = YES;
+}
+
+- (void)dismissSmallWindow:(id <UIViewControllerContextTransitioning>)transitionContext {
+    [UIView animateWithDuration:SBSmallWindowDismissDuration delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        self.fromView.alpha = 0;
     } completion:^(BOOL finished) {
         [transitionContext completeTransition:YES];
-        fromVC.view.alpha = 1;
+        
+        self.fromView.alpha = 1;
+        if (self.dismissWindowBlock) {
+            self.dismissWindowBlock();
+        }
     }];
 }
 
@@ -37,24 +47,54 @@
 @implementation SBDismissToBottomAnimator
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext {
-    return 0.3f;
+    return SBSmallWindowDismissDuration;
 }
 
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext {
-    
-    UIView *toView = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey].view;
-    toView.tintAdjustmentMode = UIViewTintAdjustmentModeAutomatic;
-    toView.userInteractionEnabled = YES;
-    
-    UIView *fromView = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey].view;
+    [self commonInit:transitionContext];
+    [self dismissSmallWindow:transitionContext];
+}
+
+
+- (void)dismissSmallWindow:(id <UIViewControllerContextTransitioning>)transitionContext {
     [transitionContext.containerView layoutIfNeeded];
-    [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        fromView.top = transitionContext.containerView.bottom;
+    [UIView animateWithDuration:SBSmallWindowDismissDuration delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        self.fromView.top = transitionContext.containerView.bottom;
         [transitionContext.containerView layoutIfNeeded];
     } completion:^(BOOL finished) {
         [transitionContext completeTransition:YES];
+        
+        if (self.dismissWindowBlock) {
+            self.dismissWindowBlock();
+        }
     }];
 }
 
 @end
 
+@implementation SBDismissToRightAnimator
+
+- (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext {
+    return SBSmallWindowDismissDuration;
+}
+
+- (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext {
+    [self commonInit:transitionContext];
+    [self dismissSmallWindow:transitionContext];
+}
+
+- (void)dismissSmallWindow:(id <UIViewControllerContextTransitioning>)transitionContext {
+    [transitionContext.containerView layoutIfNeeded];
+    [UIView animateWithDuration:SBSmallWindowDismissDuration delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        self.fromView.left = transitionContext.containerView.right;
+        [transitionContext.containerView layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        [transitionContext completeTransition:YES];
+        
+        if (self.dismissWindowBlock) {
+            self.dismissWindowBlock();
+        }
+    }];
+}
+
+@end

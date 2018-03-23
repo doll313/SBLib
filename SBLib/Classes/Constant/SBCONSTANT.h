@@ -61,6 +61,15 @@
 
 #define APPCONFIG_CONN_ERROR_MSG_DOMAIN     @"SBHttpTaskError"  // 连接出错信息标志
 
+//去函数警告
+#define SBLeakWarning(Stuff) \
+do { \
+_Pragma("clang diagnostic push") \
+_Pragma("clang diagnostic ignored \"-Warc-performSelector-leaks\"") \
+Stuff; \
+_Pragma("clang diagnostic pop") \
+} while (0)
+
 /** 色值 RGBA **/
 #define RGB_A(r, g, b, a) [UIColor colorWithRed:(CGFloat)(r)/255.0f green:(CGFloat)(g)/255.0f blue:(CGFloat)(b)/255.0f alpha:(CGFloat)(a)]
 
@@ -105,6 +114,13 @@
 #define SBTempPath NSTemporaryDirectory()//获取沙盒temp路径
 #define SBCachePath [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject]//获取沙盒Cache路径
 
+// 判断设备是iphoneX
+#define SB_isiPhoneX   (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone && (NSInteger)[UIScreen mainScreen].nativeBounds.size.height == 2436)
+
+//设计稿如果是 414 * 736 的 用这个转换比例
+#define SBUIRate MIN(1, (APPCONFIG_UI_SCREEN_FWIDTH / 414.0f))          //比例  这里是设计稿的 它的宽度是 414 最大也就1
+#define SBUIRate2 MIN(1, (APPCONFIG_UI_SCREEN_FHEIGHT / 736.0f))          //比例2  这里是设计稿的 它的高度是 736 最大也就1
+
 //版本
 #define APPCONFIG_VERSION_OVER_5                 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0f)
 #define APPCONFIG_VERSION_OVER_6                 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0f)
@@ -125,7 +141,6 @@
 
 #define APPCONFIG_UI_TABLE_PADDING          10.0f                       // UITableView 的默认边距
 #define APPCONFIG_UI_WIDGET_PADDING          5.0f                       // 控件 的默认边距
-
 
 // UI 界面大小
 #define APPCONFIG_UI_SCREEN_SIZE                ([UIScreen mainScreen].bounds.size)             //屏幕大小

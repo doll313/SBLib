@@ -12,7 +12,7 @@
 typedef NS_ENUM (NSInteger, SBSmallWindowPresentStyle) {
     SBSmallWindowPresentStyle_Normal = 0,//一般弹窗，默认中间
     SBSmallWindowPresentStyle_FromBottom,//从下方弹出
-//    SBSmallWindowPresentStyle_FromRight,//从右边弹出
+    SBSmallWindowPresentStyle_FromRight,//从右边弹出
 };
 
 /*
@@ -36,5 +36,7 @@ typedef NS_ENUM (NSInteger, SBSmallWindowPresentStyle) {
 @property (nonatomic, assign) BOOL isFullHeight;//是否高度全屏
 @property (nonatomic, assign) BOOL hideMask;//半透明背景遮罩层，
 @property (nonatomic, assign) BOOL needTapGesture;//是否需要点击空白处消失,默认yes点空白自动消失
+@property (nonatomic, copy) void(^tapBlankBlock)(void); //点击空白回调
+@property (nonatomic, copy) void(^dismissWindowBlock)(void); //弹窗消失完成回调
 
 @end

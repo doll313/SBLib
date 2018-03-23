@@ -87,6 +87,10 @@
         else if ([titleStr isEqualToString:@"httprecord"]) {
             [tableView.ctrl sb_quickOpenCtrl:@"SBApiRecordController"];
         }
+        else if ([titleStr isEqualToString:@"window"]) {
+            [tableView.ctrl sb_quickOpenCtrl:@"SBTestWindowController"];
+        }
+        
     };
 
     // 帐户资料
@@ -104,6 +108,7 @@
                             @"database",
                             @"tips",
                             @"httprecord",
+                            @"window",
                             ];
 
     //单元格

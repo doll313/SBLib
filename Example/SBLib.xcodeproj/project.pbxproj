@@ -33,6 +33,8 @@
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		70163781AFC33F60110847C8 /* libPods-SBLib_Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7577FE817A85FF1611FE07F /* libPods-SBLib_Example.a */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
+		A1C4BD82206500EA00B8B088 /* SBTestWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C4BD81206500EA00B8B088 /* SBTestWindowController.m */; };
+		A1C4BD852065020F00B8B088 /* SBTestWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C4BD842065020F00B8B088 /* SBTestWindow.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +93,10 @@
 		64396283D3D5F71388761D27 /* Pods-SBLib_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SBLib_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-SBLib_Example/Pods-SBLib_Example.release.xcconfig"; sourceTree = "<group>"; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		9555F7BB42FA96E1872CD431 /* SBLib.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = SBLib.podspec; path = ../SBLib.podspec; sourceTree = "<group>"; };
+		A1C4BD80206500EA00B8B088 /* SBTestWindowController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBTestWindowController.h; sourceTree = "<group>"; };
+		A1C4BD81206500EA00B8B088 /* SBTestWindowController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SBTestWindowController.m; sourceTree = "<group>"; };
+		A1C4BD832065020F00B8B088 /* SBTestWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBTestWindow.h; sourceTree = "<group>"; };
+		A1C4BD842065020F00B8B088 /* SBTestWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SBTestWindow.m; sourceTree = "<group>"; };
 		A7577FE817A85FF1611FE07F /* libPods-SBLib_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SBLib_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7C7374F0E226B481488CE87 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -133,6 +139,7 @@
 		5FB3D78C1E6954F8005B54DA /* Class */ = {
 			isa = PBXGroup;
 			children = (
+				A1C4BD7F206500BB00B8B088 /* Window */,
 				5F91A56F1ED7F1B800A391D1 /* Interface */,
 				5FB3D78D1E6954F8005B54DA /* List */,
 				5FB3D7981E6954F8005B54DA /* URLProtol */,
@@ -260,6 +267,17 @@
 				B7C7374F0E226B481488CE87 /* LICENSE */,
 			);
 			name = "Podspec Metadata";
+			sourceTree = "<group>";
+		};
+		A1C4BD7F206500BB00B8B088 /* Window */ = {
+			isa = PBXGroup;
+			children = (
+				A1C4BD80206500EA00B8B088 /* SBTestWindowController.h */,
+				A1C4BD81206500EA00B8B088 /* SBTestWindowController.m */,
+				A1C4BD832065020F00B8B088 /* SBTestWindow.h */,
+				A1C4BD842065020F00B8B088 /* SBTestWindow.m */,
+			);
+			path = Window;
 			sourceTree = "<group>";
 		};
 		F83040CD322A3ACD4C9BBD32 /* Pods */ = {
@@ -442,6 +460,8 @@
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				5FB3D79E1E6954F8005B54DA /* SBIndexTableController.m in Sources */,
 				5FB3D7A01E6954F8005B54DA /* SBURLProtocol.m in Sources */,
+				A1C4BD82206500EA00B8B088 /* SBTestWindowController.m in Sources */,
+				A1C4BD852065020F00B8B088 /* SBTestWindow.m in Sources */,
 				5F91A5721ED7F1D600A391D1 /* SBDbController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
