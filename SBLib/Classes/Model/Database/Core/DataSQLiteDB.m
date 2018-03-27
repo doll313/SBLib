@@ -37,7 +37,7 @@
     
     self.dbpath = [SBFileManager getDbFullPath:dbname];
     self.db = [FMDatabase databaseWithPath:_dbpath];
-    [self.db open];
+    [self.db openWithFlags:SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE|SQLITE_OPEN_FULLMUTEX];
     
     self.queue = [FMDatabaseQueue databaseQueueWithPath:_dbpath];
     
