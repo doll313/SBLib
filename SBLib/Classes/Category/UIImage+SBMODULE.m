@@ -258,7 +258,7 @@
 }
 
 +(UIImage *)sb_imageWithColor:(UIColor *)aColor withFrame:(CGRect)aFrame{
-    UIGraphicsBeginImageContext(aFrame.size);
+    UIGraphicsBeginImageContextWithOptions(aFrame.size, YES, 0);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetFillColorWithColor(context, [aColor CGColor]);
     CGContextFillRect(context, aFrame);
