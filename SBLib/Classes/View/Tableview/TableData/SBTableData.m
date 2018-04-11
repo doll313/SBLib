@@ -221,7 +221,7 @@ static NSString *dFinishCellCls = nil;
 //加载下一页
 - (void)loadDataforNextPage {
     //加载完毕或者正在加载
-    if (self.httpStatus == SBTableDataStatusLoading || [self isLoadDataComplete]) {
+    if (self.httpStatus == SBTableDataStatusLoading || [self isLoadDataComplete] || self.httpStatus == SBTableDataStatusNotStart) {
         return;
     }
 
