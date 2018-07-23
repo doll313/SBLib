@@ -142,11 +142,17 @@
         string = [string stringByAppendingString:@"\r\n"];
         string = [string stringByAppendingString:@"\r\n"];
     }
-    if (body.length > 0) {
-        string = [string stringByAppendingString:bodyDictionary.description];
+    if (bodyDictionary.allKeys.count > 0) {
+        string = [string stringByAppendingString:body];
         string = [string stringByAppendingString:@"\r\n"];
         string = [string stringByAppendingString:@"\r\n"];
     }
+    else {
+        string = [string stringByAppendingString:body];
+        string = [string stringByAppendingString:@"\r\n"];
+        string = [string stringByAppendingString:@"\r\n"];
+    }
+    
     if (allHTTPHeaderFields.count > 0) {
         string = [string stringByAppendingString:allHTTPHeaderFields.description];
         string = [string stringByAppendingString:@"\r\n"];
@@ -162,7 +168,7 @@
     }
     else {
         NSString *temp = [[NSString alloc] initWithData:task.recieveData encoding:NSUTF8StringEncoding];
-        string = [string stringByAppendingString:temp];
+        string = [string stringByAppendingString:SBNoNil(temp)];
     }
 
     SBApiInfoController *iCtrl = [[SBApiInfoController alloc] init];
